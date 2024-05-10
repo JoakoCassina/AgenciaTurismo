@@ -17,6 +17,7 @@ public class Hotel {
     private Integer priceForNight;
     private Date dateFrom;
     private Date dateTo;
+    private Boolean reserved;
 
     public String getHotelCode() {
         return hotelCode;
@@ -74,14 +75,11 @@ public class Hotel {
         this.dateTo = dateTo;
     }
 
-    public boolean isReserved() {
-        return reserved;
-    }
+    public Boolean getReserved() { return reserved; }
 
-    public void setReserved(boolean reserved) {
+    public void setReserved(Boolean reserved) {
         this.reserved = reserved;
     }
 
-    private boolean reserved;
 
 }

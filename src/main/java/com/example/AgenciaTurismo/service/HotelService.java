@@ -21,7 +21,8 @@ public class HotelService implements IHotelService{
                         hotel.getRoomType(),
                         hotel.getPriceForNight(),
                         hotel.getDateFrom(),
-                        hotel.getDateTo()
+                        hotel.getDateTo(),
+                        hotel.getReserved()
                 )).toList();
     }
 }
