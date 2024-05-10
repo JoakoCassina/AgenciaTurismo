@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AgenciaTurismoApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(AgenciaTurismoApplication.class, args);
+
+
 	}
 
 }

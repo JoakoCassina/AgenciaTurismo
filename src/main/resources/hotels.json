@@ -1,0 +1,122 @@
+[
+  {
+    "hotelCode": "CH-0002",
+    "hotelName": "Cataratas Hotel",
+    "destination": "Puerto Iguazú",
+    "roomType": "Doble",
+    "priceForNight": "$6300",
+    "dateFrom": "10-02-2025",
+    "dateTo": "20-03-2025",
+    "reserved": "NO"
+  },
+  {
+    "hotelCode": "CH-0003",
+    "hotelName": "Cataratas Hotel 2",
+    "destination": "Puerto Iguazú",
+    "roomType": "Triple",
+    "priceForNight": "$8200",
+    "dateFrom": "10-02-2025",
+    "dateTo": "23-03-2025",
+    "reserved": "NO"
+  },
+  {
+    "hotelCode": "HB-0001",
+    "hotelName": "Hotel Bristol",
+    "destination": "Buenos Aires",
+    "roomType": "Single",
+    "priceForNight": "$5435",
+    "dateFrom": "10-02-2025",
+    "dateTo": "19-03-2025",
+    "reserved": "NO"
+  },
+  {
+    "hotelCode": "BH-0002",
+    "hotelName": "Hotel Bristol 2",
+    "destination": "Buenos Aires",
+    "roomType": "Doble",
+    "priceForNight": "$7200",
+    "dateFrom": "12-02-2025",
+    "dateTo": "17-04-2025",
+    "reserved": "NO"
+  },
+  {
+    "hotelCode": "SH-0002",
+    "hotelName": "Sheraton",
+    "destination": "Tucumán",
+    "roomType": "Doble",
+    "priceForNight": "$5790",
+    "dateFrom": "17-04-2025",
+    "dateTo": "23-05-2025",
+    "reserved": "NO"
+  },
+  {
+    "hotelCode": "SH-0001",
+    "hotelName": "Sheraton 2",
+    "destination": "Tucumán",
+    "roomType": "Single",
+    "priceForNight": "$4150",
+    "dateFrom": "02-01-2025",
+    "dateTo": "19-02-2025",
+    "reserved": "NO"
+  },
+  {
+    "hotelCode": "SE-0001",
+    "hotelName": "Selina",
+    "destination": "Bogotá",
+    "roomType": "Single",
+    "priceForNight": "$3900",
+    "dateFrom": "23-01-2025",
+    "dateTo": "23-11-2025",
+    "reserved": "NO"
+  },
+  {
+    "hotelCode": "SE-0002",
+    "hotelName": "Selina 2",
+    "destination": "Bogotá",
+    "roomType": "Doble",
+    "priceForNight": "$5840",
+    "dateFrom": "23-01-2025",
+    "dateTo": "15-10-2025",
+    "reserved": "NO"
+  },
+  {
+    "hotelCode": "EC-0003",
+    "hotelName": "El Campín",
+    "destination": "Bogotá",
+    "roomType": "Triple",
+    "priceForNight": "$7020",
+    "dateFrom": "15-02-2025",
+    "dateTo": "27-03-2025",
+    "reserved": "NO"
+  },
+  {
+    "hotelCode": "CP-0004",
+    "hotelName": "Central Plaza",
+    "destination": "Medellín",
+    "roomType": "Múltiple",
+    "priceForNight": "$8600",
+    "dateFrom": "01-03-2025",
+    "dateTo": "17-04-2025",
+    "reserved": "NO"
+  },
+  {
+    "hotelCode": "CP-0002",
+    "hotelName": "Central Plaza 2",
+    "destination": "Medellín",
+    "roomType": "Doble",
+    "priceForNight": "$6400",
+    "dateFrom": "10-02-2025",
+    "dateTo": "20-03-2025",
+    "reserved": "NO"
+  },
+  {
+    "hotelCode": "BG-0004",
+    "hotelName": "Bocagrande",
+    "destination": "Cartagena",
+    "roomType": "Múltiple",
+    "priceForNight": "$9370",
+    "dateFrom": "17-04-2025",
+    "dateTo": "12-06-2025",
+    "reserved": "NO"
+  }
+]
