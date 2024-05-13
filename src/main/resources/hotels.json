@@ -5,9 +5,9 @@
     "destination": "Puerto Iguazú",
     "room_type": "Doble",
     "price_for_night": 6300,
-    "date_from": "10-02-2025",
-    "date_to": "20-03-2025",
-    "reserved": "NO"
+    "date_from": "2025-02-10",
+    "date_to": "2025-03-20",
+    "reserved": false
   },
   {
     "hotel_code": "CH-0003",
@@ -15,9 +15,9 @@
     "destination": "Puerto Iguazú",
     "room_type": "Triple",
     "price_for_night": 8200,
-    "date_from": "10-02-2025",
-    "date_to": "23-03-2025",
-    "reserved": "NO"
+    "date_from": "2025-02-10",
+    "date_to": "2025-03-23",
+    "reserved": false
   },
   {
     "hotel_code": "HB-0001",
@@ -25,9 +25,9 @@
     "destination": "Buenos Aires",
     "room_type": "Single",
     "price_for_night": 5435,
-    "date_from": "10-02-2025",
-    "date_to": "19-03-2025",
-    "reserved": "NO"
+    "date_from": "2025-02-10",
+    "date_to": "2025-03-19",
+    "reserved": false
   },
   {
     "hotel_code": "BH-0002",
@@ -35,9 +35,9 @@
     "destination": "Buenos Aires",
     "room_type": "Doble",
     "price_for_night": 7200,
-    "date_from": "12-02-2025",
-    "date_to": "17-04-2025",
-    "reserved": "NO"
+    "date_from": "2025-02-12",
+    "date_to": "2025-04-17",
+    "reserved": false
   },
   {
     "hotel_code": "SH-0002",
@@ -45,9 +45,9 @@
     "destination": "Tucumán",
     "room_type": "Doble",
     "price_for_night": 5790,
-    "date_from": "17-04-2025",
-    "date_to": "23-05-2025",
-    "reserved": "NO"
+    "date_from": "2025-04-17",
+    "date_to": "2025-05-23",
+    "reserved": false
   },
   {
     "hotel_code": "SH-0001",
@@ -55,9 +55,9 @@
     "destination": "Tucumán",
     "room_type": "Single",
     "price_for_night": 4150,
-    "date_from": "02-01-2025",
-    "date_to": "19-02-2025",
-    "reserved": "NO"
+    "date_from": "2025-01-02",
+    "date_to": "2025-02-19",
+    "reserved": false
   },
   {
     "hotel_code": "SE-0001",
@@ -65,9 +65,9 @@
     "destination": "Bogotá",
     "room_type": "Single",
     "price_for_night": 3900,
-    "date_from": "23-01-2025",
-    "date_to": "23-11-2025",
-    "reserved": "NO"
+    "date_from": "2025-01-23",
+    "date_to": "2025-11-23",
+    "reserved": false
   },
   {
     "hotel_code": "SE-0002",
@@ -75,9 +75,9 @@
     "destination": "Bogotá",
     "room_type": "Doble",
     "price_for_night": 5840,
-    "date_from": "23-01-2025",
-    "date_to": "15-10-2025",
-    "reserved": "NO"
+    "date_from": "2025-01-23",
+    "date_to": "2025-10-15",
+    "reserved": false
   },
   {
     "hotel_code": "EC-0003",
@@ -85,9 +85,9 @@
     "destination": "Bogotá",
     "room_type": "Triple",
     "price_for_night": 7020,
-    "date_from": "15-02-2025",
-    "date_to": "27-03-2025",
-    "reserved": "NO"
+    "date_from": "2025-02-15",
+    "date_to": "2025-03-27",
+    "reserved": false
   },
   {
     "hotel_code": "CP-0004",
@@ -95,9 +95,9 @@
     "destination": "Medellín",
     "room_type": "Múltiple",
     "price_for_night": 8600,
-    "date_from": "01-03-2025",
-    "date_to": "17-04-2025",
-    "reserved": "NO"
+    "date_from": "2025-03-01",
+    "date_to": "2025-04-17",
+    "reserved": false
   },
   {
     "hotel_code": "CP-0002",
@@ -105,9 +105,9 @@
     "destination": "Medellín",
     "room_type": "Doble",
     "price_for_night": 6400,
-    "date_from": "10-02-2025",
-    "date_to": "20-03-2025",
-    "reserved": "NO"
+    "date_from": "2025-02-10",
+    "date_to": "2025-03-20",
+    "reserved": false
   },
   {
     "hotel_code": "BG-0004",
@@ -115,8 +115,8 @@
     "destination": "Cartagena",
     "room_type": "Múltiple",
     "price_for_night": 9370,
-    "date_from": "17-04-2025",
-    "date_to": "12-06-2025",
-    "reserved": "NO"
+    "date_from": "2025-04-17",
+    "date_to": "2025-06-12",
+    "reserved": false
   }
 ]
