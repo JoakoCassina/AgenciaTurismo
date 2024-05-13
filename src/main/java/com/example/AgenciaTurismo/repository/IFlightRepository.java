@@ -1,5 +1,11 @@
 package com.example.AgenciaTurismo.repository;
 
-public interface IFlightRepository {
 
+
+import com.example.AgenciaTurismo.model.Flight;
+
+import java.util.List;
+
+public interface IFlightRepository {
+    public List<Flight> findAll();
 }

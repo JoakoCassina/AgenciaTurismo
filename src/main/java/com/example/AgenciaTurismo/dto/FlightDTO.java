@@ -1,14 +1,32 @@
 package com.example.AgenciaTurismo.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 import java.util.Date;
 
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class FlightDTO {
 
-    private String flight_code;
+    @JsonProperty("flight_code")
+    private String flightCode;
     private String origin;
     private String destination;
-    private String seat_type;
+    @JsonProperty("seat_type")
+    private String seatType;
     private Integer price;
-    private Date date_from;
-    private Date date_to;
+    @JsonProperty("date_from")
+
+    private LocalDate dateFrom;
+    @JsonProperty("date_to")
+
+    private LocalDate dateTo;
+
 }

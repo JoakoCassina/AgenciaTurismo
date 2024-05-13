@@ -1,9 +1,11 @@
 package com.example.AgenciaTurismo.repository;
 
 import com.example.AgenciaTurismo.model.Flight;
+import com.example.AgenciaTurismo.model.Hotel;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -15,7 +17,15 @@ import java.util.List;
 @Repository
 public class FlightRepository implements IFlightRepository {
 
-
+    private List<Flight> flightList;
+    public FlightRepository() {
+        System.out.println("Se esta inicializando el repository de Vuelos");
+        this.flightList = loadData();
+    }
+    @Override
+    public List<Flight> findAll() {
+        return flightList;
+    }
 
 
 
@@ -24,7 +34,8 @@ public class FlightRepository implements IFlightRepository {
         File file;
 
         ObjectMapper objectMapper = new ObjectMapper()
-                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+                .registerModule(new JavaTimeModule());
 
         TypeReference<List<Flight>> typeRef = new TypeReference<>() {};
 
