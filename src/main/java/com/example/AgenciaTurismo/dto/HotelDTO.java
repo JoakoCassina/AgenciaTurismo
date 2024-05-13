@@ -6,8 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
-
 
 
 @Data
@@ -23,10 +24,12 @@ public class HotelDTO {
     private String roomType;
     @JsonProperty("price_for_night")
     private Integer priceForNight;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat()
     @JsonProperty("date_from")
     private Date dateFrom;
+    @JsonFormat()
     @JsonProperty("date_to")
     private Date dateTo;
     private Boolean reserved;
+
 }
