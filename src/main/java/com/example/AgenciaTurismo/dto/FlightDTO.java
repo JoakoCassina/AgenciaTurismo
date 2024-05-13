@@ -23,10 +23,10 @@ public class FlightDTO {
     private String seatType;
     private Integer price;
     @JsonProperty("date_from")
-
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateFrom;
     @JsonProperty("date_to")
-
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
 }

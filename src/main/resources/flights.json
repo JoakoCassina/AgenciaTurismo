@@ -5,8 +5,8 @@
     "destination": "Puerto Iguazú",
     "seat_type": "Economy",
     "price": 6500,
-    "date_from": "2025-02-10",
-    "date_to": "2025-02-15"
+    "date_from": "10-02-2025",
+    "date_to": "15-02-2025"
   },
   {
     "flight_code": "PIBA-1420",
@@ -14,8 +14,8 @@
     "destination": "Bogotá",
     "seat_type": "Business",
     "price": 43200,
-    "date_from": "2025-02-10",
-    "date_to": "2025-02-20"
+    "date_from": "10-02-2025",
+    "date_to": "20-02-2025"
   },
   {
     "flight_code": "PIBA-1420",
@@ -23,8 +23,8 @@
     "destination": "Bogotá",
     "seat_type": "Economy",
     "price": 25735,
-    "date_from": "2025-02-10",
-    "date_to": "2025-02-21"
+    "date_from": "10-02-2025",
+    "date_to": "21-02-2025"
   },
   {
     "flight_code": "BATU-5536",
@@ -32,8 +32,8 @@
     "destination": "Tucumán",
     "seat_type": "Economy",
     "price": 7320,
-    "date_from": "2025-02-10",
-    "date_to": "2025-02-17"
+    "date_from": "10-02-2025",
+    "date_to": "17-02-2025"
   },
   {
     "flight_code": "TUPI-3369",
@@ -41,8 +41,8 @@
     "destination": "Puerto Iguazú",
     "seat_type": "Business",
     "price": 12530,
-    "date_from": "2025-02-12",
-    "date_to": "2025-02-23"
+    "date_from": "12-02-2025",
+    "date_to": "23-02-2025"
   },
   {
     "flight_code": "TUPI-3369",
@@ -50,8 +50,8 @@
     "destination": "Puerto Iguazú",
     "seat_type": "Economy",
     "price": 5400,
-    "date_from": "2025-01-02",
-    "date_to": "2025-01-16"
+    "date_from": "02-01-2025",
+    "date_to": "16-01-2025"
   },
   {
     "flight_code": "BOCA-4213",
@@ -59,8 +59,8 @@
     "destination": "Cartagena",
     "seat_type": "Economy",
     "price": 8000,
-    "date_from": "2025-01-23",
-    "date_to": "2025-02-05"
+    "date_from": "23-01-2025",
+    "date_to": "05-02-2025"
   },
   {
     "flight_code": "CAME-0321",
@@ -68,8 +68,8 @@
     "destination": "Medellín",
     "seat_type": "Economy",
     "price": 7800,
-    "date_from": "2025-01-23",
-    "date_to": "2025-01-31"
+    "date_from": "23-01-2025",
+    "date_to": "31-01-2025"
   },
   {
     "flight_code": "BOBA-6567",
@@ -77,8 +77,8 @@
     "destination": "Buenos Aires",
     "seat_type": "Business",
     "price": 57000,
-    "date_from": "2025-02-15",
-    "date_to": "2025-02-28"
+    "date_from": "15-02-2025",
+    "date_to": "28-02-2025"
   },
   {
     "flight_code": "BOBA-6567",
@@ -86,8 +86,8 @@
     "destination": "Buenos Aires",
     "seat_type": "Economy",
     "price": 39860,
-    "date_from": "2025-03-01",
-    "date_to": "2025-03-14"
+    "date_from": "01-03-2025",
+    "date_to": "14-03-2025"
   },
   {
     "flight_code": "BOME-4442",
@@ -95,8 +95,8 @@
     "destination": "Medellín",
     "seat_type": "Economy",
     "price": 11000,
-    "date_from": "2025-02-10",
-    "date_to": "2025-02-24"
+    "date_from": "10-02-2025",
+    "date_to": "24-02-2025"
   },
   {
     "flight_code": "MEPI-9986",
@@ -104,7 +104,7 @@
     "destination": "Puerto Iguazú",
     "seat_type": "Business",
     "price": 41640,
-    "date_from": "2025-04-17",
-    "date_to": "2025-05-02"
+    "date_from": "17-04-2025",
+    "date_to": "02-05-2025"
   }
 ]
