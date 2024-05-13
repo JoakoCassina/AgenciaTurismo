@@ -31,10 +31,10 @@ public class HotelDTO {
     private String roomType;
     @JsonProperty("price_for_night")
     private Integer priceForNight;
-   /* @JsonFormat(pattern = "dd-MM-yyyy")*/
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_from")
     private LocalDate dateFrom;
-    /*@JsonFormat(pattern = "dd-MM-yyyy")*/
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_to")
     private LocalDate dateTo;
     private Boolean reserved;
