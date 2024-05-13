@@ -15,7 +15,7 @@ public class HotelService implements IHotelService{
 
     public List<HotelDTO> listHotelsDTO() {
         return hotelRepository.findAll().stream()
-                .map(hotel -> new Hotel(
+                .map(hotel -> new HotelDTO(
                         hotel.getHotelCode(),
                         hotel.getHotelName(),
                         hotel.getDestination(),
