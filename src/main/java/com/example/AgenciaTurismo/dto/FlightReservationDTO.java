@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class flight_reservationDTO {
+public class FlightReservationDTO {
     @JsonProperty("date_from")
     private String DateFrom;
     @JsonProperty("date_to")
@@ -23,7 +23,9 @@ public class flight_reservationDTO {
     private String seats;
     @JsonProperty("seat_type")
     private String seatType;
+    @JsonProperty("people")
     private List<PeopleDTO> peopleDTO;
+    @JsonProperty("payment_method")
     private PaymentMethodDTO paymentMethodDTO;
 
 }

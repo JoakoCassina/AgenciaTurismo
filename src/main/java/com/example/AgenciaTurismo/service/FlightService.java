@@ -1,12 +1,10 @@
 package com.example.AgenciaTurismo.service;
 
 import com.example.AgenciaTurismo.dto.FlightDTO;
-import com.example.AgenciaTurismo.dto.HotelDTO;
-import com.example.AgenciaTurismo.dto.request.FinalReservationDTO;
+import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
-import com.example.AgenciaTurismo.dto.response.TotalReservationDTO;
-import com.example.AgenciaTurismo.model.Flight;
+import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,7 +52,7 @@ public class FlightService implements IFlightService{
     }
 
     @Override
-    public TotalReservationDTO calcularTotal(FinalReservationDTO finalReservationDTO) {
+    public TotalFlightReservationDTO calcularTotal(FinalFlightReservationDTO finalReservationDTO) {
         return null;
     }
 
