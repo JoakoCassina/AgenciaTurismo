@@ -1,6 +1,5 @@
 package com.example.AgenciaTurismo.dto.response;
 
-import com.example.AgenciaTurismo.dto.FlightDTO;
 import com.example.AgenciaTurismo.dto.HotelDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
