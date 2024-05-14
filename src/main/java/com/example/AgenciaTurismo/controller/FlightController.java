@@ -22,11 +22,13 @@ public class FlightController {
     @Autowired
     private IFlightService flightService;
 
+    //US 0004:
     @GetMapping("/listarVuelos") //
     public ResponseEntity<?> listFlightsDTO(){
         return new ResponseEntity<>(flightService.listFlightsDTO(), HttpStatus.OK);
     }
 
+    //US 0005:
     @GetMapping("/flights")
     public ResponseEntity<?> vuelosDisponibles(@DateTimeFormat(pattern = "dd-MM-yyyy") @RequestParam LocalDate dateFrom,
                                                @DateTimeFormat(pattern = "dd-MM-yyyy") @RequestParam LocalDate dateTo,
