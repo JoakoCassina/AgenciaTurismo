@@ -1,6 +1,5 @@
 package com.example.AgenciaTurismo.controller;
 
-import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.service.IHotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +20,13 @@ public class HotelController {
     @Autowired
     private IHotelService hotelService;
 
-
+    //US 0001:
     @GetMapping("/listarHoteles") //
     public ResponseEntity<?> listarHoteles(){
         return new ResponseEntity<>(hotelService.listHotelsDTO(), HttpStatus.OK);
     }
 
+    //US 0002:
     @GetMapping("/hotels")
     public ResponseEntity<?> hotelesDisponibles(@DateTimeFormat(pattern = "dd-MM-yyyy") @RequestParam LocalDate dateFrom,
                                                @DateTimeFormat(pattern = "dd-MM-yyyy") @RequestParam LocalDate dateTo,
