@@ -10,7 +10,6 @@ public class AgenciaTurismoApplication {
 
 		SpringApplication.run(AgenciaTurismoApplication.class, args);
 
-
 	}
 
 }
