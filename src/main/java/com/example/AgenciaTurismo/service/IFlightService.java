@@ -14,7 +14,6 @@ public interface IFlightService {
 
     FlightAvailableDTO vuelosDisponibles(FlightConsultDTO flightConsultDTO);
 
-
-    TotalFlightReservationDTO calcularTotal(FinalFlightReservationDTO finalFlightReservationDTO);
+    FinalFlightReservationDTO processFlightReservation(FinalFlightReservationDTO request);
 
 }

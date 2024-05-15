@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PeopleDTO {
+public class PersonDetailsDTO {
     private Integer dni;
     private String name;;
     @JsonProperty("last_name")
@@ -22,3 +22,4 @@ public class PeopleDTO {
     private LocalDate birthDate;
     private String email;
 }
+

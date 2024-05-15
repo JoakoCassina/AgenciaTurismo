@@ -1,6 +1,6 @@
 package com.example.AgenciaTurismo.service;
 
-import com.example.AgenciaTurismo.dto.FlightDTO;
+import com.example.AgenciaTurismo.dto.*;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
@@ -52,9 +52,33 @@ public class FlightService implements IFlightService{
     }
 
     @Override
-    public TotalFlightReservationDTO calcularTotal(FinalFlightReservationDTO finalReservationDTO) {
-        return null;
+    public FinalFlightReservationDTO processFlightReservation(FinalFlightReservationDTO request) {
+
+        //Calcular el total
+        double amount = 4000.50;
+        double interest = 4.5;
+        double total = amount * (1 + (interest / 100));
+
+        //Obtener detalles de las personas
+        List<PersonDetailsDTO> personDetails = new ArrayList<>();
+        for(PeopleDTO person : request.getFlightReservationDTO().getPeopleDTO()){
+            PersonDetailsDTO details = new PersonDetailsDTO();
+            details.setDni(person.getDni());
+            details.setName(person.getName());
+            details.setLastName(person.getLastName());
+            details.setEmail(person.getEmail());
+            details.setBirthDate(person.getBirthDate());
+            personDetails.add(details);
+        }
+
+        //Construyo la respuesta
+        FinalFlightReservationDTO response = new FinalFlightReservationDTO();
+        response.setUserName(request.getUserName());
+        response.setAmount(amount);
+        response.setInterest(interest);
+        response.setTotal(total);
+        response.setFlightReservationDTO(request.getFlightReservationDTO());
+        response.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
+        return response;
     }
-
-
 }
