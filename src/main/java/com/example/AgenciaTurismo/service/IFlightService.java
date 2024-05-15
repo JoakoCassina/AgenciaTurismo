@@ -18,5 +18,4 @@ public interface IFlightService {
     Double calcInterest(Double totalPrice, Integer dues);
 
     TotalFlightReservationDTO reserved(FinalFlightReservationDTO finalFlightReservationDTO);
-
 }

@@ -77,8 +77,8 @@ public class FlightService implements IFlightService{
 
         FlightDTO flightToReserved = null;
         for (FlightDTO flight : listFlightDTO) {
-            if (flight.getOrigin().equals(finalFlightReservationDTO.getFlightReservationDTO().getOrigin())
-                    && flight.getDestination().equals(finalFlightReservationDTO.getFlightReservationDTO().getDestination())
+            if (flight.getOrigin().equalsIgnoreCase(finalFlightReservationDTO.getFlightReservationDTO().getOrigin())
+                    && flight.getDestination().equalsIgnoreCase(finalFlightReservationDTO.getFlightReservationDTO().getDestination())
                     && flight.getDateFrom().equals(finalFlightReservationDTO.getFlightReservationDTO().getDateFrom())
                     && flight.getDateTo().equals(finalFlightReservationDTO.getFlightReservationDTO().getDateTo())) {
                 flightToReserved = flight;

@@ -14,5 +14,5 @@ public class FinalFlightReservationDTO {
     @JsonProperty("user_name")
     private String userName;
     @JsonProperty("flight_reservation")
-    private FlightReservationDTO FlightReservationDTO;
+    private FlightReservationDTO flightReservationDTO;
 }
