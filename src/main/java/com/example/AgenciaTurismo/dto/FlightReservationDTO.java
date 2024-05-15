@@ -5,22 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
-
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class FlightReservationDTO {
     @JsonProperty("date_from")
-    private String DateFrom;
+    private LocalDate DateFrom;
     @JsonProperty("date_to")
-    private String DateTo;
+    private LocalDate DateTo;
     private String Origin;
     private String Destination;
     @JsonProperty("flight_number")
     private String flightNumber;
-    private String seats;
+    private Double seats;
     @JsonProperty("seat_type")
     private String seatType;
     @JsonProperty("people")

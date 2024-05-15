@@ -51,10 +51,62 @@ public class FlightService implements IFlightService{
         return flightAvailable;
     }
 
+
     @Override
-    public TotalFlightReservationDTO calcularTotal(FinalFlightReservationDTO finalReservationDTO) {
-        return null;
+    public Double calcInterest(Double priceTotal, Integer dues) {
+        switch (dues) {
+            case 1:
+                return 0.0;
+            case 3:
+                return priceTotal * 0.05;
+            case 6:
+                return priceTotal * 0.15;
+            case 12:
+                return priceTotal * 0.30;
+            default:
+                System.out.println("Número de cuotas no válido.");
+                return 0.0;
+        }
     }
+
+
+    @Override
+    public TotalFlightReservationDTO reserved(FinalFlightReservationDTO finalFlightReservationDTO) {
+
+        List<FlightDTO> listFlightDTO = listFlightsDTO();
+
+        FlightDTO flightToReserved = null;
+        for (FlightDTO flight : listFlightDTO) {
+            if (flight.getOrigin().equals(finalFlightReservationDTO.getFlightReservationDTO().getOrigin())
+                    && flight.getDestination().equals(finalFlightReservationDTO.getFlightReservationDTO().getDestination())
+                    && flight.getDateFrom().equals(finalFlightReservationDTO.getFlightReservationDTO().getDateFrom())
+                    && flight.getDateTo().equals(finalFlightReservationDTO.getFlightReservationDTO().getDateTo())) {
+                flightToReserved = flight;
+                break;
+            }
+        }
+        if (flightToReserved == null) {
+            System.out.println("No se encontró ningún vuelo que coincida con los criterios de reserva.");
+            return null;
+        }
+
+        Double priceTotal = (flightToReserved.getPrice() * finalFlightReservationDTO.getFlightReservationDTO().getSeats());
+        //no me deja multiplicar por Integer
+
+
+        Double interest = calcInterest(priceTotal, finalFlightReservationDTO.getFlightReservationDTO().getPaymentMethodDTO().getDues());
+
+        Double priceFinal = priceTotal + interest;
+
+        TotalFlightReservationDTO totalFlightReservationDTO = new TotalFlightReservationDTO();
+        totalFlightReservationDTO.setAmount(priceTotal);
+        totalFlightReservationDTO.setInterest(interest);
+        totalFlightReservationDTO.setTotal(priceFinal);
+        totalFlightReservationDTO.setFinalFlightReservationDTO(finalFlightReservationDTO);
+
+        return totalFlightReservationDTO;
+    }
+
 
 
 }
