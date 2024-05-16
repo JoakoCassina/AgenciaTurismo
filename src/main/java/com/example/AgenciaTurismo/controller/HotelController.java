@@ -1,7 +1,9 @@
 package com.example.AgenciaTurismo.controller;
 
+import com.example.AgenciaTurismo.dto.HotelDTO;
 import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
+import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
 import com.example.AgenciaTurismo.service.IHotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ public class HotelController {
     private IHotelService hotelService;
 
     //US 0001:
-    @GetMapping("/listarHoteles") //
+    @GetMapping("/listHotels") //
     public ResponseEntity<?> listarHoteles(){
         return new ResponseEntity<>(hotelService.listHotelsDTO(), HttpStatus.OK);
     }
@@ -40,4 +42,10 @@ public class HotelController {
         return hotelService.reserved(finalHotelReservationDTO);
     }
 
+    //CREATE
+    @PostMapping("/createHotel")
+    public ResponseEntity<ResponseDTO> createHotel(HotelDTO hotelDTO) {
+
+        return new ResponseEntity<>(hotelService.createHotel(hotelDTO), HttpStatus.CREATED);
+    }
 }
