@@ -1,8 +1,7 @@
 package com.example.AgenciaTurismo.dto.request;
 
 
-import com.example.AgenciaTurismo.dto.FlightReservationDTO;
-import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
+import com.example.AgenciaTurismo.dto.HotelReservationDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FinalFlightReservationDTO {
+public class FinalHotelReservationDTO {
     @JsonProperty("user_name")
     private String userName;
-    @JsonProperty("flight_reservation")
-    private FlightReservationDTO flightReservationDTO;
-
+    @JsonProperty("booking")
+    private HotelReservationDTO hotelReservationDTO;
 }
