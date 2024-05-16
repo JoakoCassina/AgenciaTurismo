@@ -5,6 +5,7 @@ import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
+import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,11 @@ public class FlightService implements IFlightService{
                 availableFlight.add(flight);
             }
         }
+
+        if (availableFlight.isEmpty()) {
+            throw new InvalidReservationException("No hay vuelos disponibles para las fechas y la ruta especificadas.");
+        }
+
         FlightAvailableDTO flightAvailable = new FlightAvailableDTO();
         flightAvailable.setAvailableFlightDTO(availableFlight);
 
@@ -64,8 +70,7 @@ public class FlightService implements IFlightService{
             case 12:
                 return priceTotal * 0.30;
             default:
-                System.out.println("Número de cuotas no válido.");
-                return 0.0;
+                throw new InvalidReservationException("Número de cuotas no válido.");
         }
     }
 
@@ -86,8 +91,7 @@ public class FlightService implements IFlightService{
             }
         }
         if (flightToReserved == null) {
-            System.out.println("No se encontró ningún vuelo que coincida con los criterios de reserva.");
-            return null;
+            throw new InvalidReservationException("No se encontró ningún vuelo que coincida con los criterios de reserva.");
         }
 
         Double priceTotal = (flightToReserved.getPrice() * finalFlightReservationDTO.getFlightReservationDTO().getSeats());
