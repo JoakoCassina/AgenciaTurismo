@@ -49,7 +49,7 @@ public class FlightController {
 
     //CREATE
     @PostMapping("/createFlight")
-    public ResponseEntity<ResponseDTO> createFlight(FlightDTO flightDTO) {
+    public ResponseEntity<ResponseDTO> createFlight(@RequestBody FlightDTO flightDTO) {
 
         return new ResponseEntity<>(flightService.createFlight(flightDTO), HttpStatus.CREATED);
     }
