@@ -1,12 +1,16 @@
 package com.example.AgenciaTurismo.service;
 
 import com.example.AgenciaTurismo.dto.FlightDTO;
+import com.example.AgenciaTurismo.dto.HotelDTO;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
+import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.exception.InvalidReservationException;
+import com.example.AgenciaTurismo.model.Flight;
+import com.example.AgenciaTurismo.model.Hotel;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,6 +114,20 @@ public class FlightService implements IFlightService{
         return totalFlightReservationDTO;
     }
 
+    //CREATE
+    @Override
+    public ResponseDTO createFlight(FlightDTO flightDTO) {
+        Flight flight = new Flight();
+        flight.setFlightCode(flightDTO.getFlightCode());
+        flight.setOrigin(flightDTO.getOrigin());
+        flight.setDestination(flightDTO.getDestination());
+        flight.setSeatType(flightDTO.getSeatType());
+        flight.setPrice(flightDTO.getPrice());
+        flight.setDateFrom(flightDTO.getDateFrom());
+        flight.setDateTo(flightDTO.getDateTo());
+        flightRepository.save(flight);
 
+        return new ResponseDTO("Vuelo creado con éxito");
+    }
 
 }

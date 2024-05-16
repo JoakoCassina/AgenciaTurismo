@@ -4,6 +4,7 @@ package com.example.AgenciaTurismo.service;
 import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.HotelAvailableDTO;
+import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
 import com.example.AgenciaTurismo.exception.InvalidReservationException;
@@ -103,5 +104,22 @@ public class HotelService implements IHotelService{
         return totalHotelReservationDTO;
     }
 
+    //CREATE
+    @Override
+    public ResponseDTO createHotel(HotelDTO hotelDTO) {
+        Hotel hotel = new Hotel();
+
+        hotel.setHotelCode(hotelDTO.getHotelCode());
+        hotel.setHotelName(hotelDTO.getHotelName());
+        hotel.setDestination(hotelDTO.getDestination());
+        hotel.setRoomType(hotelDTO.getRoomType());
+        hotel.setPriceForNight(hotelDTO.getPriceForNight());
+        hotel.setDateFrom(hotelDTO.getDateFrom());
+        hotel.setDateTo(hotelDTO.getDateTo());
+        hotel.setReserved(hotelDTO.getReserved());
+
+        hotelRepository.save(hotel);
+        return new ResponseDTO("Hotel creado con éxito");
+    }
 
 }

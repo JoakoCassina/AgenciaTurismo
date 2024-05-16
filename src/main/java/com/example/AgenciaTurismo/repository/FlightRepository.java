@@ -27,7 +27,11 @@ public class FlightRepository implements IFlightRepository {
         return flightList;
     }
 
-
+    //CREATE
+    public Flight save(Flight flight){
+        flightList.add(flight);
+        return flight;
+    }
 
     private List<Flight> loadData() {
         List<Flight> loadedData = null;
