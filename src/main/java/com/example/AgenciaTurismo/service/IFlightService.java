@@ -14,7 +14,6 @@ public interface IFlightService {
 
     FlightAvailableDTO vuelosDisponibles(FlightConsultDTO flightConsultDTO);
 
-
     Double calcInterest(Double totalPrice, Integer dues);
 
     TotalFlightReservationDTO reserved(FinalFlightReservationDTO finalFlightReservationDTO);

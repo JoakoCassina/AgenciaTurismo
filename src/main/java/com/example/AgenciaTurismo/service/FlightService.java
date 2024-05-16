@@ -4,6 +4,7 @@ import com.example.AgenciaTurismo.dto.FlightDTO;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
+import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
@@ -94,20 +95,18 @@ public class FlightService implements IFlightService{
             throw new InvalidReservationException("No se encontró ningún vuelo que coincida con los criterios de reserva.");
         }
 
-        Double priceTotal = (flightToReserved.getPrice() * finalFlightReservationDTO.getFlightReservationDTO().getSeats());
-        //no me deja multiplicar por Integer
+        Double amount = flightToReserved.getPrice() * finalFlightReservationDTO.getFlightReservationDTO().getSeats();
 
+        Double interest = calcInterest(amount, finalFlightReservationDTO.getFlightReservationDTO().getPaymentMethodDTO().getDues());
 
-        Double interest = calcInterest(priceTotal, finalFlightReservationDTO.getFlightReservationDTO().getPaymentMethodDTO().getDues());
-
-        Double priceFinal = priceTotal + interest;
+        Double priceFinal = amount + interest;
 
         TotalFlightReservationDTO totalFlightReservationDTO = new TotalFlightReservationDTO();
-        totalFlightReservationDTO.setAmount(priceTotal);
+        totalFlightReservationDTO.setAmount(amount);
         totalFlightReservationDTO.setInterest(interest);
         totalFlightReservationDTO.setTotal(priceFinal);
         totalFlightReservationDTO.setFinalFlightReservationDTO(finalFlightReservationDTO);
-
+        totalFlightReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
         return totalFlightReservationDTO;
     }
 
