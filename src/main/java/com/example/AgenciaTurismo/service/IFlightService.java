@@ -22,4 +22,10 @@ public interface IFlightService {
 
     //CREATE
     ResponseDTO createFlight(FlightDTO flightDTO);
+
+    //UPDATE
+    ResponseDTO updateFlight(FlightDTO flightDTO);
+
+    //DELETE
+    ResponseDTO deleteFlight(String flightCode);
 }
