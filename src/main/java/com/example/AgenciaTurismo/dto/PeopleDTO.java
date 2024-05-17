@@ -1,6 +1,5 @@
 package com.example.AgenciaTurismo.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,8 +16,8 @@ public class PeopleDTO {
     private String name;;
     @JsonProperty("last_name")
     private String lastName;
-    @JsonProperty("birth_date")
     @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonProperty("birth_date")
     private LocalDate birthDate;
     private String email;
 }

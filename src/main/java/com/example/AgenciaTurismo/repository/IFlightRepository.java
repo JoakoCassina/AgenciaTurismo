@@ -11,11 +11,5 @@ public interface IFlightRepository {
     public List<Flight> findAll();
     //CREATE
     Flight save(Flight flight);
-
-    //UPDATE
-    Flight update(Flight flight);
-
-    //DELETE
-    Flight deleteFlight(String flight);
 }
 

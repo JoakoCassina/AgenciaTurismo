@@ -130,35 +130,4 @@ public class FlightService implements IFlightService{
         return new ResponseDTO("Vuelo creado con éxito");
     }
 
-    //UPDATE
-    @Override
-    public ResponseDTO updateFlight(FlightDTO flightDTO) {
-        Flight flight = new Flight(
-                flightDTO.getFlightCode(),
-                flightDTO.getOrigin(),
-                flightDTO.getDestination(),
-                flightDTO.getSeatType(),
-                flightDTO.getPrice(),
-                flightDTO.getDateFrom(),
-                flightDTO.getDateTo()
-        );
-        Flight updatedFlight = flightRepository.update(flight);
-        if (updatedFlight != null) {
-            return new ResponseDTO("Vuelo actualizado con éxito");
-        } else {
-            return new ResponseDTO("Vuelo no encontrado");
-        }
-    }
-    //DELETE
-    @Override
-    public ResponseDTO deleteFlight(String flightCode) {
-        Flight flight = flightRepository.deleteFlight(flightCode);
-        if(flight != null){
-            return new ResponseDTO("Vuelo eliminado con éxito");
-        }else {
-            return new ResponseDTO("No se encontro el vuelo a eliminar");
-        }
-
-    }
-
 }

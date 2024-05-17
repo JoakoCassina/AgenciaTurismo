@@ -9,11 +9,4 @@ public interface IHotelRepository {
 
     //CREATE
     Hotel save(Hotel hotel);
-
-    //UPDATE
-    Hotel update(Hotel hotel);
-    //DELETE
-    Hotel deleteHotel(String hotel);
 }
-
-
