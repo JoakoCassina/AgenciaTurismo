@@ -1,6 +1,7 @@
 package com.example.AgenciaTurismo.service;
 
 import com.example.AgenciaTurismo.dto.FlightDTO;
+import com.example.AgenciaTurismo.dto.FlightReservedDTO;
 import com.example.AgenciaTurismo.dto.HotelDTO;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
@@ -19,6 +20,11 @@ public interface IFlightService {
     Double calcInterest(Double totalPrice, Integer dues);
 
     TotalFlightReservationDTO reserved(FinalFlightReservationDTO finalFlightReservationDTO);
+
+    Boolean reserveSaved(FinalFlightReservationDTO finalFlightReservationDTO);
+
+    List<FlightReservedDTO> flightReserved();
+
 
     //CREATE
     ResponseDTO createFlight(FlightDTO flightDTO);

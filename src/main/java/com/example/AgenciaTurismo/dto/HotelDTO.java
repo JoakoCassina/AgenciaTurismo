@@ -20,7 +20,6 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 public class HotelDTO {
     @JsonProperty("hotel_code")
     private String hotelCode;

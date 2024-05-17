@@ -24,6 +24,8 @@ public class FlightService implements IFlightService{
     @Autowired
     private IFlightRepository flightRepository;
 
+
+
     @Override
     public List<FlightDTO> listFlightsDTO() {
         return flightRepository.findAll().stream()
@@ -113,6 +115,23 @@ public class FlightService implements IFlightService{
         totalFlightReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
         return totalFlightReservationDTO;
     }
+
+
+    public Boolean reserveSaved(FinalFlightReservationDTO finalFlightReservationDTO) {
+        for (FlightReservedDTO reservaGuardada : flightReserve){
+            FinalFlightReservationDTO reservaExistente = reservaGuardada.getFlightReserved().getFinalFlightReservationDTO();
+            if (reservaExistente.equals(finalFlightReservationDTO)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<FlightReservedDTO> flightsSaved() {
+        return flightReserve;
+    }
+
 
     //CREATE
     @Override
