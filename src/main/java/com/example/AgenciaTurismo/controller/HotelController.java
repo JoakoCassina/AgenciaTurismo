@@ -54,5 +54,11 @@ public class HotelController {
 
         return new ResponseEntity<>(hotelService.updateHotel(hotelDTO), HttpStatus.OK);
     }
+
+    //DELETE
+    @DeleteMapping("/deleteHotel/{hotelCode}")
+    public ResponseEntity<ResponseDTO> deleteHotel(@PathVariable String hotelCode) {
+        return new ResponseEntity<>(hotelService.deleteHotel(hotelCode), HttpStatus.OK);
+    }
 }
 

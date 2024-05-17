@@ -58,9 +58,23 @@ public class HotelRepository implements IHotelRepository {
         // Si no se encuentra el hotel, podrías lanzar una excepción
         // o manejarlo de alguna otra manera según tus necesidades.
     }
-        private Hotel findById (String hotelCode){
-            return hotelList.get(Integer.parseInt(hotelCode));
+
+    //DELETE
+    @Override
+    public Hotel deleteHotel(String hotel) {
+
+        for (int i = 0; i < hotelList.size(); i++) {
+            Hotel existingHotel = hotelList.get(i);
+            if (existingHotel.getHotelCode().equals(hotel)) {
+                hotelList.remove(existingHotel);
+                return existingHotel;
+            }
         }
+        throw new InvalidReservationException("No se encontró ningún hotel para eliminar.");
+    }
+
+
+
 
         private List<Hotel> loadData () {
             List<Hotel> loadedData = null;

@@ -12,6 +12,8 @@ public interface IHotelRepository {
 
     //UPDATE
     Hotel update(Hotel hotel);
+    //DELETE
+    Hotel deleteHotel(String hotel);
 }
 
 

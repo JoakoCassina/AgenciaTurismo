@@ -1,5 +1,6 @@
 package com.example.AgenciaTurismo.repository;
 
+import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import com.example.AgenciaTurismo.model.Flight;
 import com.example.AgenciaTurismo.model.Hotel;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class FlightRepository implements IFlightRepository {
@@ -32,6 +34,48 @@ public class FlightRepository implements IFlightRepository {
         flightList.add(flight);
         return flight;
     }
+
+    //UPDATE
+    @Override
+    public Flight update(Flight flight) {
+        Optional<Flight> existingFlight = flightList.stream()
+                .filter(h -> h.getFlightCode().equals(flight.getFlightCode()))
+                .findFirst();
+        if (existingFlight.isPresent()) {
+            flightList.remove(existingFlight.get());
+            flightList.add(flight);
+            return flight;
+        }
+        return null;  // or throw an exception
+
+//        for (int i = 0; i < flightList.size(); i++) {
+//            Flight existingFlight = flightList.get(i);
+//            if (existingFlight.getFlightCode().equals(flight.getFlightCode())) {
+//                flightList.set(i, flight);
+//                return flight;
+//            }
+//        }
+//        throw new InvalidReservationException("No se encontró ningún vuelo para actualizar.");
+        // Si no se encuentra el hotel, podrías lanzar una excepción
+        // o manejarlo de alguna otra manera según tus necesidades.
+    }
+
+    //DELETE
+    @Override
+    public Flight deleteFlight(String flight) {
+
+        for (int i = 0; i < flightList.size(); i++) {
+            Flight existingFlight = flightList.get(i);
+            if (existingFlight.getFlightCode().equals(flight)) {
+                flightList.remove(existingFlight);
+                return existingFlight;
+            }
+        }
+        throw new InvalidReservationException("No se encontró ningún vuelo para eliminar.");
+    }
+
+
+
 
     private List<Flight> loadData() {
         List<Flight> loadedData = null;

@@ -26,5 +26,7 @@ public interface IHotelService {
     //UPDATE
     ResponseDTO updateHotel(HotelDTO hotelDTO);
 
+    //DELETE
+    ResponseDTO deleteHotel(String hotelCode);
 
 }

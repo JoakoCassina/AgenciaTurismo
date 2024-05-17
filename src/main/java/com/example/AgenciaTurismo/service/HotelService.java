@@ -142,5 +142,16 @@ public class HotelService implements IHotelService{
             return new ResponseDTO("Hotel no encontrado");
         }
     }
+    //DELETE
+    @Override
+    public ResponseDTO deleteHotel(String hotelCode) {
+        Hotel hotel = hotelRepository.deleteHotel(hotelCode);
+        if(hotel != null){
+            return new ResponseDTO("Hotel eliminado con éxito");
+        }else {
+            return new ResponseDTO("No se encontro el hotel a eliminar");
+        }
+
+    }
 
 }

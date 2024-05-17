@@ -17,7 +17,6 @@ public class PeopleDTO {
     private String name;;
     @JsonProperty("last_name")
     private String lastName;
-    @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("birth_date")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
