@@ -6,6 +6,7 @@ import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.HotelAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
+import com.example.AgenciaTurismo.model.Hotel;
 
 import java.util.List;
 
@@ -22,5 +23,10 @@ public interface IHotelService {
     //CREATE
     ResponseDTO createHotel(HotelDTO hotelDTO);
 
+    //UPDATE
+    ResponseDTO updateHotel(HotelDTO hotelDTO);
+
+    //DELETE
+    ResponseDTO deleteHotel(String hotelCode);
 
 }

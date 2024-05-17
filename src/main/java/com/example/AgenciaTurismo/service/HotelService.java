@@ -122,4 +122,36 @@ public class HotelService implements IHotelService{
         return new ResponseDTO("Hotel creado con éxito");
     }
 
+    //UPDATE
+    @Override
+    public ResponseDTO updateHotel(HotelDTO hotelDTO) {
+        Hotel hotel = new Hotel(
+                hotelDTO.getHotelCode(),
+                hotelDTO.getHotelName(),
+                hotelDTO.getDestination(),
+                hotelDTO.getRoomType(),
+                hotelDTO.getPriceForNight(),
+                hotelDTO.getDateFrom(),
+                hotelDTO.getDateTo(),
+                hotelDTO.getReserved()
+        );
+        Hotel updatedHotel = hotelRepository.update(hotel);
+        if (updatedHotel != null) {
+            return new ResponseDTO("Hotel actualizado con éxito");
+        } else {
+            return new ResponseDTO("Hotel no encontrado");
+        }
+    }
+    //DELETE
+    @Override
+    public ResponseDTO deleteHotel(String hotelCode) {
+        Hotel hotel = hotelRepository.deleteHotel(hotelCode);
+        if(hotel != null){
+            return new ResponseDTO("Hotel eliminado con éxito");
+        }else {
+            return new ResponseDTO("No se encontro el hotel a eliminar");
+        }
+
+    }
+
 }

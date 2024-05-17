@@ -54,4 +54,17 @@ public class FlightController {
         return new ResponseEntity<>(flightService.createFlight(flightDTO), HttpStatus.CREATED);
     }
 
+    //UPDATE
+    @PutMapping("/updateFlight/{flightCode}")
+    public ResponseEntity<ResponseDTO> updateFlight(@PathVariable String flightCode, @RequestBody FlightDTO flightDTO) {
+
+        return new ResponseEntity<>(flightService.updateFlight(flightDTO), HttpStatus.OK);
+    }
+
+    //DELETE
+    @DeleteMapping("/deleteFlight/{flightCode}")
+    public ResponseEntity<ResponseDTO> deleteFlight(@PathVariable String flightCode) {
+        return new ResponseEntity<>(flightService.deleteFlight(flightCode), HttpStatus.OK);
+    }
+
 }
