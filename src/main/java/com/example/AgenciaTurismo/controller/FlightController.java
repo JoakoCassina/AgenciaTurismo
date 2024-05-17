@@ -49,7 +49,7 @@ public class FlightController {
     //VUELOS RESERVADOS
     @GetMapping("/reservedFlights")
     public ResponseEntity<?> flightsSaved() {
-        return new ResponseEntity<>(flightService.flightsSaved(), HttpStatus.OK);
+        return new ResponseEntity<>(flightService.flightSaved(), HttpStatus.OK);
     }
 
     //CREATE

@@ -1,6 +1,7 @@
 package com.example.AgenciaTurismo.service;
 
 import com.example.AgenciaTurismo.dto.FlightDTO;
+import com.example.AgenciaTurismo.dto.FlightReservedDTO;
 import com.example.AgenciaTurismo.dto.HotelDTO;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
@@ -24,7 +25,7 @@ public class FlightService implements IFlightService{
     @Autowired
     private IFlightRepository flightRepository;
 
-
+    private List<FlightReservedDTO> flightReserve = new ArrayList<>();
 
     @Override
     public List<FlightDTO> listFlightsDTO() {
@@ -85,6 +86,10 @@ public class FlightService implements IFlightService{
     @Override
     public TotalFlightReservationDTO reserved(FinalFlightReservationDTO finalFlightReservationDTO) {
 
+        if (reserveSaved(finalFlightReservationDTO)) {
+            throw new InvalidReservationException("La reserva ya está realizada.");
+        }
+
         List<FlightDTO> listFlightDTO = listFlightsDTO();
 
         FlightDTO flightToReserved = null;
@@ -128,7 +133,7 @@ public class FlightService implements IFlightService{
     }
 
     @Override
-    public List<FlightReservedDTO> flightsSaved() {
+    public List<FlightReservedDTO> flightSaved() {
         return flightReserve;
     }
 

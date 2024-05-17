@@ -23,7 +23,7 @@ public interface IFlightService {
 
     Boolean reserveSaved(FinalFlightReservationDTO finalFlightReservationDTO);
 
-    List<FlightReservedDTO> flightReserved();
+    List<FlightReservedDTO> flightSaved();
 
 
     //CREATE
