@@ -1,9 +1,12 @@
 package com.example.AgenciaTurismo.controller;
 
+import com.example.AgenciaTurismo.dto.FlightDTO;
 import com.example.AgenciaTurismo.dto.FlightReservationDTO;
+import com.example.AgenciaTurismo.dto.HotelDTO;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
+import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.service.IFlightService;
 import com.example.AgenciaTurismo.service.IHotelService;
@@ -23,7 +26,7 @@ public class FlightController {
     private IFlightService flightService;
 
     //US 0004:
-    @GetMapping("/listarvuelos") //
+    @GetMapping("/listFlights") //
     public ResponseEntity<?> listFlightsDTO(){
         return new ResponseEntity<>(flightService.listFlightsDTO(), HttpStatus.OK);
     }
@@ -42,6 +45,13 @@ public class FlightController {
     @PostMapping("/flight-reservation")
     public TotalFlightReservationDTO reserveFlight(@RequestBody FinalFlightReservationDTO finalFlightReservationDTO) {
         return flightService.reserved(finalFlightReservationDTO);
+    }
+
+    //CREATE
+    @PostMapping("/createFlight")
+    public ResponseEntity<ResponseDTO> createFlight(@RequestBody FlightDTO flightDTO) {
+
+        return new ResponseEntity<>(flightService.createFlight(flightDTO), HttpStatus.CREATED);
     }
 
 }

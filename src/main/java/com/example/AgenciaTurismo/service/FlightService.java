@@ -1,10 +1,16 @@
 package com.example.AgenciaTurismo.service;
 
 import com.example.AgenciaTurismo.dto.FlightDTO;
+import com.example.AgenciaTurismo.dto.HotelDTO;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
+import com.example.AgenciaTurismo.dto.response.ResponseDTO;
+import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
+import com.example.AgenciaTurismo.exception.InvalidReservationException;
+import com.example.AgenciaTurismo.model.Flight;
+import com.example.AgenciaTurismo.model.Hotel;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +51,11 @@ public class FlightService implements IFlightService{
                 availableFlight.add(flight);
             }
         }
+
+        if (availableFlight.isEmpty()) {
+            throw new InvalidReservationException("No hay vuelos disponibles para las fechas y la ruta especificadas.");
+        }
+
         FlightAvailableDTO flightAvailable = new FlightAvailableDTO();
         flightAvailable.setAvailableFlightDTO(availableFlight);
 
@@ -64,8 +75,7 @@ public class FlightService implements IFlightService{
             case 12:
                 return priceTotal * 0.30;
             default:
-                System.out.println("Número de cuotas no válido.");
-                return 0.0;
+                throw new InvalidReservationException("Número de cuotas no válido.");
         }
     }
 
@@ -86,27 +96,38 @@ public class FlightService implements IFlightService{
             }
         }
         if (flightToReserved == null) {
-            System.out.println("No se encontró ningún vuelo que coincida con los criterios de reserva.");
-            return null;
+            throw new InvalidReservationException("No se encontró ningún vuelo que coincida con los criterios de reserva.");
         }
 
-        Double priceTotal = (flightToReserved.getPrice() * finalFlightReservationDTO.getFlightReservationDTO().getSeats());
-        //no me deja multiplicar por Integer
+        Double amount = flightToReserved.getPrice() * finalFlightReservationDTO.getFlightReservationDTO().getSeats();
 
+        Double interest = calcInterest(amount, finalFlightReservationDTO.getFlightReservationDTO().getPaymentMethodDTO().getDues());
 
-        Double interest = calcInterest(priceTotal, finalFlightReservationDTO.getFlightReservationDTO().getPaymentMethodDTO().getDues());
-
-        Double priceFinal = priceTotal + interest;
+        Double priceFinal = amount + interest;
 
         TotalFlightReservationDTO totalFlightReservationDTO = new TotalFlightReservationDTO();
-        totalFlightReservationDTO.setAmount(priceTotal);
+        totalFlightReservationDTO.setAmount(amount);
         totalFlightReservationDTO.setInterest(interest);
         totalFlightReservationDTO.setTotal(priceFinal);
         totalFlightReservationDTO.setFinalFlightReservationDTO(finalFlightReservationDTO);
-
+        totalFlightReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
         return totalFlightReservationDTO;
     }
 
+    //CREATE
+    @Override
+    public ResponseDTO createFlight(FlightDTO flightDTO) {
+        Flight flight = new Flight();
+        flight.setFlightCode(flightDTO.getFlightCode());
+        flight.setOrigin(flightDTO.getOrigin());
+        flight.setDestination(flightDTO.getDestination());
+        flight.setSeatType(flightDTO.getSeatType());
+        flight.setPrice(flightDTO.getPrice());
+        flight.setDateFrom(flightDTO.getDateFrom());
+        flight.setDateTo(flightDTO.getDateTo());
+        flightRepository.save(flight);
 
+        return new ResponseDTO("Vuelo creado con éxito");
+    }
 
 }

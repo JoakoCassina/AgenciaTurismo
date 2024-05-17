@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface IHotelRepository {
     public List<Hotel> findAll();
+
+    //CREATE
+    Hotel save(Hotel hotel);
 }

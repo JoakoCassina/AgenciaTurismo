@@ -26,6 +26,11 @@ public class HotelRepository implements IHotelRepository {
         return hotelList;
     }
 
+    //CREATE
+    public Hotel save(Hotel hotel){
+        hotelList.add(hotel);
+        return hotel;
+    }
 
 
 
