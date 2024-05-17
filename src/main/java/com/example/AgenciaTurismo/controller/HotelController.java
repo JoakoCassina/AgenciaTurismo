@@ -42,6 +42,12 @@ public class HotelController {
         return hotelService.reserved(finalHotelReservationDTO);
     }
 
+    //VUELOS RESERVADOS
+    @GetMapping("/reservedHotels")
+    public ResponseEntity<?> hotelsSaved() {
+        return new ResponseEntity<>(hotelService.hotelSaved(), HttpStatus.OK);
+    }
+
     //CREATE
     @PostMapping("/createHotel")
     public ResponseEntity<ResponseDTO> createHotel(@RequestBody HotelDTO hotelDTO) {

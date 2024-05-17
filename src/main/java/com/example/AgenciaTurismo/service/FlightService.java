@@ -118,6 +118,9 @@ public class FlightService implements IFlightService{
         totalFlightReservationDTO.setTotal(priceFinal);
         totalFlightReservationDTO.setFinalFlightReservationDTO(finalFlightReservationDTO);
         totalFlightReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
+
+        flightReserve.add(new FlightReservedDTO(totalFlightReservationDTO));
+
         return totalFlightReservationDTO;
     }
 
