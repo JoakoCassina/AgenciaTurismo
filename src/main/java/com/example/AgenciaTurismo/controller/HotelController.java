@@ -42,7 +42,7 @@ public class HotelController {
         return hotelService.reserved(finalHotelReservationDTO);
     }
 
-    //VUELOS RESERVADOS
+    //HOTELES RESERVADOS
     @GetMapping("/reservedHotels")
     public ResponseEntity<?> hotelsSaved() {
         return new ResponseEntity<>(hotelService.hotelSaved(), HttpStatus.OK);
