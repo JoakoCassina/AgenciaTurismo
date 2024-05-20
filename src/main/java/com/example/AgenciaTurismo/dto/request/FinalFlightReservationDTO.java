@@ -2,7 +2,6 @@ package com.example.AgenciaTurismo.dto.request;
 
 
 import com.example.AgenciaTurismo.dto.FlightReservationDTO;
-import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

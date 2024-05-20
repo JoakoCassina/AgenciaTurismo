@@ -1,6 +1,6 @@
 package com.example.AgenciaTurismo.service;
 
-
+import com.example.AgenciaTurismo.dto.HotelReservedDTO;
 import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.HotelAvailableDTO;
@@ -21,6 +21,8 @@ import java.util.List;
 public class HotelService implements IHotelService{
     @Autowired
     private IHotelRepository hotelRepository;
+
+    private List<HotelReservedDTO> hotelReserve = new ArrayList<>();
 
     public List<HotelDTO> listHotelsDTO() {
         return hotelRepository.findAll().stream()
@@ -48,8 +50,14 @@ public class HotelService implements IHotelService{
                   availableHotel.add(hotel);
             }
         }
+
+        if(availableHotel.isEmpty()){
+            throw new InvalidReservationException("No hay hoteles disponibles para las fechas y la ruta especificadas.");
+        }
+
         HotelAvailableDTO hotelAvailable = new HotelAvailableDTO();
         hotelAvailable.setAvailableHotelDTO(availableHotel);
+
 
         return hotelAvailable;
     }
@@ -72,6 +80,10 @@ public class HotelService implements IHotelService{
 
     @Override
     public TotalHotelReservationDTO reserved(FinalHotelReservationDTO finalHotelReservationDTO) {
+
+        if (reserveSaved(finalHotelReservationDTO)) {
+            throw new InvalidReservationException("La reserva ya está realizada.");
+        }
 
         List<HotelDTO> listHotelDTO = listHotelsDTO();
 
@@ -101,7 +113,25 @@ public class HotelService implements IHotelService{
         totalHotelReservationDTO.setFinalHotelReservation(finalHotelReservationDTO);
         totalHotelReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
 
+        hotelReserve.add(new HotelReservedDTO(totalHotelReservationDTO));
+
         return totalHotelReservationDTO;
+    }
+
+    @Override
+    public Boolean reserveSaved(FinalHotelReservationDTO finalHotelReservationDTO) {
+        for (HotelReservedDTO reservaGuardada : hotelReserve){
+            FinalHotelReservationDTO reservaExistente = reservaGuardada.getHotelReserved().getFinalHotelReservation();
+            if (reservaExistente.equals(finalHotelReservationDTO)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<HotelReservedDTO> hotelSaved() {
+        return hotelReserve;
     }
 
     //CREATE

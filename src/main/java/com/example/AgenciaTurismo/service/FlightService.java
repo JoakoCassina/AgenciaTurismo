@@ -1,7 +1,8 @@
 package com.example.AgenciaTurismo.service;
 
 import com.example.AgenciaTurismo.dto.FlightDTO;
-import com.example.AgenciaTurismo.dto.HotelDTO;
+import com.example.AgenciaTurismo.dto.FlightReservedDTO;
+
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
@@ -10,7 +11,6 @@ import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import com.example.AgenciaTurismo.model.Flight;
-import com.example.AgenciaTurismo.model.Hotel;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +23,8 @@ public class FlightService implements IFlightService{
 
     @Autowired
     private IFlightRepository flightRepository;
+
+    private List<FlightReservedDTO> flightReserve = new ArrayList<>();
 
     @Override
     public List<FlightDTO> listFlightsDTO() {
@@ -83,6 +85,10 @@ public class FlightService implements IFlightService{
     @Override
     public TotalFlightReservationDTO reserved(FinalFlightReservationDTO finalFlightReservationDTO) {
 
+        if (reserveSaved(finalFlightReservationDTO)) {
+            throw new InvalidReservationException("La reserva ya está realizada.");
+        }
+
         List<FlightDTO> listFlightDTO = listFlightsDTO();
 
         FlightDTO flightToReserved = null;
@@ -111,8 +117,28 @@ public class FlightService implements IFlightService{
         totalFlightReservationDTO.setTotal(priceFinal);
         totalFlightReservationDTO.setFinalFlightReservationDTO(finalFlightReservationDTO);
         totalFlightReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
+
+        flightReserve.add(new FlightReservedDTO(totalFlightReservationDTO));
+
         return totalFlightReservationDTO;
     }
+
+
+    public Boolean reserveSaved(FinalFlightReservationDTO finalFlightReservationDTO) {
+        for (FlightReservedDTO reservaGuardada : flightReserve){
+            FinalFlightReservationDTO reservaExistente = reservaGuardada.getFlightReserved().getFinalFlightReservationDTO();
+            if (reservaExistente.equals(finalFlightReservationDTO)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<FlightReservedDTO> flightSaved() {
+        return flightReserve;
+    }
+
 
     //CREATE
     @Override

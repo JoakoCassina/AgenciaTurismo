@@ -1,15 +1,11 @@
 package com.example.AgenciaTurismo.controller;
 
 import com.example.AgenciaTurismo.dto.FlightDTO;
-import com.example.AgenciaTurismo.dto.FlightReservationDTO;
-import com.example.AgenciaTurismo.dto.HotelDTO;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
-import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.service.IFlightService;
-import com.example.AgenciaTurismo.service.IHotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -45,6 +41,11 @@ public class FlightController {
     @PostMapping("/flight-reservation")
     public TotalFlightReservationDTO reserveFlight(@RequestBody FinalFlightReservationDTO finalFlightReservationDTO) {
         return flightService.reserved(finalFlightReservationDTO);
+    }
+    //VUELOS RESERVADOS
+    @GetMapping("/reservedFlights")
+    public ResponseEntity<?> flightsSaved() {
+        return new ResponseEntity<>(flightService.flightSaved(), HttpStatus.OK);
     }
 
     //CREATE
