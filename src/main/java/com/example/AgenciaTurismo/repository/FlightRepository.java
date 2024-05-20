@@ -2,7 +2,6 @@ package com.example.AgenciaTurismo.repository;
 
 import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import com.example.AgenciaTurismo.model.Flight;
-import com.example.AgenciaTurismo.model.Hotel;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;

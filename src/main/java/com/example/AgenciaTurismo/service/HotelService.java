@@ -50,8 +50,14 @@ public class HotelService implements IHotelService{
                   availableHotel.add(hotel);
             }
         }
+
+        if(availableHotel.isEmpty()){
+            throw new InvalidReservationException("No hay hoteles disponibles para las fechas y la ruta especificadas.");
+        }
+
         HotelAvailableDTO hotelAvailable = new HotelAvailableDTO();
         hotelAvailable.setAvailableHotelDTO(availableHotel);
+
 
         return hotelAvailable;
     }
