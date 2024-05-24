@@ -158,9 +158,9 @@ public class FlightService implements IFlightService{
 
     //UPDATE
     @Override
-    public ResponseDTO updateFlight(FlightDTO flightDTO) {
+    public ResponseDTO updateFlight(String flightCode, FlightDTO flightDTO) {
         Flight flight = new Flight(
-                flightDTO.getFlightCode(),
+                flightCode,
                 flightDTO.getOrigin(),
                 flightDTO.getDestination(),
                 flightDTO.getSeatType(),

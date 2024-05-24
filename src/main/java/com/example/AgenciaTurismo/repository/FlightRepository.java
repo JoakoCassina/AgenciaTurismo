@@ -45,7 +45,7 @@ public class FlightRepository implements IFlightRepository {
             flightList.add(flight);
             return flight;
         }
-        return null;  // or throw an exception
+        throw new InvalidReservationException("No se encontró ningún vuelo para actualizar.");
 
 //        for (int i = 0; i < flightList.size(); i++) {
 //            Flight existingFlight = flightList.get(i);

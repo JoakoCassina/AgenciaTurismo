@@ -29,7 +29,7 @@ public interface IFlightService {
     ResponseDTO createFlight(FlightDTO flightDTO);
 
     //UPDATE
-    ResponseDTO updateFlight(FlightDTO flightDTO);
+    ResponseDTO updateFlight(String flightCode, FlightDTO flightDTO);
 
     //DELETE
     ResponseDTO deleteFlight(String flightCode);
