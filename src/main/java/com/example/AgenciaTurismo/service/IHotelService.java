@@ -29,7 +29,7 @@ public interface IHotelService {
     ResponseDTO createHotel(HotelDTO hotelDTO);
 
     //UPDATE
-    ResponseDTO updateHotel(HotelDTO hotelDTO);
+    ResponseDTO updateHotel(String hotelCode, HotelDTO hotelDTO);
 
     //DELETE
     ResponseDTO deleteHotel(String hotelCode);

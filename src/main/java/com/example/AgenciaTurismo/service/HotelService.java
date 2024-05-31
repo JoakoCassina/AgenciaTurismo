@@ -154,9 +154,9 @@ public class HotelService implements IHotelService{
 
     //UPDATE
     @Override
-    public ResponseDTO updateHotel(HotelDTO hotelDTO) {
+    public ResponseDTO updateHotel(String hotelCode, HotelDTO hotelDTO) {
         Hotel hotel = new Hotel(
-                hotelDTO.getHotelCode(),
+                hotelCode,
                 hotelDTO.getHotelName(),
                 hotelDTO.getDestination(),
                 hotelDTO.getRoomType(),

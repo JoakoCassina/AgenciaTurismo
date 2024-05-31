@@ -59,7 +59,7 @@ public class FlightController {
     @PutMapping("/updateFlight/{flightCode}")
     public ResponseEntity<ResponseDTO> updateFlight(@PathVariable String flightCode, @RequestBody FlightDTO flightDTO) {
 
-        return new ResponseEntity<>(flightService.updateFlight(flightDTO), HttpStatus.OK);
+        return new ResponseEntity<>(flightService.updateFlight(flightCode, flightDTO), HttpStatus.OK);
     }
 
     //DELETE
