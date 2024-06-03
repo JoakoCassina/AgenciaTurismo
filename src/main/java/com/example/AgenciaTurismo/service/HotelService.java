@@ -1,5 +1,6 @@
 package com.example.AgenciaTurismo.service;
 
+import com.example.AgenciaTurismo.dto.HotelReservationDTO;
 import com.example.AgenciaTurismo.dto.HotelReservedDTO;
 import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
@@ -16,6 +17,7 @@ import com.example.AgenciaTurismo.dto.HotelDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelService implements IHotelService{
@@ -62,20 +64,31 @@ public class HotelService implements IHotelService{
         return hotelAvailable;
     }
 
+    //Evalua el metodo de pago ingresado para poder hacer el carlculo de la reserva.
     @Override
-    public Double calcInterest(Double amount, Integer dues) {
-        switch (dues) {
-            case 1:
-                return 0.0;
-            case 3:
-                return amount * 0.05;
-            case 6:
-                return amount * 0.15;
-            case 12:
-                return amount * 0.30;
-            default:
-                throw new InvalidReservationException("Número de cuotas no válido.");
+    public Double calcInterest(Double amount, Integer dues, String type) {
+
+        if(type.equalsIgnoreCase("Debit") || type.equalsIgnoreCase("Credit")){
+            if(type.equalsIgnoreCase("Debit") && dues > 1) {
+                throw new InvalidReservationException("No puede pagar en cuotas con tarjeta de debito.");
+            } else
+                switch (dues) {
+                    case 1:
+                        return 0.0;
+                    case 2,3:
+                        return amount * 0.05;
+                    case 4,5,6:
+                        return amount * 0.10;
+                    case 7,8,9,10,11,12:
+                        return amount * 0.20;
+                    default:
+                        throw new InvalidReservationException("Número de cuotas no válido.");
+                }
+        }else{
+            throw new InvalidReservationException("Tipo de pago no válido.");
         }
+
+
     }
 
     @Override
@@ -102,7 +115,8 @@ public class HotelService implements IHotelService{
 
         Double amount = (hotelToReserved.getPriceForNight() * finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
 
-        Double interest = calcInterest(amount, finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO().getDues());
+        Double interest = calcInterest(amount, finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO().getDues(),
+                finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO().getType());
 
         Double total = amount + interest;
 
@@ -183,5 +197,45 @@ public class HotelService implements IHotelService{
         }
 
     }
+
+    //comparar tupo de habitacion con cantidad de personas ingresadas
+    public Boolean roomCapacity(HotelReservationDTO reservation){
+        Integer people;
+
+        switch (reservation.getRoomType()){
+            case "Single":
+                people = 1;
+                break;
+            case "Doble":
+                people = 2;
+                break;
+            case "Triple":
+                people = 3;
+                break;
+            case "Múltiple":
+                people = 4;
+                break;
+            default:
+                people = 0;
+                break;
+        }
+        if(people != reservation.getPeopleDTO().size()){
+            throw new IllegalArgumentException ("La cantidad de personas no coincide con el tipo de habitación.");
+        }
+        return true;
+    }
+
+//Validando existencia del destino solicitado.
+    public Boolean destinationValid(String destination) {
+        List<String> validDestination = listHotelsDTO().stream()
+                .map(HotelDTO::getDestination)
+                .collect(Collectors.toList());
+        if(validDestination.contains(destination)){
+            return true;
+        }
+        throw new IllegalArgumentException("El destino es inexistente");
+    }
+
+
 
 }

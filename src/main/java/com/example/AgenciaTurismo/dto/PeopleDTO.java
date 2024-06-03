@@ -2,6 +2,7 @@ package com.example.AgenciaTurismo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,6 @@ public class PeopleDTO {
     @JsonProperty("birth_date")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
+    @Email(message= "Por favor ingrese un e-mail válido")
     private String email;
 }

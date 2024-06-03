@@ -1,6 +1,7 @@
 package com.example.AgenciaTurismo.service;
 
 import com.example.AgenciaTurismo.dto.HotelDTO;
+import com.example.AgenciaTurismo.dto.HotelReservationDTO;
 import com.example.AgenciaTurismo.dto.HotelReservedDTO;
 import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
@@ -16,7 +17,7 @@ public interface IHotelService {
 
     HotelAvailableDTO hotelesDisponibles (HotelConsultDTO hotelConsultDTO);
 
-    Double calcInterest(Double amount, Integer dues);
+    Double calcInterest(Double amount, Integer dues, String type);
 
     TotalHotelReservationDTO reserved(FinalHotelReservationDTO finalHotelReservationDTO);
 
@@ -33,5 +34,7 @@ public interface IHotelService {
 
     //DELETE
     ResponseDTO deleteHotel(String hotelCode);
+
+    Boolean roomCapacity(HotelReservationDTO reservation);
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -47,6 +48,13 @@ public class ExecptionController {
                                 .map(ConstraintViolation::getMessage)
                                 .collect(Collectors.toList())
                 )
+        );
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorDTO> illegalArgumentExceptionHandler(IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(
+                new ErrorDTO("Error en la solicitud: ", Collections.singletonList(e.getMessage()))
         );
     }
 }
