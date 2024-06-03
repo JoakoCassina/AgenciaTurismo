@@ -1,5 +1,6 @@
 package com.example.AgenciaTurismo.service;
 
+import com.example.AgenciaTurismo.dto.HotelReservationDTO;
 import com.example.AgenciaTurismo.dto.HotelReservedDTO;
 import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
@@ -16,6 +17,7 @@ import com.example.AgenciaTurismo.dto.HotelDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelService implements IHotelService{
@@ -194,6 +196,44 @@ public class HotelService implements IHotelService{
             return new ResponseDTO("No se encontro el hotel a eliminar");
         }
 
+    }
+
+    //comparar tupo de habitacion con cantidad de personas ingresadas
+    public Boolean roomCapacity(HotelReservationDTO reservation){
+        Integer people;
+
+        switch (reservation.getRoomType()){
+            case "Single":
+                people = 1;
+                break;
+            case "Doble":
+                people = 2;
+                break;
+            case "Triple":
+                people = 3;
+                break;
+            case "Múltiple":
+                people = 4;
+                break;
+            default:
+                people = 0;
+                break;
+        }
+        if(people != reservation.getPeopleDTO().size()){
+            throw new IllegalArgumentException ("La cantidad de personas no coincide con el tipo de habitación.");
+        }
+        return true;
+    }
+
+//Validando existencia del destino solicitado.
+    public Boolean destinationValid(String destination) {
+        List<String> validDestination = listHotelsDTO().stream()
+                .map(HotelDTO::getDestination)
+                .collect(Collectors.toList());
+        if(validDestination.contains(destination)){
+            return true;
+        }
+        throw new IllegalArgumentException("El destino es inexistente");
     }
 
 
