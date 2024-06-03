@@ -34,16 +34,26 @@ public class HotelController {
 
     //US 0002:
     @GetMapping("/hotels")
-    public ResponseEntity<?> hotelesDisponibles(@DateTimeFormat(pattern = "dd-MM-yyyy") @Future(message = "La fecha de inicio debe ser en el futuro") @RequestParam LocalDate dateFrom,
-                                               @DateTimeFormat(pattern = "dd-MM-yyyy") @RequestParam LocalDate dateTo,
+    public ResponseEntity<?> hotelesDisponibles(@RequestParam  @Future(message = "La fecha de entrada debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateFrom,
+                                                @RequestParam @Future(message = "La fecha de salida debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateTo,
                                                @RequestParam @NotBlank(message = "El destino no puede estar en blanco") String destination){
+        if(!dateFrom.isBefore(dateTo)){
+            throw new IllegalArgumentException("La fecha de entrada debe ser menor a la de salida");
+        }
+        if(!dateTo.isAfter(dateFrom)){
+            throw new IllegalArgumentException("La fecha de salida debe ser mayor que la de entrada");
+        }
+        /* aca llamamos al metodo pasandole los parametros
+
+        */
+
         HotelConsultDTO datos = new HotelConsultDTO(dateFrom, dateTo, destination);
         return new ResponseEntity<>(hotelService.hotelesDisponibles(datos), HttpStatus.OK);
     }
 
     //US 0003:
     @PostMapping("/booking")
-    public TotalHotelReservationDTO reserved(@RequestBody FinalHotelReservationDTO finalHotelReservationDTO) {
+    public TotalHotelReservationDTO reserved(@RequestBody @Valid FinalHotelReservationDTO finalHotelReservationDTO) {
         return hotelService.reserved(finalHotelReservationDTO);
     }
 

@@ -62,20 +62,31 @@ public class HotelService implements IHotelService{
         return hotelAvailable;
     }
 
+    //Evalua el metodo de pago ingresado para poder hacer el carlculo de la reserva.
     @Override
-    public Double calcInterest(Double amount, Integer dues) {
-        switch (dues) {
-            case 1:
-                return 0.0;
-            case 3:
-                return amount * 0.05;
-            case 6:
-                return amount * 0.15;
-            case 12:
-                return amount * 0.30;
-            default:
-                throw new InvalidReservationException("Número de cuotas no válido.");
+    public Double calcInterest(Double amount, Integer dues, String type) {
+
+        if(type.equalsIgnoreCase("Debit") || type.equalsIgnoreCase("Credit")){
+            if(type.equalsIgnoreCase("Debit") && dues > 1) {
+                throw new InvalidReservationException("No puede pagar en cuotas con tarjeta de debito.");
+            } else
+                switch (dues) {
+                    case 1:
+                        return 0.0;
+                    case 2,3:
+                        return amount * 0.05;
+                    case 4,5,6:
+                        return amount * 0.10;
+                    case 7,8,9,10,11,12:
+                        return amount * 0.20;
+                    default:
+                        throw new InvalidReservationException("Número de cuotas no válido.");
+                }
+        }else{
+            throw new InvalidReservationException("Tipo de pago no válido.");
         }
+
+
     }
 
     @Override
@@ -102,7 +113,8 @@ public class HotelService implements IHotelService{
 
         Double amount = (hotelToReserved.getPriceForNight() * finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
 
-        Double interest = calcInterest(amount, finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO().getDues());
+        Double interest = calcInterest(amount, finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO().getDues(),
+                finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO().getType());
 
         Double total = amount + interest;
 
@@ -183,5 +195,7 @@ public class HotelService implements IHotelService{
         }
 
     }
+
+
 
 }

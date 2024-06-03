@@ -16,7 +16,7 @@ public interface IHotelService {
 
     HotelAvailableDTO hotelesDisponibles (HotelConsultDTO hotelConsultDTO);
 
-    Double calcInterest(Double amount, Integer dues);
+    Double calcInterest(Double amount, Integer dues, String type);
 
     TotalHotelReservationDTO reserved(FinalHotelReservationDTO finalHotelReservationDTO);
 
