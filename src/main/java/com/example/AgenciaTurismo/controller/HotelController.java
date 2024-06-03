@@ -6,16 +6,20 @@ import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
 import com.example.AgenciaTurismo.service.IHotelService;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/v1")
+@Validated
 public class HotelController {
 
     @Autowired
@@ -31,7 +35,7 @@ public class HotelController {
     @GetMapping("/hotels")
     public ResponseEntity<?> hotelesDisponibles(@DateTimeFormat(pattern = "dd-MM-yyyy") @RequestParam LocalDate dateFrom,
                                                @DateTimeFormat(pattern = "dd-MM-yyyy") @RequestParam LocalDate dateTo,
-                                               @RequestParam String destination){
+                                               @RequestParam @NotBlank(message = "No puede ser nulo") String destination){
         HotelConsultDTO datos = new HotelConsultDTO(dateFrom, dateTo, destination);
         return new ResponseEntity<>(hotelService.hotelesDisponibles(datos), HttpStatus.OK);
     }
