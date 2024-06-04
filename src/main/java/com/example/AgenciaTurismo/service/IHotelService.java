@@ -18,13 +18,9 @@ public interface IHotelService {
 
     HotelAvailableDTO hotelesDisponibles (HotelConsultDTO hotelConsultDTO);
 
-    Double calcInterest(Double amount, Integer dues, String type);
-
     TotalHotelReservationDTO reserved(FinalHotelReservationDTO finalHotelReservationDTO);
 
-    Boolean reserveSaved(FinalHotelReservationDTO finalHotelReservationDTO);
 
-    List<HotelReservedDTO> hotelSaved();
 
 
     //CREATE
@@ -39,6 +35,11 @@ public interface IHotelService {
 
 
     //METODOS PARA VALIDAR
+    Boolean reserveSaved(FinalHotelReservationDTO finalHotelReservationDTO);
+
+    List<HotelReservedDTO> hotelSaved();
+
+    Double calcInterest(Double amount, Integer dues, String type);
 
     Boolean roomCapacity(HotelReservationDTO reservation);
 

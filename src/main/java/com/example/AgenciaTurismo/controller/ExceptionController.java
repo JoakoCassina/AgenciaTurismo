@@ -1,6 +1,7 @@
 package com.example.AgenciaTurismo.controller;
 
 import com.example.AgenciaTurismo.dto.response.ErrorDTO;
+import com.example.AgenciaTurismo.dto.response.ErrorMethodsDTO;
 import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -15,7 +16,7 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class ExecptionController {
+public class ExceptionController {
 
     @ExceptionHandler(value = {InvalidReservationException.class})
     public ResponseEntity<Object> handleInvalidFlightReservationException(InvalidReservationException e){
@@ -52,9 +53,9 @@ public class ExecptionController {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorDTO> illegalArgumentExceptionHandler(IllegalArgumentException e) {
+    public ResponseEntity<ErrorMethodsDTO> illegalArgumentExceptionHandler(IllegalArgumentException e) {
         return ResponseEntity.badRequest().body(
-                new ErrorDTO("Error en la solicitud: ", Collections.singletonList(e.getMessage()))
+                new ErrorMethodsDTO("Error en la solicitud: ", e.getMessage())
         );
     }
 }
