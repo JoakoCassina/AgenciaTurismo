@@ -1,6 +1,7 @@
 package com.example.AgenciaTurismo.controller;
 
 import com.example.AgenciaTurismo.dto.response.ErrorDTO;
+import com.example.AgenciaTurismo.dto.response.ErrorMethodsDTO;
 import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -11,10 +12,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class ExecptionController {
+public class ExceptionController {
 
     @ExceptionHandler(value = {InvalidReservationException.class})
     public ResponseEntity<Object> handleInvalidFlightReservationException(InvalidReservationException e){
@@ -47,6 +49,13 @@ public class ExecptionController {
                                 .map(ConstraintViolation::getMessage)
                                 .collect(Collectors.toList())
                 )
+        );
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorMethodsDTO> illegalArgumentExceptionHandler(IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(
+                new ErrorMethodsDTO("Error en la solicitud: ", e.getMessage())
         );
     }
 }
