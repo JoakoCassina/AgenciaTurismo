@@ -15,12 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.AgenciaTurismo.dto.HotelDTO;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class HotelService implements IHotelService{
+public class HotelService implements IHotelService {
     @Autowired
     private IHotelRepository hotelRepository;
 
@@ -40,51 +41,43 @@ public class HotelService implements IHotelService{
                 )).toList();
     }
 
+
+//REFACTORIZAR METODOS PARA REUTILIZAR
+
     @Override
     public HotelAvailableDTO hotelesDisponibles(HotelConsultDTO hotelConsultDTO) {
-        List<HotelDTO> listHotelDTO = listHotelsDTO();
+        // Verificar si hay hoteles disponibles para las fechas y el destino
+        List<HotelDTO> availableHotel = validarHotelesDisponibles(hotelConsultDTO);
 
-        List<HotelDTO> availableHotel = new ArrayList<>();
-        for (HotelDTO hotel : listHotelDTO) {
-            if (hotel.getDestination().equals(hotelConsultDTO.getDestination())
-                    && hotel.getDateFrom().equals(hotelConsultDTO.getDateFrom())
-                    && hotel.getDateTo().equals(hotelConsultDTO.getDateTo())){
-                  availableHotel.add(hotel);
-            }
-        }
-
-        if(availableHotel.isEmpty()){
-            throw new InvalidReservationException("No hay hoteles disponibles para las fechas y la ruta especificadas.");
-        }
-
+        // Crear y configurar el objeto HotelAvailableDTO
         HotelAvailableDTO hotelAvailable = new HotelAvailableDTO();
         hotelAvailable.setAvailableHotelDTO(availableHotel);
 
-
         return hotelAvailable;
     }
+
 
     //Evalua el metodo de pago ingresado para poder hacer el carlculo de la reserva.
     @Override
     public Double calcInterest(Double amount, Integer dues, String type) {
 
-        if(type.equalsIgnoreCase("Debit") || type.equalsIgnoreCase("Credit")){
-            if(type.equalsIgnoreCase("Debit") && dues > 1) {
+        if (type.equalsIgnoreCase("Debit") || type.equalsIgnoreCase("Credit")) {
+            if (type.equalsIgnoreCase("Debit") && dues > 1) {
                 throw new InvalidReservationException("No puede pagar en cuotas con tarjeta de debito.");
             } else
                 switch (dues) {
                     case 1:
                         return 0.0;
-                    case 2,3:
+                    case 2, 3:
                         return amount * 0.05;
-                    case 4,5,6:
+                    case 4, 5, 6:
                         return amount * 0.10;
-                    case 7,8,9,10,11,12:
+                    case 7, 8, 9, 10, 11, 12:
                         return amount * 0.20;
                     default:
                         throw new InvalidReservationException("Número de cuotas no válido.");
                 }
-        }else{
+        } else {
             throw new InvalidReservationException("Tipo de pago no válido.");
         }
 
@@ -134,7 +127,7 @@ public class HotelService implements IHotelService{
 
     @Override
     public Boolean reserveSaved(FinalHotelReservationDTO finalHotelReservationDTO) {
-        for (HotelReservedDTO reservaGuardada : hotelReserve){
+        for (HotelReservedDTO reservaGuardada : hotelReserve) {
             FinalHotelReservationDTO reservaExistente = reservaGuardada.getHotelReserved().getFinalHotelReservation();
             if (reservaExistente.equals(finalHotelReservationDTO)) {
                 return true;
@@ -186,23 +179,24 @@ public class HotelService implements IHotelService{
             return new ResponseDTO("Hotel no encontrado");
         }
     }
+
     //DELETE
     @Override
     public ResponseDTO deleteHotel(String hotelCode) {
         Hotel hotel = hotelRepository.deleteHotel(hotelCode);
-        if(hotel != null){
+        if (hotel != null) {
             return new ResponseDTO("Hotel eliminado con éxito");
-        }else {
+        } else {
             return new ResponseDTO("No se encontro el hotel a eliminar");
         }
 
     }
 
     //comparar tupo de habitacion con cantidad de personas ingresadas
-    public Boolean roomCapacity(HotelReservationDTO reservation){
+    public Boolean roomCapacity(HotelReservationDTO reservation) {
         Integer people;
 
-        switch (reservation.getRoomType()){
+        switch (reservation.getRoomType()) {
             case "Single":
                 people = 1;
                 break;
@@ -219,23 +213,96 @@ public class HotelService implements IHotelService{
                 people = 0;
                 break;
         }
-        if(people != reservation.getPeopleDTO().size()){
-            throw new IllegalArgumentException ("La cantidad de personas no coincide con el tipo de habitación.");
+        if (people != reservation.getPeopleDTO().size()) {
+            throw new IllegalArgumentException("La cantidad de personas no coincide con el tipo de habitación.");
         }
         return true;
     }
 
-//Validando existencia del destino solicitado.
+    @Override
+    public List<HotelDTO> validarHotelesDisponibles(HotelConsultDTO hotelConsultDTO) {
+        // llamamo al metodo que verifica la existencia del destino
+        destinationValid(hotelConsultDTO.getDestination());
+
+        // llamamos al metodo que verifica las fechas
+        dateValid(hotelConsultDTO.getDateFrom(), hotelConsultDTO.getDateTo());
+
+        List<HotelDTO> listHotelDTO = listHotelsDTO();
+
+        List<HotelDTO> availableHotel = new ArrayList<>();
+        for (HotelDTO hotel : listHotelDTO) {
+            if (hotel.getDateFrom().equals(hotelConsultDTO.getDateFrom())
+                    && hotel.getDateTo().equals(hotelConsultDTO.getDateTo())) {
+                availableHotel.add(hotel);
+            }
+        }
+
+        if (availableHotel.isEmpty()) {
+            throw new InvalidReservationException("No hay hoteles disponibles para las fechas y la ruta especificadas.");
+        }
+
+        return availableHotel;
+    }
+
+    @Override
+    public Boolean dateValid(LocalDate dateFrom, LocalDate dateTo) {
+        if (!dateFrom.isBefore(dateTo)) {
+            throw new IllegalArgumentException("La fecha de entrada debe ser menor a la de salida");
+        } else
+            return true;
+    }
+
     public Boolean destinationValid(String destination) {
         List<String> validDestination = listHotelsDTO().stream()
                 .map(HotelDTO::getDestination)
                 .collect(Collectors.toList());
-        if(validDestination.contains(destination)){
+        if (validDestination.contains(destination)) {
             return true;
         }
         throw new IllegalArgumentException("El destino es inexistente");
     }
-
-
-
 }
+
+    //Validando existencia del destino solicitado.
+
+
+    //VALIDAR HOTELES DISPONIBLES
+//    private List<HotelDTO> validarHotelesDisponibles(HotelConsultDTO hotelConsultDTO) {
+//        // llamamo al metodo que verifica la existencia del destino
+//        destinationValid(hotelConsultDTO.getDestination());
+//
+//        // llamamos al metodo que verifica las fechas
+//        dateValid(hotelConsultDTO.getDateFrom(), hotelConsultDTO.getDateTo());
+//
+//        List<HotelDTO> listHotelDTO = listHotelsDTO();
+//
+//        List<HotelDTO> availableHotel = new ArrayList<>();
+//        for (HotelDTO hotel : listHotelDTO) {
+//            if (hotel.getDateFrom().equals(hotelConsultDTO.getDateFrom())
+//                    && hotel.getDateTo().equals(hotelConsultDTO.getDateTo())) {
+//                availableHotel.add(hotel);
+//            }
+//        }
+//
+//        if (availableHotel.isEmpty()) {
+//            throw new InvalidReservationException("No hay hoteles disponibles para las fechas y la ruta especificadas.");
+//        }
+//
+//        return availableHotel;
+//    }
+
+//    @Override
+//    public HotelAvailableDTO hotelesDisponibles(HotelConsultDTO hotelConsultDTO) {
+//        // Verificar si hay hoteles disponibles para las fechas y el destino
+//        List<HotelDTO> availableHotel = validarHotelesDisponibles(hotelConsultDTO);
+//
+//        // Crear y configurar el objeto HotelAvailableDTO
+//        HotelAvailableDTO hotelAvailable = new HotelAvailableDTO();
+//        hotelAvailable.setAvailableHotelDTO(availableHotel);
+//
+//        return hotelAvailable;
+//    }
+
+
+
+

@@ -9,6 +9,7 @@ import com.example.AgenciaTurismo.dto.response.HotelAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IHotelService {
@@ -35,6 +36,16 @@ public interface IHotelService {
     //DELETE
     ResponseDTO deleteHotel(String hotelCode);
 
+
+
+    //METODOS PARA VALIDAR
+
     Boolean roomCapacity(HotelReservationDTO reservation);
+
+    List<HotelDTO> validarHotelesDisponibles(HotelConsultDTO hotelConsultDTO);
+
+    Boolean dateValid(LocalDate dateFrom, LocalDate dateTo);
+
+    Boolean destinationValid(String destination);
 
 }
