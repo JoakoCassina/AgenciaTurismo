@@ -22,14 +22,13 @@ import java.util.List;
 public class HotelReservationDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_from")
-    @Future(message = "La fecha de entrada debe ser en el futuro")
+    @Future(message = "La fecha de entrada debe ser mayor al dia de hoy")
     //@Pattern( regexp = "\\d{2}-\\d{2}-\\d{4}",message = "Formato de fecha debe ser dd-mm-aaaa")
     private LocalDate dateFrom;
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_to")
     @Future(message = "La fecha de salida debe ser en el futuro")
     private LocalDate dateTo;
-
     private String destination;
     @JsonProperty("hotel_code")
     private String hotelCode;
