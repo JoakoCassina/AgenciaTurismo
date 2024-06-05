@@ -2,6 +2,8 @@ package com.example.AgenciaTurismo.service;
 
 
 import com.example.AgenciaTurismo.dto.HotelDTO;
+import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
+import com.example.AgenciaTurismo.dto.response.HotelAvailableDTO;
 import com.example.AgenciaTurismo.model.Hotel;
 import com.example.AgenciaTurismo.repository.IHotelRepository;
 import org.junit.jupiter.api.Assertions;
@@ -46,6 +48,9 @@ public class HotelServiceTest {
             "Single", 5435, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 19), false);
 
 
+
+
+    // US-0001: Listar todos los hoteles registrados
     @Test
     @DisplayName("Test ListarHotelesDTO OK")   //public List<HotelDTO> listHotelsDTO()
     public void listHotelesDTOTestOK(){
@@ -63,6 +68,30 @@ public class HotelServiceTest {
     }
 
 
+
+    @Test
+    @DisplayName("Test HotelDisponibleDTO OK") // public HotelAvailableDTO hotelesDisponibles(HotelConsultDTO hotelConsultDTO)
+    public void hotelesDisponiblesDTOTestOK() {
+
+        LocalDate dateFrom = LocalDate.of(2025, 2, 10);
+        LocalDate dateTo = LocalDate.of(2025, 3, 19);
+
+
+        HotelConsultDTO hotelConsultado = new HotelConsultDTO(dateFrom,
+                dateTo, "Buenos Aires");
+
+        List<HotelDTO> listaEsperada = new ArrayList<>();
+        listaEsperada.add(hotelDTO3);
+
+
+        //ACT
+        Mockito.when(hotelService.validarHotelesDisponibles(hotelConsultado)).thenReturn(listaEsperada);
+        HotelAvailableDTO hotelDisponible = hotelService.hotelesDisponibles(hotelConsultado);
+
+        //ASSERT
+        Assertions.assertEquals(listaEsperada, hotelDisponible);
+
+    }
 
 
 
