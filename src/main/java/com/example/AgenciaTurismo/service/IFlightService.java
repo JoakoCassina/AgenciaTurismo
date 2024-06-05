@@ -33,4 +33,7 @@ public interface IFlightService {
 
     //DELETE
     ResponseDTO deleteFlight(String flightCode);
+
+    //METODOS PARA VALIDAR
+    Boolean flightValid(String origin, String destination);
 }

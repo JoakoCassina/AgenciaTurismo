@@ -3,6 +3,7 @@ package com.example.AgenciaTurismo.service;
 import com.example.AgenciaTurismo.dto.FlightDTO;
 import com.example.AgenciaTurismo.dto.FlightReservedDTO;
 
+import com.example.AgenciaTurismo.dto.HotelDTO;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
@@ -42,15 +43,17 @@ public class FlightService implements IFlightService{
 
     @Override
     public FlightAvailableDTO vuelosDisponibles(FlightConsultDTO flightConsultDTO) {
+        flightValid(flightConsultDTO.getOrigin(), flightConsultDTO.getDestination());
+
+
         List<FlightDTO> listFlightDTO = listFlightsDTO();
 
         List<FlightDTO> availableFlight = new ArrayList<>();
         for (FlightDTO flight : listFlightDTO) {
-            if (flight.getOrigin().equals(flightConsultDTO.getOrigin())
-                    && flight.getDestination().equals(flightConsultDTO.getDestination())
-                    && flight.getDateFrom().equals(flightConsultDTO.getDateFrom())
-                    && flight.getDateTo().equals(flightConsultDTO.getDateTo())) {
-                availableFlight.add(flight);
+            if (flight.getDateFrom().equals(flightConsultDTO.getDateFrom())
+                    && flight.getDateTo().equals(flightConsultDTO.getDateTo()))
+                     {
+                     availableFlight.add(flight);
             }
         }
 
@@ -185,6 +188,25 @@ public class FlightService implements IFlightService{
             return new ResponseDTO("No se encontro el vuelo a eliminar");
         }
 
+    }
+
+    //VALIDACION DE DESTINO Y ORIGEN DE VUELOS
+    public Boolean flightValid(String origin, String destination) {
+        List<String> validOrigin = listFlightsDTO().stream()
+                .map(FlightDTO::getOrigin)
+                .toList();
+        List<String> validDestination = listFlightsDTO().stream()
+                .map(FlightDTO::getDestination)
+                .toList();
+        if (validOrigin.contains(origin) && !validDestination.contains(destination)){
+            throw new IllegalArgumentException("El destino elegido no existe");
+        }else if (!validOrigin.contains(origin) && validDestination.contains(destination)){
+            throw new IllegalArgumentException("El origen elegido no existe");
+        }else if (!validOrigin.contains(origin) && !validDestination.contains(destination)){
+            throw new IllegalArgumentException("El origen y el destino elegido no existe");
+        }else {
+            return true; //LOS DOS ARGUMENTOS SON CORRECTOS, DESTINO Y ORIGEN EXISTEN
+        }
     }
 
 }
