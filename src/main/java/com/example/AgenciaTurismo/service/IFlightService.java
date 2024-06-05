@@ -8,6 +8,7 @@ import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IFlightService {
@@ -16,13 +17,7 @@ public interface IFlightService {
 
     FlightAvailableDTO vuelosDisponibles(FlightConsultDTO flightConsultDTO);
 
-    Double calcInterest(Double totalPrice, Integer dues);
-
     TotalFlightReservationDTO reserved(FinalFlightReservationDTO finalFlightReservationDTO);
-
-    Boolean reserveSaved(FinalFlightReservationDTO finalFlightReservationDTO);
-
-    List<FlightReservedDTO> flightSaved();
 
 
     //CREATE
@@ -34,6 +29,17 @@ public interface IFlightService {
     //DELETE
     ResponseDTO deleteFlight(String flightCode);
 
+
     //METODOS PARA VALIDAR
+    Boolean reserveSaved(FinalFlightReservationDTO finalFlightReservationDTO);
+
+    List<FlightReservedDTO> flightSaved();
+
+    List<FlightDTO> validarVuelosDisponibles(FlightConsultDTO flightConsultDTO);
+
     Boolean flightValid(String origin, String destination);
+
+    Boolean dateValid(LocalDate dateFrom, LocalDate dateTo);
+
+    Double calcInterest(Double totalPrice, Integer dues, String type);
 }
