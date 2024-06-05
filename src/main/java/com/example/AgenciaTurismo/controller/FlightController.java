@@ -6,6 +6,10 @@ import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.service.IFlightService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -29,17 +33,17 @@ public class FlightController {
 
     //US 0005:
     @GetMapping("/flights")
-    public ResponseEntity<?> vuelosDisponibles(@DateTimeFormat(pattern = "dd-MM-yyyy") @RequestParam LocalDate dateFrom,
-                                               @DateTimeFormat(pattern = "dd-MM-yyyy") @RequestParam LocalDate dateTo,
-                                               @RequestParam String origin,
-                                               @RequestParam String destination){
+    public ResponseEntity<?> vuelosDisponibles(@RequestParam @Future(message = "La fecha de entrada debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy")  LocalDate dateFrom,
+                                               @RequestParam @Future(message = "La fecha de salida debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateTo,
+                                               @RequestParam @NotBlank String origin,
+                                               @RequestParam @NotBlank String destination){
         FlightConsultDTO datos = new FlightConsultDTO(dateFrom, dateTo, origin, destination);
         return new ResponseEntity<>(flightService.vuelosDisponibles(datos), HttpStatus.OK);
     }
 
     //US 0006
     @PostMapping("/flight-reservation")
-    public TotalFlightReservationDTO reserveFlight(@RequestBody FinalFlightReservationDTO finalFlightReservationDTO) {
+    public TotalFlightReservationDTO reserveFlight(@RequestBody @Valid FinalFlightReservationDTO finalFlightReservationDTO) {
         return flightService.reserved(finalFlightReservationDTO);
     }
     //VUELOS RESERVADOS
@@ -50,21 +54,21 @@ public class FlightController {
 
     //CREATE
     @PostMapping("/createFlight")
-    public ResponseEntity<ResponseDTO> createFlight(@RequestBody FlightDTO flightDTO) {
+    public ResponseEntity<ResponseDTO> createFlight(@RequestBody @Valid FlightDTO flightDTO) {
 
         return new ResponseEntity<>(flightService.createFlight(flightDTO), HttpStatus.CREATED);
     }
 
     //UPDATE
     @PutMapping("/updateFlight/{flightCode}")
-    public ResponseEntity<ResponseDTO> updateFlight(@PathVariable String flightCode, @RequestBody FlightDTO flightDTO) {
+    public ResponseEntity<ResponseDTO> updateFlight(@PathVariable @NotBlank String flightCode, @RequestBody FlightDTO flightDTO) {
 
         return new ResponseEntity<>(flightService.updateFlight(flightCode, flightDTO), HttpStatus.OK);
     }
 
     //DELETE
     @DeleteMapping("/deleteFlight/{flightCode}")
-    public ResponseEntity<ResponseDTO> deleteFlight(@PathVariable String flightCode) {
+    public ResponseEntity<ResponseDTO> deleteFlight(@PathVariable @NotBlank String flightCode) {
         return new ResponseEntity<>(flightService.deleteFlight(flightCode), HttpStatus.OK);
     }
 
