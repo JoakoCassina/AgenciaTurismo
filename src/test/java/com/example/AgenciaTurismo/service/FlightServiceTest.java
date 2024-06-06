@@ -37,13 +37,12 @@ public class FlightServiceTest {
 
     private static final FlightDTO flightDTO1 = new FlightDTO("BAPI-1235", "Buenos Aires", "Puerto Iguazú", "Economy", 6500, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 15));
     private static final FlightDTO flightDTO2 = new FlightDTO("PIBA-1420", "Puerto Iguazú", "Bogotá", "Business", 43200, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 20));
-    private static final FlightDTO flightDTO3 = new FlightDTO("PIBA-1420", "Puerto Iguazú", "Bogotá", "Economy", 25735, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 21));
+    private static final FlightDTO flightDTO3 = new FlightDTO("PIBA-1420", "Puerto Iguazú", "Bogotá", "Economy", 25735, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 20));
 
 
     private static final Flight flight1 = new Flight("BAPI-1235", "Buenos Aires", "Puerto Iguazú", "Economy", 6500, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 15));
     private static final Flight flight2 = new Flight("PIBA-1420", "Puerto Iguazú", "Bogotá", "Business", 43200, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 20));
-    private static final Flight flight3 = new Flight("PIBA-1420", "Puerto Iguazú", "Bogotá", "Economy", 25735, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 21));
-    private static final Flight flight4 = new Flight("BATU-5536", "Buenos Aires", "Tucumán", "Economy", 7320, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 17));
+    private static final Flight flight3 = new Flight("PIBA-1420", "Puerto Iguazú", "Bogotá", "Economy", 25735, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 20));
 
     //Personas para la lista enviada
     private static final PeopleDTO peopleDTO1 = new PeopleDTO(42533885,"Joako","Cassina",LocalDate.of(2000,04,18), "joako@gmail.com");
@@ -67,6 +66,13 @@ public class FlightServiceTest {
     @Test
     @DisplayName("Test ListarVuelosDTO OK")
     public void listVuelosDTOTestOK() {
+
+        List<FlightDTO> listaEsperadaDTO = new ArrayList<>();
+        listaEsperadaDTO.add(flightDTO1);
+        listaEsperadaDTO.add(flightDTO2);
+        listaEsperadaDTO.add(flightDTO3);
+
+
         List<Flight> listaEsperada = new ArrayList<>();
         listaEsperada.add(flight1);
         listaEsperada.add(flight2);
@@ -77,7 +83,7 @@ public class FlightServiceTest {
         List<FlightDTO> listaDTO = flightService.listFlightsDTO();
 
         // ASSERT
-        Assertions.assertEquals(listaEsperada.get(0).getDestination(), listaDTO.get(0).getDestination());
+        Assertions.assertEquals(listaEsperadaDTO, listaDTO);
     }
 
 
@@ -89,6 +95,8 @@ public class FlightServiceTest {
         FlightConsultDTO flightConsultDTO = new FlightConsultDTO(LocalDate.of(2025, 2, 10),
                 LocalDate.of(2025, 2, 15), "Buenos Aires", "Puerto Iguazú");
 
+        FlightAvailableDTO vueloEsperado = new FlightAvailableDTO(List.of(flightDTO1));
+
         List<Flight> listaEsperada = new ArrayList<>();
         listaEsperada.add(flight1);
 
@@ -98,8 +106,7 @@ public class FlightServiceTest {
 
         // ASSERT
         Assertions.assertNotNull(vuelosDisponibles);
-        Assertions.assertEquals(listaEsperada.size(), vuelosDisponibles.getAvailableFlightDTO().size());
-        Assertions.assertEquals(listaEsperada.get(0).getDestination(), vuelosDisponibles.getAvailableFlightDTO().get(0).getDestination());
+        Assertions.assertEquals(vueloEsperado, vuelosDisponibles);
     }
 
 

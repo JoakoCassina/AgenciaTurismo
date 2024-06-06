@@ -24,7 +24,7 @@
     "seat_type": "Economy",
     "price": 25735,
     "date_from": "10-02-2025",
-    "date_to": "21-02-2025"
+    "date_to": "20-02-2025"
   },
   {
     "flight_code": "BATU-5536",
@@ -50,8 +50,8 @@
     "destination": "Puerto Iguazú",
     "seat_type": "Economy",
     "price": 5400,
-    "date_from": "02-01-2025",
-    "date_to": "16-01-2025"
+    "date_from": "12-02-2025",
+    "date_to": "23-02-2025"
   },
   {
     "flight_code": "BOCA-4213",
@@ -86,8 +86,8 @@
     "destination": "Buenos Aires",
     "seat_type": "Economy",
     "price": 39860,
-    "date_from": "01-03-2025",
-    "date_to": "14-03-2025"
+    "date_from": "15-02-2025",
+    "date_to": "28-02-2025"
   },
   {
     "flight_code": "BOME-4442",
