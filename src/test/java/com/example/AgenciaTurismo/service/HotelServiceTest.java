@@ -79,6 +79,12 @@ public class HotelServiceTest {
     @Test
     @DisplayName("Test ListarHotelesDTO OK")   //public List<HotelDTO> listHotelsDTO()
     public void listHotelesDTOTestOK(){
+
+        List<HotelDTO> listaEsperadaDTO = new ArrayList<>();
+        listaEsperadaDTO.add(hotelDTO1);
+        listaEsperadaDTO.add(hotelDTO2);
+        listaEsperadaDTO.add(hotelDTO3);
+
         List<Hotel> listaEsperada = new ArrayList<>();
         listaEsperada.add(hotel1);
         listaEsperada.add(hotel2);
@@ -89,7 +95,7 @@ public class HotelServiceTest {
         List<HotelDTO> listaDTO = hotelService.listHotelsDTO();
 
         //ASSERT
-        Assertions.assertEquals(listaEsperada.get(2).getDestination(), listaDTO.get(2).getDestination());
+        Assertions.assertEquals(listaEsperadaDTO, listaDTO);
     }
 
 
@@ -101,6 +107,9 @@ public class HotelServiceTest {
         HotelConsultDTO hotelConsultadoDTO = new HotelConsultDTO(LocalDate.of(2025, 2, 10),
                 LocalDate.of(2025, 3, 19), "Buenos Aires");
 
+
+        HotelAvailableDTO hotelEsperado = new HotelAvailableDTO(List.of(hotelDTO3));
+
         List<Hotel> listaEsperada = new ArrayList<>();
         listaEsperada.add(hotel3);
 
@@ -111,8 +120,7 @@ public class HotelServiceTest {
 
         //ASSERT
         Assertions.assertNotNull(hotelDisponible);
-        Assertions.assertEquals(listaEsperada.size(), hotelDisponible.getAvailableHotelDTO().size());
-        Assertions.assertEquals(listaEsperada.get(0).getDestination(), hotelDisponible.getAvailableHotelDTO().get(0).getDestination());
+        Assertions.assertEquals(hotelEsperado, hotelDisponible);
 
     }
 
