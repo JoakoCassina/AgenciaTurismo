@@ -58,7 +58,7 @@ public class HotelService implements IHotelService {
     public TotalHotelReservationDTO reserved(FinalHotelReservationDTO finalHotelReservationDTO) {
 
         if (reserveSaved(finalHotelReservationDTO)) {
-            throw new InvalidReservationException("La reserva ya está realizada.");
+            throw new IllegalArgumentException("La reserva ya está realizada.");
         }
 
         roomCapacity(finalHotelReservationDTO.getHotelReservationDTO());
@@ -81,7 +81,7 @@ public class HotelService implements IHotelService {
             }
         }
         if (hotelToReserved == null) {
-            throw new InvalidReservationException("No se encontró ningún hotel que coincida con los criterios de reserva.");
+            throw new IllegalArgumentException("No se encontró ningún hotel que coincida con los criterios de reserva.");
         }
 
         Double amount = (hotelToReserved.getPriceForNight() * finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());

@@ -6,11 +6,15 @@ import com.example.AgenciaTurismo.dto.FlightReservationDTO;
 import com.example.AgenciaTurismo.dto.PaymentMethodDTO;
 import com.example.AgenciaTurismo.dto.PeopleDTO;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
+import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
+import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
+import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import com.example.AgenciaTurismo.model.Flight;
+import com.example.AgenciaTurismo.model.Hotel;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -55,6 +59,9 @@ public class FlightServiceTest {
 
     private static final FlightReservationDTO reserva = new FlightReservationDTO(LocalDate.of(2025, 2, 10),
             LocalDate.of(2025, 2, 15), "Buenos Aires", "Puerto Iguazú", "Andre1235", 2.0, "Economy",
+            List.of(peopleDTO1, peopleDTO2), metodoDTO);
+    private static final FlightReservationDTO reservaFail = new FlightReservationDTO(LocalDate.of(2026, 2, 10),
+            LocalDate.of(2026, 2, 15), "Buenos Aires", "Puerto Iguazú", "Andre1235", 2.0, "Economy",
             List.of(peopleDTO1, peopleDTO2), metodoDTO);
 
     // StatusCode de respuesta
@@ -109,12 +116,31 @@ public class FlightServiceTest {
         Assertions.assertEquals(vueloEsperado, vuelosDisponibles);
     }
 
+    @Test
+    @DisplayName("Test VueloDisponibleDTO NO OK") // public HotelAvailableDTO hotelesDisponibles(HotelConsultDTO hotelConsultDTO)
+    public void vuelosDisponiblesDTOTestNoOK() {
 
+        FlightConsultDTO flightConsultDTO = new FlightConsultDTO(LocalDate.of(2025, 3, 10),
+                LocalDate.of(2025, 3, 29), "Tucuman", "Rafaela");
+
+
+        List<Flight> listaEsperada = new ArrayList<>();
+
+
+        //ACT
+        Mockito.when(flightRepository.findAll()).thenReturn(listaEsperada);
+
+
+        //ASSERT
+        Assertions.assertThrows(IllegalArgumentException.class, ()-> flightService.
+                vuelosDisponibles(flightConsultDTO));
+
+    }
     //US-0006:
 
     // public TotalFlightReservationDTO reserved(FinalFlightReservationDTO finalFlightReservationDTO)
     @Test
-    @DisplayName("Test VuelosDisponiblesDTO OK")
+    @DisplayName("Test reservas OK")
     public void reservedTestOK() {
 
         FinalFlightReservationDTO reservaCreada = new FinalFlightReservationDTO("Andrea", reserva);
@@ -133,5 +159,35 @@ public class FlightServiceTest {
         Assertions.assertEquals(resultadoEsperado, resultadoObtenido);
 
     }
+    @Test
+    @DisplayName("Test reserved NO OK")
+    public void reservedTestNoOK() {
+        FinalFlightReservationDTO reservaPasadaDTO  = new FinalFlightReservationDTO("Joako",reservaFail);
+
+        List<Flight> listaEsperada = new ArrayList<>();
+        Mockito.when(flightRepository.findAll()).thenReturn(listaEsperada);
+
+        //ACT & ASSERT
+        // Aquí se espera que el método reserved lance una InvalidReservationException
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            flightService.reserved(reservaPasadaDTO);
+        });
+
+
+    }
+
+    @Test
+    @DisplayName("Test fail por reserva existente")
+    public void reservedFailTest() {
+        FinalFlightReservationDTO reservaPasadaDTO  = new FinalFlightReservationDTO("Joako", reserva);
+        //Boolean result = hotelService.reserveSaved(reservaPasadaDTO);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            flightService.reserved(reservaPasadaDTO);});
+
+        IllegalArgumentException exceptionEsperada = new IllegalArgumentException("No se encontró ningún vuelo que coincida con los criterios de reserva.");
+        Assertions.assertEquals(exceptionEsperada, flightService.reserved(reservaPasadaDTO));
+
+    }
 
 }
+

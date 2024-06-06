@@ -10,6 +10,7 @@ import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.HotelAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
+import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import com.example.AgenciaTurismo.model.Hotel;
 import com.example.AgenciaTurismo.repository.IHotelRepository;
 import org.junit.jupiter.api.Assertions;
@@ -70,6 +71,9 @@ public class HotelServiceTest {
     private static final HotelReservationDTO reservaHotelDTO = new HotelReservationDTO(LocalDate.of(2025, 2, 10),
             LocalDate.of(2025, 3, 20),"Puerto Iguazú","CH-0002",2.0,"Doble", List.of(peopleDTO1,peopleDTO2),metodoDTO);
 
+    private static final HotelReservationDTO reservaHotelFail = new HotelReservationDTO(LocalDate.of(2026, 2, 10),
+            LocalDate.of(2026, 3, 20),"Rafaela","CH-0002",2.0,"Doble", List.of(peopleDTO1,peopleDTO2),metodoDTO);
+
 
     // StatusCode de respuesta
     private static final StatusCodeDTO statusCodeDTO = new StatusCodeDTO(201, "El proceso terminó satisfactoriamente");
@@ -124,6 +128,28 @@ public class HotelServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Test HotelDisponibleDTO NO OK") // public HotelAvailableDTO hotelesDisponibles(HotelConsultDTO hotelConsultDTO)
+    public void hotelesDisponiblesDTOTestNoOK() {
+
+        HotelConsultDTO hotelConsultadoDTO = new HotelConsultDTO(LocalDate.of(2025, 3, 10),
+                LocalDate.of(2025, 3, 29), "Tucuman");
+
+
+        List<Hotel> listaEsperada = new ArrayList<>();
+        listaEsperada.add(hotel3);
+
+
+        //ACT
+        Mockito.when(hotelRepository.findAll()).thenReturn(listaEsperada);
+
+
+        //ASSERT
+        Assertions.assertThrows(InvalidReservationException.class, ()-> hotelService.
+                hotelesDisponibles(hotelConsultadoDTO));
+
+    }
+
     //TotalHotelReservationDTO reserved(FinalHotelReservationDTO finalHotelReservationDTO) {
 
     @Test
@@ -146,5 +172,34 @@ public class HotelServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Test reserved NO OK")
+    public void reservedTestNoOK() {
+        FinalHotelReservationDTO reservaPasadaDTO  = new FinalHotelReservationDTO("Joako",reservaHotelFail);
+
+        List<Hotel> listaEsperada = new ArrayList<>();
+        Mockito.when(hotelRepository.findAll()).thenReturn(listaEsperada);
+
+        //ACT & ASSERT
+        // Aquí se espera que el método reserved lance una InvalidReservationException
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            hotelService.reserved(reservaPasadaDTO);
+        });
+
+
+    }
+
+    @Test
+    @DisplayName("Test fail por reserva existente")
+    public void reservedFailTest() {
+        FinalHotelReservationDTO reservaPasadaDTO  = new FinalHotelReservationDTO("Joako", reservaHotelDTO);
+        //Boolean result = hotelService.reserveSaved(reservaPasadaDTO);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                hotelService.reserved(reservaPasadaDTO);});
+
+        IllegalArgumentException exceptionEsperada = new IllegalArgumentException("No se encontró ningún hotel que coincida con los criterios de reserva.");
+        Assertions.assertEquals(exceptionEsperada, hotelService.reserved(reservaPasadaDTO));
+
+    }
 
 }
