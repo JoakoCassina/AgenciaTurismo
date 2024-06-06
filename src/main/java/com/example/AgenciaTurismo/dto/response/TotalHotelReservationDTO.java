@@ -20,15 +20,4 @@ public class TotalHotelReservationDTO {
     @JsonProperty("status_code")
     private StatusCodeDTO statusCode;
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-
-    public static class ErrorDTO {
-
-        private String description;
-        @JsonProperty("messages_list")
-        private List<String> messagesList;
-
-    }
 }
