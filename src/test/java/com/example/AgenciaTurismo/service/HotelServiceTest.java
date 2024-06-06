@@ -2,8 +2,14 @@ package com.example.AgenciaTurismo.service;
 
 
 import com.example.AgenciaTurismo.dto.HotelDTO;
+import com.example.AgenciaTurismo.dto.HotelReservationDTO;
+import com.example.AgenciaTurismo.dto.PaymentMethodDTO;
+import com.example.AgenciaTurismo.dto.PeopleDTO;
+import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.HotelAvailableDTO;
+import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
+import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
 import com.example.AgenciaTurismo.model.Hotel;
 import com.example.AgenciaTurismo.repository.IHotelRepository;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +25,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 public class HotelServiceTest {
@@ -47,7 +55,24 @@ public class HotelServiceTest {
     private static final Hotel hotel3 = new Hotel("HB-0001", "Hotel Bristol", "Buenos Aires",
             "Single", 5435, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 19), false);
 
+    //Personas para la lista enviada
+    private static final PeopleDTO peopleDTO1 = new PeopleDTO(42533885,"Joako","Cassina",LocalDate.of(2000,04,18), "joako@gmail.com");
 
+    private static final PeopleDTO peopleDTO2 = new PeopleDTO(420000,"Juan","Casi",LocalDate.of(1999,05,19), "juan@gmail.com");
+
+
+
+    //Metodo de pago enviado
+    private static final PaymentMethodDTO metodoDTO = new PaymentMethodDTO("Debit", "0001", 1);
+
+
+    //Reserva de hotel enviada
+    private static final HotelReservationDTO reservaHotelDTO = new HotelReservationDTO(LocalDate.of(2025, 2, 10),
+            LocalDate.of(2025, 3, 20),"Puerto Iguazú","CH-0002",2.0,"Doble", List.of(peopleDTO1,peopleDTO2),metodoDTO);
+
+
+    // StatusCode de respuesta
+    private static final StatusCodeDTO statusCodeDTO = new StatusCodeDTO(201, "El proceso terminó satisfactoriamente");
 
 
     // US-0001: Listar todos los hoteles registrados
@@ -64,7 +89,7 @@ public class HotelServiceTest {
         List<HotelDTO> listaDTO = hotelService.listHotelsDTO();
 
         //ASSERT
-        Assertions.assertEquals(listaEsperada.size(), listaDTO.size());
+        Assertions.assertEquals(listaEsperada.get(2).getDestination(), listaDTO.get(2).getDestination());
     }
 
 
@@ -73,27 +98,45 @@ public class HotelServiceTest {
     @DisplayName("Test HotelDisponibleDTO OK") // public HotelAvailableDTO hotelesDisponibles(HotelConsultDTO hotelConsultDTO)
     public void hotelesDisponiblesDTOTestOK() {
 
-        LocalDate dateFrom = LocalDate.of(2025, 2, 10);
-        LocalDate dateTo = LocalDate.of(2025, 3, 19);
+        HotelConsultDTO hotelConsultadoDTO = new HotelConsultDTO(LocalDate.of(2025, 2, 10),
+                LocalDate.of(2025, 3, 19), "Buenos Aires");
 
-
-        HotelConsultDTO hotelConsultado = new HotelConsultDTO(dateFrom,
-                dateTo, "Buenos Aires");
-
-        List<HotelDTO> listaEsperada = new ArrayList<>();
-        listaEsperada.add(hotelDTO3);
+        List<Hotel> listaEsperada = new ArrayList<>();
+        listaEsperada.add(hotel3);
 
 
         //ACT
-        Mockito.when(hotelService.validarHotelesDisponibles(hotelConsultado)).thenReturn(listaEsperada);
-        HotelAvailableDTO hotelDisponible = hotelService.hotelesDisponibles(hotelConsultado);
+        Mockito.when(hotelRepository.findAll()).thenReturn(listaEsperada);
+        HotelAvailableDTO hotelDisponible = hotelService.hotelesDisponibles(hotelConsultadoDTO);
 
         //ASSERT
-        Assertions.assertEquals(listaEsperada, hotelDisponible);
+        Assertions.assertNotNull(hotelDisponible);
+        Assertions.assertEquals(listaEsperada.size(), hotelDisponible.getAvailableHotelDTO().size());
+        Assertions.assertEquals(listaEsperada.get(0).getDestination(), hotelDisponible.getAvailableHotelDTO().get(0).getDestination());
 
     }
 
+    //TotalHotelReservationDTO reserved(FinalHotelReservationDTO finalHotelReservationDTO) {
 
+    @Test
+    @DisplayName("Test reserved OK")
+    public void reservedTestOK() {
+        FinalHotelReservationDTO reservaPasadaDTO  = new FinalHotelReservationDTO("Joako",reservaHotelDTO);
+
+        TotalHotelReservationDTO respuestaEsperada = new TotalHotelReservationDTO(12600.0, 0.0, 12600.0,
+                reservaPasadaDTO,statusCodeDTO);
+
+        List<Hotel> listaEsperada = new ArrayList<>();
+        listaEsperada.add(hotel1);
+        Mockito.when(hotelRepository.findAll()).thenReturn(listaEsperada);
+
+        TotalHotelReservationDTO respuestaObtenida = hotelService.reserved(reservaPasadaDTO);
+
+        Assertions.assertEquals(respuestaEsperada, respuestaObtenida);
+        Assertions.assertEquals(201, respuestaObtenida.getStatusCode().getCode());
+
+
+    }
 
 
 }
