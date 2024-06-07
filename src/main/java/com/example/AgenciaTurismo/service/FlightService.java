@@ -46,7 +46,7 @@ public class FlightService implements IFlightService {
     @Override
     public FlightAvailableDTO vuelosDisponibles(FlightConsultDTO flightConsultDTO) {
         //LLAMAMOS AL METODO VALIDAR VUELOS DISPONIBLES
-        List<FlightDTO> availableFlight = validarVuelosDisponibles(flightConsultDTO);
+        List<FlightDTO> availableFlight = this.validarVuelosDisponibles(flightConsultDTO);
         //CREAMOS OBJ TIPO FLIGHTAVAILABLEDTO
         FlightAvailableDTO flightAvailable = new FlightAvailableDTO();
         flightAvailable.setAvailableFlightDTO(availableFlight);
@@ -60,7 +60,7 @@ public class FlightService implements IFlightService {
         //SE CREA VARIABLE PARA REDUCIR LINEAS DE CODIGO
         FlightReservationDTO vueloReserva = finalFlightReservationDTO.getFlightReservationDTO();
 
-        if (reserveSaved(finalFlightReservationDTO)) {
+        if (this.reserveSaved(finalFlightReservationDTO)) {
             throw new IllegalArgumentException("La reserva ya está realizada.");
         }
 
@@ -70,7 +70,7 @@ public class FlightService implements IFlightService {
                 vueloReserva.getOrigin(),
                 vueloReserva.getDestination());
 
-        List<FlightDTO> availableFlight = validarVuelosDisponibles(vueloBuscados);
+        List<FlightDTO> availableFlight = this.validarVuelosDisponibles(vueloBuscados);
 
 
         FlightDTO flightToReserved = null;
@@ -89,7 +89,7 @@ public class FlightService implements IFlightService {
 
         Double amount = flightToReserved.getPrice() * finalFlightReservationDTO.getFlightReservationDTO().getSeats();
 
-        Double interest = calcInterest(amount,
+        Double interest = this.calcInterest(amount,
                                         finalFlightReservationDTO.getFlightReservationDTO().getPaymentMethodDTO().getDues(),
                                         finalFlightReservationDTO.getFlightReservationDTO().getPaymentMethodDTO().getType());
 
@@ -200,12 +200,12 @@ public class FlightService implements IFlightService {
     @Override
     public List<FlightDTO> validarVuelosDisponibles(FlightConsultDTO flightConsultDTO) {
         //LLAMAMOS AL METODO QUE VALIDA DESTINO Y ORIGEN
-        flightValid(flightConsultDTO.getOrigin(), flightConsultDTO.getDestination());
+        this.flightValid(flightConsultDTO.getOrigin(), flightConsultDTO.getDestination());
         //LLAMAMOS AL METODO QUE VALIDA FECHAS
-        dateValid(flightConsultDTO.getDateFrom(), flightConsultDTO.getDateTo());
+        this.dateValid(flightConsultDTO.getDateFrom(), flightConsultDTO.getDateTo());
 
 
-        List<FlightDTO> listFlightDTO = listFlightsDTO();
+        List<FlightDTO> listFlightDTO = this.listFlightsDTO();
         //CREAMOS UNA LISTA DE VUELOS QUE COINCIDAN CON LA FECHA
         List<FlightDTO> availableFlight = new ArrayList<>();
         for (FlightDTO flight : listFlightDTO) {

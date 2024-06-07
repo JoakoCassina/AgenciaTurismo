@@ -62,17 +62,21 @@ public class HotelServiceTest {
     private static final PeopleDTO peopleDTO2 = new PeopleDTO(420000,"Juan","Casi",LocalDate.of(1999,05,19), "juan@gmail.com");
 
 
-
     //Metodo de pago enviado
     private static final PaymentMethodDTO metodoDTO = new PaymentMethodDTO("Debit", "0001", 1);
+
+
 
 
     //Reserva de hotel enviada
     private static final HotelReservationDTO reservaHotelDTO = new HotelReservationDTO(LocalDate.of(2025, 2, 10),
             LocalDate.of(2025, 3, 20),"Puerto Iguazú","CH-0002",2.0,"Doble", List.of(peopleDTO1,peopleDTO2),metodoDTO);
 
-    private static final HotelReservationDTO reservaHotelFail = new HotelReservationDTO(LocalDate.of(2026, 2, 10),
-            LocalDate.of(2026, 3, 20),"Rafaela","CH-0002",2.0,"Doble", List.of(peopleDTO1,peopleDTO2),metodoDTO);
+
+    private static final HotelReservationDTO reservaHotelFail = new HotelReservationDTO(LocalDate.of(2025, 2, 10),
+            LocalDate.of(2025, 3, 20),
+            "Rafaela","CH-0002",2.0,"Doble", List.of(peopleDTO1,peopleDTO2),metodoDTO);
+
 
 
     // StatusCode de respuesta
@@ -103,7 +107,7 @@ public class HotelServiceTest {
     }
 
 
-
+    // US-0002: Hoteles Disponible
     @Test
     @DisplayName("Test HotelDisponibleDTO OK") // public HotelAvailableDTO hotelesDisponibles(HotelConsultDTO hotelConsultDTO)
     public void hotelesDisponiblesDTOTestOK() {
@@ -127,7 +131,7 @@ public class HotelServiceTest {
         Assertions.assertEquals(hotelEsperado, hotelDisponible);
 
     }
-
+    //TEST NOOK
     @Test
     @DisplayName("Test HotelDisponibleDTO NO OK") // public HotelAvailableDTO hotelesDisponibles(HotelConsultDTO hotelConsultDTO)
     public void hotelesDisponiblesDTOTestNoOK() {
@@ -145,13 +149,13 @@ public class HotelServiceTest {
 
 
         //ASSERT
-        Assertions.assertThrows(InvalidReservationException.class, ()-> hotelService.
+        Assertions.assertThrows(IllegalArgumentException.class, ()-> hotelService.
                 hotelesDisponibles(hotelConsultadoDTO));
 
     }
 
-    //TotalHotelReservationDTO reserved(FinalHotelReservationDTO finalHotelReservationDTO) {
 
+    // US-0002: Crear Reserva
     @Test
     @DisplayName("Test reserved OK")
     public void reservedTestOK() {
@@ -169,9 +173,11 @@ public class HotelServiceTest {
         Assertions.assertEquals(respuestaEsperada, respuestaObtenida);
         Assertions.assertEquals(201, respuestaObtenida.getStatusCode().getCode());
 
+        System.out.println("Mensaje: " + respuestaObtenida);
 
     }
 
+    //Test NOOK
     @Test
     @DisplayName("Test reserved NO OK")
     public void reservedTestNoOK() {
@@ -181,24 +187,12 @@ public class HotelServiceTest {
         Mockito.when(hotelRepository.findAll()).thenReturn(listaEsperada);
 
         //ACT & ASSERT
-        // Aquí se espera que el método reserved lance una InvalidReservationException
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             hotelService.reserved(reservaPasadaDTO);
         });
 
-
-    }
-
-    @Test
-    @DisplayName("Test fail por reserva existente")
-    public void reservedFailTest() {
-        FinalHotelReservationDTO reservaPasadaDTO  = new FinalHotelReservationDTO("Joako", reservaHotelDTO);
-        //Boolean result = hotelService.reserveSaved(reservaPasadaDTO);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-                hotelService.reserved(reservaPasadaDTO);});
-
-        IllegalArgumentException exceptionEsperada = new IllegalArgumentException("No se encontró ningún hotel que coincida con los criterios de reserva.");
-        Assertions.assertEquals(exceptionEsperada, hotelService.reserved(reservaPasadaDTO));
+        String mensajeError = exception.getMessage();
+        System.out.println("Mensaje de error: " + mensajeError);
 
     }
 

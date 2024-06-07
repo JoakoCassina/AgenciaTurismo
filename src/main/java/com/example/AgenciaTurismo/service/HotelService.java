@@ -45,7 +45,7 @@ public class HotelService implements IHotelService {
     @Override
     public HotelAvailableDTO hotelesDisponibles(HotelConsultDTO hotelConsultDTO) {
         // Verificar si hay hoteles disponibles para las fechas y el destino
-        List<HotelDTO> availableHotel = validarHotelesDisponibles(hotelConsultDTO);
+        List<HotelDTO> availableHotel = this.validarHotelesDisponibles(hotelConsultDTO);
 
         // Crear y configurar el objeto HotelAvailableDTO
         HotelAvailableDTO hotelAvailable = new HotelAvailableDTO();
@@ -57,18 +57,18 @@ public class HotelService implements IHotelService {
     @Override
     public TotalHotelReservationDTO reserved(FinalHotelReservationDTO finalHotelReservationDTO) {
 
-        if (reserveSaved(finalHotelReservationDTO)) {
+        if (this.reserveSaved(finalHotelReservationDTO)) {
             throw new IllegalArgumentException("La reserva ya está realizada.");
         }
 
-        roomCapacity(finalHotelReservationDTO.getHotelReservationDTO());
+        this.roomCapacity(finalHotelReservationDTO.getHotelReservationDTO());
 
 
         HotelConsultDTO hotelBuscado = new HotelConsultDTO(finalHotelReservationDTO.getHotelReservationDTO().getDateFrom(),
                 finalHotelReservationDTO.getHotelReservationDTO().getDateTo(),
                 finalHotelReservationDTO.getHotelReservationDTO().getDestination());
 
-        List<HotelDTO> availableHotel = validarHotelesDisponibles(hotelBuscado);
+        List<HotelDTO> availableHotel = this.validarHotelesDisponibles(hotelBuscado);
 
 
         HotelDTO hotelToReserved = null;
@@ -86,7 +86,7 @@ public class HotelService implements IHotelService {
 
         Double amount = (hotelToReserved.getPriceForNight() * finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
 
-        Double interest = calcInterest(amount, finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO().getDues(),
+        Double interest = this.calcInterest(amount, finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO().getDues(),
                 finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO().getType());
 
         Double total = amount + interest;
@@ -236,12 +236,12 @@ public class HotelService implements IHotelService {
     @Override
     public List<HotelDTO> validarHotelesDisponibles(HotelConsultDTO hotelConsultDTO) {
         // llamamo al metodo que verifica la existencia del destino
-        destinationValid(hotelConsultDTO.getDestination());
+        this.destinationValid(hotelConsultDTO.getDestination());
 
         // llamamos al metodo que verifica las fechas
-        dateValid(hotelConsultDTO.getDateFrom(), hotelConsultDTO.getDateTo());
+        this.dateValid(hotelConsultDTO.getDateFrom(), hotelConsultDTO.getDateTo());
 
-        List<HotelDTO> listHotelDTO = listHotelsDTO();
+        List<HotelDTO> listHotelDTO = this.listHotelsDTO();
 
         List<HotelDTO> availableHotel = new ArrayList<>();
         for (HotelDTO hotel : listHotelDTO) {
@@ -275,7 +275,7 @@ public class HotelService implements IHotelService {
         if (validDestination.contains(destination)) {
             return true;
         }
-        throw new IllegalArgumentException("El destino elegido  no existe");
+        throw new IllegalArgumentException("El destino elegido no existe");
     }
 }
 
