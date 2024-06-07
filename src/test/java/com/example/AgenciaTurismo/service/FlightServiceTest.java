@@ -150,6 +150,7 @@ public class FlightServiceTest {
         Assertions.assertEquals(resultadoEsperado, resultadoObtenido);
 
     }
+
     @Test
     @DisplayName("Test reserved NO OK")
     public void reservedTestNoOK() {

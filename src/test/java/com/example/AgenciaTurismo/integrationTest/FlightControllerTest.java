@@ -100,7 +100,7 @@ public class FlightControllerTest {
 
         TotalFlightReservationDTO resultadoEsperado = new TotalFlightReservationDTO(13000.0, 650.0, 13650.0, reservaConsulta, statusCodeDTO);
 
-        ResultMatcher statusEsperado = MockMvcResultMatchers.status().isOk();
+        ResultMatcher statusEsperado = MockMvcResultMatchers.status().isCreated();
         ResultMatcher bodyEsperado= MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(resultadoEsperado));
         ResultMatcher contentTypeEsperado = MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON);
 

@@ -43,8 +43,8 @@ public class FlightController {
 
     //US 0006
     @PostMapping("/flight-reservation")
-    public TotalFlightReservationDTO reserveFlight(@RequestBody @Valid FinalFlightReservationDTO finalFlightReservationDTO) {
-        return flightService.reserved(finalFlightReservationDTO);
+    public ResponseEntity<?> reserveFlight(@RequestBody @Valid FinalFlightReservationDTO finalFlightReservationDTO) {
+        return new ResponseEntity<>(flightService.reserved(finalFlightReservationDTO), HttpStatus.CREATED);
     }
     //VUELOS RESERVADOS
     @GetMapping("/reservedFlights")

@@ -105,7 +105,7 @@ public class HotelControllerTest {
         TotalHotelReservationDTO respuestaEsperada = new TotalHotelReservationDTO(12600.0, 0.0, 12600.0,
                 reservaConstulta,statusCodeDTO);
 
-        ResultMatcher statusEsperado = MockMvcResultMatchers.status().isOk();
+        ResultMatcher statusEsperado = MockMvcResultMatchers.status().isCreated();
         ResultMatcher bodyEsperado= MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(respuestaEsperada));
         ResultMatcher contentTypeEsperado = MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON);
 

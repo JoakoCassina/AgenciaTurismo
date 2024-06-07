@@ -44,8 +44,8 @@ public class HotelController {
 
     //US 0003:
     @PostMapping("/booking")
-    public TotalHotelReservationDTO reserved(@RequestBody @Valid FinalHotelReservationDTO finalHotelReservationDTO) {
-        return hotelService.reserved(finalHotelReservationDTO);
+    public ResponseEntity<?> reserved(@RequestBody @Valid FinalHotelReservationDTO finalHotelReservationDTO) {
+        return new ResponseEntity<>(hotelService.reserved(finalHotelReservationDTO), HttpStatus.CREATED);
     }
 
     //HOTELES RESERVADOS
@@ -57,9 +57,9 @@ public class HotelController {
     //CREATE
     @PostMapping("/createHotel")
     public ResponseEntity<ResponseDTO> createHotel(@RequestBody @Valid HotelDTO hotelDTO) {
-
         return new ResponseEntity<>(hotelService.createHotel(hotelDTO), HttpStatus.CREATED);
     }
+
     //UPDATE
     @PutMapping("/updateHotel/{hotelCode}")
     public ResponseEntity<ResponseDTO> updateHotel(@PathVariable @NotNull String hotelCode, @RequestBody HotelDTO hotelDTO) {
