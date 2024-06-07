@@ -10,7 +10,6 @@ import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.HotelAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
-import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import com.example.AgenciaTurismo.model.Hotel;
 import com.example.AgenciaTurismo.repository.IHotelRepository;
 import org.junit.jupiter.api.Assertions;
@@ -24,10 +23,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 public class HotelServiceTest {
@@ -155,7 +152,7 @@ public class HotelServiceTest {
     }
 
 
-    // US-0002: Crear Reserva
+    // US-0003: Crear Reserva
     @Test
     @DisplayName("Test reserved OK")
     public void reservedTestOK() {
@@ -195,5 +192,7 @@ public class HotelServiceTest {
         System.out.println("Mensaje de error: " + mensajeError);
 
     }
+
+
 
 }
