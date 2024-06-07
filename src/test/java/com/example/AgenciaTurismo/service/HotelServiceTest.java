@@ -63,8 +63,6 @@ public class HotelServiceTest {
     private static final PaymentMethodDTO metodoDTO = new PaymentMethodDTO("Debit", "0001", 1);
 
 
-
-
     //Reserva de hotel enviada
     private static final HotelReservationDTO reservaHotelDTO = new HotelReservationDTO(LocalDate.of(2025, 2, 10),
             LocalDate.of(2025, 3, 20),"Puerto Iguazú","CH-0002",2.0,"Doble", List.of(peopleDTO1,peopleDTO2),metodoDTO);

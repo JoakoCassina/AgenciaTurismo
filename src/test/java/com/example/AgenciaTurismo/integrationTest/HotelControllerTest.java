@@ -1,34 +1,29 @@
 package com.example.AgenciaTurismo.integrationTest;
 
-
-import com.example.AgenciaTurismo.controller.HotelController;
 import com.example.AgenciaTurismo.dto.HotelDTO;
-import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
+import com.example.AgenciaTurismo.dto.HotelReservationDTO;
+import com.example.AgenciaTurismo.dto.PaymentMethodDTO;
+import com.example.AgenciaTurismo.dto.PeopleDTO;
+import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.response.HotelAvailableDTO;
+import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
+import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
@@ -52,6 +47,19 @@ public class HotelControllerTest {
     private static final HotelDTO hotelDTO3 = new HotelDTO("HB-0001", "Hotel Bristol", "Buenos Aires",
             "Single", 5435, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 19), false);
 
+    //Personas para la lista enviada
+    private static final PeopleDTO peopleDTO1 = new PeopleDTO(42533885,"Joako","Cassina",LocalDate.of(2000,04,18), "joako@gmail.com");
+
+    private static final PeopleDTO peopleDTO2 = new PeopleDTO(420000,"Juan","Casi",LocalDate.of(1999,05,19), "juan@gmail.com");
+
+    //Metodo de pago enviado
+    private static final PaymentMethodDTO metodoDTO = new PaymentMethodDTO("Debit", "0001", 1);
+
+    //Reserva de hotel enviada
+    private static final HotelReservationDTO reservaHotelDTO = new HotelReservationDTO(LocalDate.of(2025, 2, 10),
+            LocalDate.of(2025, 3, 20),"Puerto Iguazú","CH-0002",2.0,"Doble", List.of(peopleDTO1,peopleDTO2),metodoDTO);
+
+    private static final StatusCodeDTO statusCodeDTO = new StatusCodeDTO(201, "El proceso terminó satisfactoriamente");
 
 
     //US 01: test de integracion de listar hoteles
@@ -79,9 +87,35 @@ public class HotelControllerTest {
         ResultMatcher bodyEsperado= MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(respuestaEsperada));
         ResultMatcher contentTypeEsperado = MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON);
 
-        mockMvc.perform(get("/api/v1/hotels").param("dateFrom",dateFromConsul).param("dateTo",dateToConsul).param("destination",destinationConsult))
+        mockMvc.perform(get("/api/v1/hotels")
+                        .param("dateFrom",dateFromConsul)
+                        .param("dateTo",dateToConsul)
+                        .param("destination",destinationConsult))
                 .andExpectAll(statusEsperado,bodyEsperado,contentTypeEsperado)
                 .andDo(print());
+    }
+
+    //US 0003: devolver reserva
+
+    @Test
+    public void reservedTestOK() throws Exception {
+        FinalHotelReservationDTO reservaConstulta = new FinalHotelReservationDTO("Agustina",reservaHotelDTO);
+        String payloadDto = objectMapper.writeValueAsString(reservaConstulta);
+
+        TotalHotelReservationDTO respuestaEsperada = new TotalHotelReservationDTO(12600.0, 0.0, 12600.0,
+                reservaConstulta,statusCodeDTO);
+
+        ResultMatcher statusEsperado = MockMvcResultMatchers.status().isOk();
+        ResultMatcher bodyEsperado= MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(respuestaEsperada));
+        ResultMatcher contentTypeEsperado = MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(post("/api/v1/booking")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payloadDto))
+                .andExpectAll(statusEsperado,bodyEsperado,contentTypeEsperado)
+                .andDo(print());
+
+
     }
 
 
