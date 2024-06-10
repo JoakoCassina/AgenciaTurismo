@@ -13,7 +13,19 @@
 					"name": "lista de Hoteles",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/listHotels",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"listHotels"
+							]
+						}
 					},
 					"response": []
 				},
@@ -55,7 +67,33 @@
 					"name": "Error Fechas Hotel Disponible",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/hotels?dateFrom=10-02-2026&dateTo=19-03-2025&destination=Buenos Aires",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hotels"
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "10-02-2026"
+								},
+								{
+									"key": "dateTo",
+									"value": "19-03-2025"
+								},
+								{
+									"key": "destination",
+									"value": "Buenos Aires"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -63,7 +101,33 @@
 					"name": "Error Destino Invalido Hotel",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/hotels?dateFrom=10-02-2025&dateTo=19-03-2025&destination=Rafaela",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hotels"
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "10-02-2025"
+								},
+								{
+									"key": "dateTo",
+									"value": "19-03-2025"
+								},
+								{
+									"key": "destination",
+									"value": "Rafaela"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -74,7 +138,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\r\n    \"user_name\" : \"german@gmail.com\",\r\n    \"booking\" : {\r\n         \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"19-03-2025\",\r\n        \"destination\" : \"Buenos Aires\",\r\n        \"hotel_code\": \"CC-00002\",\r\n        \"people_amount\": 2,\r\n        \"room_type\": \"DOUBLE\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":  //only cards\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
+							"raw": "{\r\n\r\n    \"user_name\" : \"german@gmail.com\",\r\n    \"booking\" : {\r\n         \"date_from\": \"10-02-2023\",\r\n        \"date_to\": \"19-03-2023\",\r\n        \"destination\" : \"Buenos Aires\",\r\n        \"hotel_code\": \"CC-00002\",\r\n        \"people_amount\": -2,\r\n        \"room_type\": \"DOBLE\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":  //only cards\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -103,7 +167,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\r\n    \"user_name\" : \"german@gmail.com\",\r\n    \"booking\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"20-03-2025\",\r\n        \"destination\" : \"Puerto Iguazú\",\r\n        \"hotel_code\": \"CC-00002\",\r\n        \"people_amount\": 2,\r\n        \"room_type\": \"DOUBLE\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":  //only cards\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
+							"raw": " {\r\n    \"user_name\" : \"german@gmail.com\",\r\n    \"booking\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"20-03-2025\",\r\n        \"destination\" : \"Puerto Iguazú\",\r\n        \"hotel_code\": \"CC-00002\",\r\n        \"people_amount\": 2,\r\n        \"room_type\": \"Single\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":  //only cards\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -132,7 +196,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\r\n    \"user_name\" : \"german@gmail.com\",\r\n    \"booking\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"20-03-2025\",\r\n        \"destination\" : \"Puerto Iguazú\",\r\n        \"hotel_code\": \"CC-00002\",\r\n        \"people_amount\": 2,\r\n        \"room_type\": \"DOUBLE\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":  //only cards\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
+							"raw": " {\r\n    \"user_name\" : \"german@gmail.com\",\r\n    \"booking\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"20-03-2025\",\r\n        \"destination\" : \"Puerto Iguazú\",\r\n        \"hotel_code\": \"CC-00002\",\r\n        \"people_amount\": 2,\r\n        \"room_type\": \"Doble\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":  //only cards\r\n        {\r\n            \"type\": \"DEBIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -161,7 +225,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\r\n    \"user_name\" : \"german@gmail.com\",\r\n    \"booking\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"20-03-2025\",\r\n        \"destination\" : \"Puerto Iguazú\",\r\n        \"hotel_code\": \"CC-00002\",\r\n        \"people_amount\": 2,\r\n        \"room_type\": \"DOUBLE\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":  //only cards\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
+							"raw": " {\r\n    \"user_name\" : \"german@gmail.com\",\r\n    \"booking\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"20-03-2025\",\r\n        \"destination\" : \"Puerto Iguazú\",\r\n        \"hotel_code\": \"CC-00002\",\r\n        \"people_amount\": 2,\r\n        \"room_type\": \"Doble\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":  //only cards\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 14\r\n        }\r\n    }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -190,7 +254,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\r\n    \"user_name\" : \"german@gmail.com\",\r\n    \"booking\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"20-03-2025\",\r\n        \"destination\" : \"Puerto Iguazú\",\r\n        \"hotel_code\": \"CC-00002\",\r\n        \"people_amount\": 2,\r\n        \"room_type\": \"DOUBLE\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":  //only cards\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
+							"raw": " {\r\n    \"user_name\" : \"german@gmail.com\",\r\n    \"booking\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"20-03-2025\",\r\n        \"destination\" : \"Puerto Iguazú\",\r\n        \"hotel_code\": \"CC-00002\",\r\n        \"people_amount\": 2,\r\n        \"room_type\": \"Doble\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":  //only cards\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -280,7 +344,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"hotel_code\": \"HB-0001\",\r\n    \"hotel_name\": \"Hotel Rafaela\",\r\n    \"destination\": \"Rafaela\",\r\n    \"room_type\": \"Single\",\r\n    \"price_for_night\": 5435,\r\n    \"date_from\": \"10-02-2025\",\r\n    \"date_to\": \"19-03-2025\",\r\n    \"reserved\": false\r\n  }",
+							"raw": "{\r\n    \"hotel_name\": \"Hotel Rafaela\",\r\n    \"destination\": \"Rafaela\",\r\n    \"room_type\": \"Single\",\r\n    \"price_for_night\": 5435,\r\n    \"date_from\": \"10-02-2025\",\r\n    \"date_to\": \"19-03-2025\",\r\n    \"reserved\": false\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -403,7 +467,37 @@
 					"name": "Error Fechas Vuelos",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/flights?dateFrom=10-02-2026&dateTo=15-02-2025&origin=Buenos Aires&destination=Puerto Iguazú",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flights"
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "10-02-2026"
+								},
+								{
+									"key": "dateTo",
+									"value": "15-02-2025"
+								},
+								{
+									"key": "origin",
+									"value": "Buenos Aires"
+								},
+								{
+									"key": "destination",
+									"value": "Puerto Iguazú"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -411,7 +505,37 @@
 					"name": "Error Origen Vuelos",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/flights?dateFrom=10-02-2025&dateTo=15-02-2025&origin=Rafaela&destination=Puerto Iguazú",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flights"
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "10-02-2025"
+								},
+								{
+									"key": "dateTo",
+									"value": "15-02-2025"
+								},
+								{
+									"key": "origin",
+									"value": "Rafaela"
+								},
+								{
+									"key": "destination",
+									"value": "Puerto Iguazú"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -419,7 +543,37 @@
 					"name": "Error Destino Vuelos",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/flights?dateFrom=10-02-2025&dateTo=15-02-2025&origin=Buenos Aires&destination=Rafaela",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flights"
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "10-02-2025"
+								},
+								{
+									"key": "dateTo",
+									"value": "15-02-2025"
+								},
+								{
+									"key": "origin",
+									"value": "Buenos Aires"
+								},
+								{
+									"key": "destination",
+									"value": "Rafaela"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -427,7 +581,37 @@
 					"name": "Error Origen y Destino Vuelos",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/flights?dateFrom=10-02-2025&dateTo=15-02-2025&origin=Rafaela&destination=Tucuman",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"flights"
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "10-02-2025"
+								},
+								{
+									"key": "dateTo",
+									"value": "15-02-2025"
+								},
+								{
+									"key": "origin",
+									"value": "Rafaela"
+								},
+								{
+									"key": "destination",
+									"value": "Tucuman"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -438,7 +622,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_name\" : \"juanperez@gmail.com\",\r\n    \"flight_reservation\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"24-02-2025\",\r\n        \"origin\" : \"Bogotá\",\r\n        \"destination\" : \"Medellín\",\r\n        \"flight_number\" : \"FFFF-0002\",\r\n        \"seats\" : 2,\r\n        \"seat_type\": \"ECONOMY\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
+							"raw": "{\r\n    \"user_name\" : \"juanperez@gmail.com\",\r\n    \"flight_reservation\" : {\r\n        \"date_from\": \"10-02-2023\",\r\n        \"date_to\": \"24-02-2023\",\r\n        \"origin\" : \"Bogotá\",\r\n        \"destination\" : \"Medellín\",\r\n        \"flight_number\" : \"FFFF-0002\",\r\n        \"seats\" : -2,\r\n        \"seat_type\": \"ECONOMY\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanpere\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -467,7 +651,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_name\" : \"juanperez@gmail.com\",\r\n    \"flight_reservation\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"24-02-2025\",\r\n        \"origin\" : \"Bogotá\",\r\n        \"destination\" : \"Medellín\",\r\n        \"flight_number\" : \"FFFF-0002\",\r\n        \"seats\" : 2,\r\n        \"seat_type\": \"ECONOMY\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
+							"raw": "{\r\n    \"user_name\" : \"juanperez@gmail.com\",\r\n    \"flight_reservation\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"24-02-2025\",\r\n        \"origin\" : \"Bogotá\",\r\n        \"destination\" : \"Medellín\",\r\n        \"flight_number\" : \"FFFF-0002\",\r\n        \"seats\" : 3,\r\n        \"seat_type\": \"ECONOMY\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n            \r\n        ],\r\n        \"payment_method\":\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -496,7 +680,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_name\" : \"juanperez@gmail.com\",\r\n    \"flight_reservation\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"24-02-2025\",\r\n        \"origin\" : \"Bogotá\",\r\n        \"destination\" : \"Medellín\",\r\n        \"flight_number\" : \"FFFF-0002\",\r\n        \"seats\" : 2,\r\n        \"seat_type\": \"ECONOMY\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
+							"raw": "{\r\n    \"user_name\" : \"juanperez@gmail.com\",\r\n    \"flight_reservation\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"24-02-2025\",\r\n        \"origin\" : \"Bogotá\",\r\n        \"destination\" : \"Medellín\",\r\n        \"flight_number\" : \"FFFF-0002\",\r\n        \"seats\" : 2,\r\n        \"seat_type\": \"ECONOMY\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 13\r\n        }\r\n    }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -525,7 +709,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_name\" : \"juanperez@gmail.com\",\r\n    \"flight_reservation\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"24-02-2025\",\r\n        \"origin\" : \"Bogotá\",\r\n        \"destination\" : \"Medellín\",\r\n        \"flight_number\" : \"FFFF-0002\",\r\n        \"seats\" : 2,\r\n        \"seat_type\": \"ECONOMY\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":\r\n        {\r\n            \"type\": \"CREDIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
+							"raw": "{\r\n    \"user_name\" : \"juanperez@gmail.com\",\r\n    \"flight_reservation\" : {\r\n        \"date_from\": \"10-02-2025\",\r\n        \"date_to\": \"24-02-2025\",\r\n        \"origin\" : \"Bogotá\",\r\n        \"destination\" : \"Medellín\",\r\n        \"flight_number\" : \"FFFF-0002\",\r\n        \"seats\" : 2,\r\n        \"seat_type\": \"ECONOMY\",\r\n        \"people\" :[\r\n            {\r\n                \"dni\": \"12345678\",\r\n                \"name\": \"Juan\",\r\n                \"last_name\": \"Perez\",\r\n                \"birth_date\": \"10-11-1982\",\r\n                \"email\": \"juanperez@gmail.com\"\r\n            },\r\n            {\r\n                \"dni\": \"87654321\",\r\n                \"name\": \"Maria\",\r\n                \"last_name\": \"Lopez\",\r\n                \"birth_date\": \"01-05-1985\",\r\n                \"email\": \"marialopez@gmail.com\"\r\n            }\r\n        ],\r\n        \"payment_method\":\r\n        {\r\n            \"type\": \"DEBIT\",\r\n            \"number_card\": \"1234-1234-1234-1234\",\r\n            \"dues\": 6\r\n        }\r\n    }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -632,7 +816,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"flight_code\": \"TUPI-3369\",\r\n    \"origin\": \"Tucumán\",\r\n    \"destination\": \"Rafaela\",\r\n    \"seat_type\": \"Economy\",\r\n    \"price\": 17000,\r\n    \"date_from\": \"02-01-2025\",\r\n    \"date_to\": \"16-01-2025\"\r\n  }",
+							"raw": "{\r\n    \"origin\": \"Tucumán\",\r\n    \"destination\": \"Rafaela\",\r\n    \"seat_type\": \"Economy\",\r\n    \"price\": 17000,\r\n    \"date_from\": \"02-01-2025\",\r\n    \"date_to\": \"16-01-2025\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
