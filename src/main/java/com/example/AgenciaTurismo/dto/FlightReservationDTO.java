@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class FlightReservationDTO {
     @JsonProperty("flight_number")
     private String flightNumber;
     @NumberFormat(style = NumberFormat.Style.NUMBER)
+    @Positive(message = "La cantidad de personas debe ser un valor numérico.")
     private Double seats;
     @JsonProperty("seat_type")
     private String seatType;

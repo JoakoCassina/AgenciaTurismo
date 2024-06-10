@@ -182,7 +182,7 @@ public class HotelService implements IHotelService {
 
         if (type.equalsIgnoreCase("Debit") || type.equalsIgnoreCase("Credit")) {
             if (type.equalsIgnoreCase("Debit") && dues > 1) {
-                throw new InvalidReservationException("No puede pagar en cuotas con tarjeta de debito.");
+                throw new IllegalArgumentException("No puede pagar en cuotas con tarjeta de debito.");
             } else
                 switch (dues) {
                     case 1:
@@ -194,10 +194,10 @@ public class HotelService implements IHotelService {
                     case 7, 8, 9, 10, 11, 12:
                         return amount * 0.20;
                     default:
-                        throw new InvalidReservationException("Número de cuotas no válido.");
+                        throw new IllegalArgumentException("Número de cuotas no válido.");
                 }
         } else {
-            throw new InvalidReservationException("Tipo de pago no válido.");
+            throw new IllegalArgumentException("Tipo de pago no válido.");
         }
 
     }
