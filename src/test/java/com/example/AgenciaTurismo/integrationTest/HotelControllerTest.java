@@ -48,6 +48,10 @@ public class HotelControllerTest {
     private static final HotelDTO hotelDTO3 = new HotelDTO("HB-0001", "Hotel Bristol", "Buenos Aires",
             "Single", 5435, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 19), false);
 
+    private static final HotelDTO hotelDTO1up = new HotelDTO("RH-0005", "Cata Hotel", "Puerto Iguazú",
+            "Doble", 6300, LocalDate.of(2025, 2, 15), LocalDate.of(2025, 3, 29), false);
+
+
     //Personas para la lista enviada
     private static final PeopleDTO peopleDTO1 = new PeopleDTO(42533885,"Joako","Cassina",LocalDate.of(2000,04,18), "joako@gmail.com");
 
@@ -125,7 +129,7 @@ public class HotelControllerTest {
     @Test
     public void createHotelTestOK() throws Exception {
         //ARRANGE
-        String payloadDto = objectMapper.writeValueAsString(hotelDTO1);
+        String payloadDto = objectMapper.writeValueAsString(hotelDTO1up);
         ResponseDTO respuestaEsperada = new ResponseDTO("Hotel creado con éxito");
 
 
