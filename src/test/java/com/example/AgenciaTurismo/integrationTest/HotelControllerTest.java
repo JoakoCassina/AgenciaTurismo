@@ -6,6 +6,7 @@ import com.example.AgenciaTurismo.dto.PaymentMethodDTO;
 import com.example.AgenciaTurismo.dto.PeopleDTO;
 import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.response.HotelAvailableDTO;
+import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +47,10 @@ public class HotelControllerTest {
 
     private static final HotelDTO hotelDTO3 = new HotelDTO("HB-0001", "Hotel Bristol", "Buenos Aires",
             "Single", 5435, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 19), false);
+
+    private static final HotelDTO hotelDTO1up = new HotelDTO("RH-0005", "Cata Hotel", "Puerto Iguazú",
+            "Doble", 6300, LocalDate.of(2025, 2, 15), LocalDate.of(2025, 3, 29), false);
+
 
     //Personas para la lista enviada
     private static final PeopleDTO peopleDTO1 = new PeopleDTO(42533885,"Joako","Cassina",LocalDate.of(2000,04,18), "joako@gmail.com");
@@ -118,7 +123,63 @@ public class HotelControllerTest {
 
     }
 
+                                    //CRUD Methods
+
+    //CREATE
+    @Test
+    public void createHotelTestOK() throws Exception {
+        //ARRANGE
+        String payloadDto = objectMapper.writeValueAsString(hotelDTO1up);
+        ResponseDTO respuestaEsperada = new ResponseDTO("Hotel creado con éxito");
 
 
+        ResultMatcher statusEsperado = MockMvcResultMatchers.status().isCreated();
+        ResultMatcher bodyEsperado = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(respuestaEsperada));
+        ResultMatcher contentTypeEsperado = MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON);
+
+        //ASSERT
+        mockMvc.perform(post("/api/v1/createHotel")
+                        .contentType(MediaType.APPLICATION_JSON) //indicamos el tipo de contenido
+                        .content(payloadDto))             //indicamos el contenido , ya tiene q estar pasado de obj a Json
+                .andExpectAll(statusEsperado,bodyEsperado,contentTypeEsperado)
+                .andDo(print());
+    }
+
+    //UPDATE
+    @Test
+    public void updateHotelTestOK() throws Exception {
+        HotelDTO hotelDTO3Up = new HotelDTO("HB-0001", "Hotel Bristol", "Rafaela",
+                "Single", 5435, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 19), false);
+
+
+        String payloadDto = objectMapper.writeValueAsString(hotelDTO3Up);
+        ResponseDTO respuestaEsperada = new ResponseDTO("Hotel actualizado con éxito");
+        String hotelCodeEntrada =  "HB-0001";
+
+        ResultMatcher statusEsperado = MockMvcResultMatchers.status().isOk();
+        ResultMatcher bodyEsperado = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(respuestaEsperada));
+        ResultMatcher typeEsperado = MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(put("/api/v1/updateHotel/{hotelCode}",hotelCodeEntrada)
+                        .contentType(MediaType.APPLICATION_JSON) //indicamos el tipo de contenido
+                        .content(payloadDto))
+                .andExpectAll(statusEsperado,bodyEsperado,typeEsperado)
+                .andDo(print());
+    }
+
+    //DELETE
+    @Test
+    public void deleteHotelTestOK() throws Exception {
+        String hotelCodeEntrada =  "HB-0001";
+        ResponseDTO respuestaEsperada = new ResponseDTO("Hotel eliminado con éxito");
+
+        ResultMatcher statusEsperado = MockMvcResultMatchers.status().isOk();
+        ResultMatcher bodyEsperado = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(respuestaEsperada));
+        ResultMatcher contentTypeEsperado = MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(delete("/api/v1/deleteHotel/{hotelCode}",hotelCodeEntrada))
+                .andExpectAll(statusEsperado, bodyEsperado, contentTypeEsperado)
+                .andDo(print());
+    }
 
 }
