@@ -1,11 +1,9 @@
 package com.example.AgenciaTurismo.integrationTest;
 
-import com.example.AgenciaTurismo.dto.FlightDTO;
-import com.example.AgenciaTurismo.dto.FlightReservationDTO;
-import com.example.AgenciaTurismo.dto.PaymentMethodDTO;
-import com.example.AgenciaTurismo.dto.PeopleDTO;
+import com.example.AgenciaTurismo.dto.*;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.response.*;
+import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -21,8 +19,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 
@@ -41,6 +39,8 @@ public class FlightControllerTest {
     private static final FlightDTO flightDTO1 = new FlightDTO("BAPI-1235", "Buenos Aires", "Puerto Iguazú", "Economy", 6500, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 15));
     private static final FlightDTO flightDTO2 = new FlightDTO("PIBA-1420", "Puerto Iguazú", "Bogotá", "Business", 43200, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 20));
     private static final FlightDTO flightDTO3 = new FlightDTO("PIBA-1420", "Puerto Iguazú", "Bogotá", "Economy", 25735, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 20));
+    private static final FlightDTO flightDTO1up = new FlightDTO("BAPI-1235", "Buenos Aires", "Puerto Iguazú", "Economy", 6500, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 15));
+
 
     //Personas para la lista enviada
     private static final PeopleDTO peopleDTO1 = new PeopleDTO(42533885,"Joako","Cassina",LocalDate.of(2000,04,18), "joako@gmail.com");
@@ -111,4 +111,62 @@ public class FlightControllerTest {
                 .andDo(print());
     }
 
+                //CRUD Methods
+
+    //CREATE
+    @Test
+    public void createFlightTestOK() throws Exception {
+        //ARRANGE
+        String payloadDto = objectMapper.writeValueAsString(flightDTO1up);
+        ResponseDTO respuestaEsperada = new ResponseDTO("Vuelo creado con éxito");
+
+
+        ResultMatcher statusEsperado = MockMvcResultMatchers.status().isCreated();
+        ResultMatcher bodyEsperado = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(respuestaEsperada));
+        ResultMatcher contentTypeEsperado = MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON);
+
+        //ASSERT
+        mockMvc.perform(post("/api/v1/createFlight")
+                        .contentType(MediaType.APPLICATION_JSON) //indicamos el tipo de contenido
+                        .content(payloadDto))             //indicamos el contenido , ya tiene q estar pasado de obj a Json
+                .andExpectAll(statusEsperado,bodyEsperado,contentTypeEsperado)
+                .andDo(print());
+    }
+
+    //UPDATE
+    @Test
+    public void updateFlightTestOK() throws Exception {
+        FlightDTO flightDTO3Up = new FlightDTO("BAPI-1235", "Rafaela", "Tucumán", "Economy", 6500, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 15));
+
+
+        String payloadDto = objectMapper.writeValueAsString(flightDTO3Up);
+        ResponseDTO respuestaEsperada = new ResponseDTO("Vuelo actualizado con éxito");
+        String flightCodeEntrada =  "BAPI-1235";
+
+        ResultMatcher statusEsperado = MockMvcResultMatchers.status().isOk();
+        ResultMatcher bodyEsperado = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(respuestaEsperada));
+        ResultMatcher typeEsperado = MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(put("/api/v1/updateFlight/{flightCode}",flightCodeEntrada)
+                        .contentType(MediaType.APPLICATION_JSON) //indicamos el tipo de contenido
+                        .content(payloadDto))
+                .andExpectAll(statusEsperado,bodyEsperado,typeEsperado)
+                .andDo(print());
+    }
+
+    //DELETE
+    @Test
+    public void deleteFlightTestOK() throws Exception {
+        String flightCodeEntrada =  "BAPI-1235";
+        ResponseDTO respuestaEsperada = new ResponseDTO("Vuelo eliminado con éxito");
+
+        ResultMatcher statusEsperado = MockMvcResultMatchers.status().isOk();
+        ResultMatcher bodyEsperado = MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(respuestaEsperada));
+        ResultMatcher typeEsperado = MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(delete("/api/v1/deleteFlight/{flightCode}",flightCodeEntrada))
+                .andExpectAll(statusEsperado, bodyEsperado, typeEsperado)
+                .andDo(print());
+
+    }
 }
