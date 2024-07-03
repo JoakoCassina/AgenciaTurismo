@@ -61,9 +61,9 @@ public class FlightController {
 
     //UPDATE
     @PutMapping("/updateFlight/{flightCode}")
-    public ResponseEntity<ResponseDTO> updateFlight(@PathVariable @NotBlank String flightCode, @RequestBody FlightDTO flightDTO) {
+    public ResponseEntity<ResponseDTO> updateFlight(@PathVariable @NotBlank Long id, @RequestBody FlightDTO flightDTO) {
 
-        return new ResponseEntity<>(flightService.updateFlight(flightCode, flightDTO), HttpStatus.OK);
+        return new ResponseEntity<>(flightService.updateFlight(id, flightDTO), HttpStatus.OK);
     }
 
     //DELETE

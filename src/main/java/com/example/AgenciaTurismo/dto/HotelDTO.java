@@ -1,5 +1,6 @@
 package com.example.AgenciaTurismo.dto;
 
+import com.example.AgenciaTurismo.model.ReservarHotel;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

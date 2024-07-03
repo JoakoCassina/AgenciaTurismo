@@ -24,7 +24,7 @@ public interface IFlightService {
     ResponseDTO createFlight(FlightDTO flightDTO);
 
     //UPDATE
-    ResponseDTO updateFlight(String flightCode, FlightDTO flightDTO);
+    ResponseDTO updateFlight(Long id, FlightDTO flightDTO);
 
     //DELETE
     ResponseDTO deleteFlight(String flightCode);

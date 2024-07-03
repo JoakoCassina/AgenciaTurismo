@@ -61,10 +61,10 @@ public class HotelController {
     }
 
     //UPDATE
-    @PutMapping("/updateHotel/{hotelCode}")
-    public ResponseEntity<ResponseDTO> updateHotel(@PathVariable @NotNull String hotelCode, @RequestBody HotelDTO hotelDTO) {
+    @PutMapping("/updateHotel/{id}")
+    public ResponseEntity<ResponseDTO> updateHotel(@PathVariable @NotNull Long id, @RequestBody HotelDTO hotelDTO) {
 
-        return new ResponseEntity<>(hotelService.updateHotel(hotelCode, hotelDTO), HttpStatus.OK);
+        return new ResponseEntity<>(hotelService.updateHotel(id, hotelDTO), HttpStatus.OK);
     }
 
     //DELETE

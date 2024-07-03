@@ -27,7 +27,7 @@ public interface IHotelService {
     ResponseDTO createHotel(HotelDTO hotelDTO);
 
     //UPDATE
-    ResponseDTO updateHotel(String hotelCode, HotelDTO hotelDTO);
+    ResponseDTO updateHotel(Long id, HotelDTO hotelDTO);
 
     //DELETE
     ResponseDTO deleteHotel(String hotelCode);
