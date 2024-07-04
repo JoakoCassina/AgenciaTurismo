@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PeopleDTO {
-    private Integer dni;
+    private String dni;
     private String name;;
     @JsonProperty("last_name")
     private String lastName;
