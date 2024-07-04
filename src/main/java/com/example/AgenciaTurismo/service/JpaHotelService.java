@@ -25,7 +25,6 @@ public class JpaHotelService implements  IJpaHotelService {
     @Override
     public ResponseDTO createHotel(HotelDTO hotelDTO) {
         Hotel hotel = new Hotel();
-
                 hotel.setHotelCode(hotelDTO.getHotelCode());
                 hotel.setHotelName(hotelDTO.getHotelName());
                 hotel.setDestination(hotelDTO.getDestination());
@@ -40,4 +39,28 @@ public class JpaHotelService implements  IJpaHotelService {
         return new ResponseDTO("Hotel creado con éxito");
     }
 
+    @Override
+    public ResponseDTO updateHotel(Long id, HotelDTO hotelDTO) {
+
+        Hotel hotel = new Hotel(
+                id,
+                hotelDTO.getHotelCode(),
+                hotelDTO.getHotelName(),
+                hotelDTO.getDestination(),
+                hotelDTO.getRoomType(),
+                hotelDTO.getPriceForNight(),
+                hotelDTO.getDateFrom(),
+                hotelDTO.getDateTo(),
+                hotelDTO.getReserved()
+        );
+        repository.save(hotel);
+        return new ResponseDTO("Hotel actualizado con éxito");
+
+
+    }
+    @Override
+    public ResponseDTO deleteHotel(Long id) {
+        repository.deleteById(id);
+        return new ResponseDTO("Hotel eliminado con éxito");
+    }
 }

@@ -14,9 +14,9 @@ public interface IJpaHotelService {
     ResponseDTO createHotel(HotelDTO hotelDTO);
 
     // UPDATE
-//    ResponseDTO updateHotel(HotelDTO hotelDTO);
-//
-//    ResponseDTO deleteHotel(Long id);
+    ResponseDTO updateHotel(Long id, HotelDTO hotelDTO);
+    //DELETE
+    ResponseDTO deleteHotel (Long id);
 
 
 }
