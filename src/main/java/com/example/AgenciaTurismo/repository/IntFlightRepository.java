@@ -8,11 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface IntFlightRepository extends JpaRepository<Flight, Long> {
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Flight f WHERE f.id = :flightCode")
-    void deleteByCode(@Param("flightCode") String flightCode);
+//    @Transactional
+//    @Modifying
+//    @Query("DELETE FROM Flight f WHERE f.id = :flightCode")
+     void deleteByFlightCode(@Param("flightCode") String flightCode);
 }

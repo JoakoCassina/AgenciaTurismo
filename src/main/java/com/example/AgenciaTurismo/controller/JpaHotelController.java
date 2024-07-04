@@ -20,7 +20,7 @@ public class JpaHotelController {
     IJpaHotelService service;
 
     @GetMapping
-    public ResponseEntity<List<Hotel>> traerTodosLosHoteles() {
+    public ResponseEntity<List<HotelDTO>> traerTodosLosHoteles() {
         return new ResponseEntity<>(service.listarHotels(), HttpStatus.OK);
     }
 

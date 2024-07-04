@@ -73,7 +73,7 @@ public class JpaFlightService implements IJpaFlightService {
 
     @Override
     public ResponseDTO eliminarPorCode(String flightCode) {
-       repository.deleteByCode(flightCode);
+       repository.deleteByFlightCode(flightCode);
        return new ResponseDTO("Vuelo eliminado con éxito");
     }
 }
