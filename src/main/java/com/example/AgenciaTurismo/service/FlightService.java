@@ -9,7 +9,7 @@ import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.model.Flight;
-import com.example.AgenciaTurismo.repository.IntFlightRepository;
+import com.example.AgenciaTurismo.repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import java.util.List;
 public class FlightService implements IFlightService {
 
     @Autowired
-    private IntFlightRepository repository;
+    private IFlightRepository repository;
 
     private List<FlightReservedDTO> flightReserve = new ArrayList<>();
 
