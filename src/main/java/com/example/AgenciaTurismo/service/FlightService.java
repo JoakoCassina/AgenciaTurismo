@@ -21,14 +21,14 @@ import java.util.List;
 public class FlightService implements IFlightService {
 
     @Autowired
-    private IFlightRepository flightRepository;
+    private IFlightRepository repository;
 
     private List<FlightReservedDTO> flightReserve = new ArrayList<>();
 
 
     @Override
-    public List<FlightDTO> listFlightsDTO() {
-        return flightRepository.findAll().stream()
+    public List<FlightDTO> listarFlight() {
+        return repository.findAll().stream()
                 .map(flight -> new FlightDTO(
                         flight.getFlightCode(),
                         flight.getOrigin(),
@@ -108,8 +108,7 @@ public class FlightService implements IFlightService {
         return totalFlightReservationDTO;
     }
 
-                                    //CRUD
-    //CREATE
+    //CRUD
     @Override
     public ResponseDTO createFlight(FlightDTO flightDTO) {
         Flight flight = new Flight();
@@ -120,14 +119,18 @@ public class FlightService implements IFlightService {
         flight.setPrice(flightDTO.getPrice());
         flight.setDateFrom(flightDTO.getDateFrom());
         flight.setDateTo(flightDTO.getDateTo());
-        flightRepository.save(flight);
+
+        repository.save(flight);
 
         return new ResponseDTO("Vuelo creado con éxito");
     }
 
-    //UPDATE
     @Override
     public ResponseDTO updateFlight(Long id, FlightDTO flightDTO) {
+
+        if(!repository.existsById(id)){
+            return new ResponseDTO("Vuelo no encontrado");
+        }
         Flight flight = new Flight(
                 id,
                 flightDTO.getFlightCode(),
@@ -138,25 +141,28 @@ public class FlightService implements IFlightService {
                 flightDTO.getDateFrom(),
                 flightDTO.getDateTo()
         );
-        Flight updatedFlight = flightRepository.update(flight);
-        if (updatedFlight != null) {
-            return new ResponseDTO("Vuelo actualizado con éxito");
-        } else {
+        repository.save(flight);
+        return new ResponseDTO("Vuelo actualizado con éxito");
+
+
+    }
+    @Override
+    public ResponseDTO deleteFlight(Long id) {
+        if(!repository.existsById(id)){
             return new ResponseDTO("Vuelo no encontrado");
         }
+
+        repository.deleteById(id);
+        return new ResponseDTO("Vuelo eliminado con éxito");
     }
 
-    //DELETE
     @Override
-    public ResponseDTO deleteFlight(String flightCode) {
-        Flight flight = flightRepository.deleteFlight(flightCode);
-        if(flight != null){
-            return new ResponseDTO("Vuelo eliminado con éxito");
-        }else {
-            return new ResponseDTO("No se encontro el vuelo a eliminar");
-        }
-
+    public ResponseDTO eliminarPorCode(String flightCode) {
+        repository.deleteByFlightCode(flightCode);
+        return new ResponseDTO("Vuelo eliminado con éxito");
     }
+
+
 
                             //METODOS PARA VALIDAR
     @Override
@@ -207,7 +213,7 @@ public class FlightService implements IFlightService {
         this.dateValid(flightConsultDTO.getDateFrom(), flightConsultDTO.getDateTo());
 
 
-        List<FlightDTO> listFlightDTO = this.listFlightsDTO();
+        List<FlightDTO> listFlightDTO = this.listarFlight();
         //CREAMOS UNA LISTA DE VUELOS QUE COINCIDAN CON LA FECHA
         List<FlightDTO> availableFlight = new ArrayList<>();
         for (FlightDTO flight : listFlightDTO) {
@@ -226,10 +232,10 @@ public class FlightService implements IFlightService {
 
     @Override
     public Boolean flightValid(String origin, String destination) {
-        List<String> validOrigin = listFlightsDTO().stream()
+        List<String> validOrigin = listarFlight().stream()
                 .map(FlightDTO::getOrigin)
                 .toList();
-        List<String> validDestination = listFlightsDTO().stream()
+        List<String> validDestination = listarFlight().stream()
                 .map(FlightDTO::getDestination)
                 .toList();
         if (validOrigin.contains(origin) && !validDestination.contains(destination)){

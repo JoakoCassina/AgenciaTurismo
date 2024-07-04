@@ -14,25 +14,19 @@ import java.util.List;
 
 public interface IHotelService {
 
-    List<HotelDTO> listHotelsDTO();
+    List<HotelDTO> listarHotels();
 
     HotelAvailableDTO hotelesDisponibles (HotelConsultDTO hotelConsultDTO);
 
     TotalHotelReservationDTO reserved(FinalHotelReservationDTO finalHotelReservationDTO);
 
-
-
-
-    //CREATE
+    // CREATE
     ResponseDTO createHotel(HotelDTO hotelDTO);
 
-    //UPDATE
+    // UPDATE
     ResponseDTO updateHotel(Long id, HotelDTO hotelDTO);
-
     //DELETE
-    ResponseDTO deleteHotel(String hotelCode);
-
-
+    ResponseDTO deleteHotel (Long id);
 
     //METODOS PARA VALIDAR
     Boolean reserveSaved(FinalHotelReservationDTO finalHotelReservationDTO);
@@ -48,5 +42,6 @@ public interface IHotelService {
     Boolean dateValid(LocalDate dateFrom, LocalDate dateTo);
 
     Boolean destinationValid(String destination);
+
 
 }

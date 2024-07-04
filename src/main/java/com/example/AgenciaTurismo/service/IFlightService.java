@@ -7,27 +7,31 @@ import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
+import com.example.AgenciaTurismo.model.Flight;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface IFlightService {
 
-    List<FlightDTO> listFlightsDTO();
+    List<FlightDTO> listarFlight();
 
     FlightAvailableDTO vuelosDisponibles(FlightConsultDTO flightConsultDTO);
 
     TotalFlightReservationDTO reserved(FinalFlightReservationDTO finalFlightReservationDTO);
 
 
-    //CREATE
+    // CREATE
     ResponseDTO createFlight(FlightDTO flightDTO);
 
-    //UPDATE
+    // UPDATE
     ResponseDTO updateFlight(Long id, FlightDTO flightDTO);
-
     //DELETE
-    ResponseDTO deleteFlight(String flightCode);
+    ResponseDTO deleteFlight (Long id);
+
+    ResponseDTO eliminarPorCode(String flightCode);
+
+
 
 
     //METODOS PARA VALIDAR
