@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -39,5 +40,17 @@ public class JpaFlightController {
     @DeleteMapping("/deleteFlights/{id}")
     public ResponseEntity<ResponseDTO> deleteFlights(@PathVariable @NotNull Long id) {
         return new ResponseEntity<>(service.deleteFlight(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/borrar/{flightCode}")
+    public ResponseEntity<ResponseDTO> deleteFlights(@PathVariable @NotNull String flightCode) {
+        try {
+            ResponseDTO response = service.eliminarPorCode(flightCode);
+            return ResponseEntity.ok(response); // Devuelve 200 OK si la eliminación fue exitosa
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build(); // Devuelve 404 Not Found si no se encontró el vuelo
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Devuelve 500 Internal Server Error en otros casos}
+        }
     }
 }

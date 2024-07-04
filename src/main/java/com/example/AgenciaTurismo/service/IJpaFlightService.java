@@ -18,6 +18,8 @@ public interface IJpaFlightService {
     //DELETE
     ResponseDTO deleteFlight (Long id);
 
+    ResponseDTO eliminarPorCode(String flightCode);
+
 
 
 }
