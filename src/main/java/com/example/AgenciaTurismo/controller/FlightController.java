@@ -32,7 +32,7 @@ public class FlightController {
     }
 
     //US 0005:
-    @GetMapping("/flights")
+    @GetMapping
     public ResponseEntity<?> vuelosDisponibles(@RequestParam @Future(message = "La fecha de entrada debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateFrom,
                                                @RequestParam @Future(message = "La fecha de salida debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateTo,
                                                @RequestParam @NotBlank String origin,
@@ -42,12 +42,12 @@ public class FlightController {
     }
 
     //US 0006
-    @PostMapping("/flight-reservation")
+    @PostMapping("/flight-reservation/new")
     public ResponseEntity<?> reserveFlight(@RequestBody @Valid FinalFlightReservationDTO finalFlightReservationDTO) {
         return new ResponseEntity<>(service.reserved(finalFlightReservationDTO), HttpStatus.CREATED);
     }
     //VUELOS RESERVADOS
-    @GetMapping("/reservedFlights")
+    @GetMapping("/flight-reservation")
     public ResponseEntity<?> flightsSaved() {
         return new ResponseEntity<>(service.flightSaved(), HttpStatus.OK);
     }
