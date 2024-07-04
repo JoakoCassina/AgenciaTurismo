@@ -42,6 +42,9 @@ public class JpaHotelService implements  IJpaHotelService {
     @Override
     public ResponseDTO updateHotel(Long id, HotelDTO hotelDTO) {
 
+        if(!repository.existsById(id)){
+            return new ResponseDTO("No se encontro el hotel a actualizar");
+        }
         Hotel hotel = new Hotel(
                 id,
                 hotelDTO.getHotelCode(),
@@ -60,6 +63,9 @@ public class JpaHotelService implements  IJpaHotelService {
     }
     @Override
     public ResponseDTO deleteHotel(Long id) {
+        if(!repository.existsById(id)){
+            return new ResponseDTO("No se encontro el hotel a eliminar");
+        }
         repository.deleteById(id);
         return new ResponseDTO("Hotel eliminado con éxito");
     }

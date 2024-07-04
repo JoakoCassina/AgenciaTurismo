@@ -2,6 +2,7 @@ package com.example.AgenciaTurismo.service;
 
 import com.example.AgenciaTurismo.dto.HotelDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
+import com.example.AgenciaTurismo.model.Flight;
 import com.example.AgenciaTurismo.model.Hotel;
 
 import java.util.List;
