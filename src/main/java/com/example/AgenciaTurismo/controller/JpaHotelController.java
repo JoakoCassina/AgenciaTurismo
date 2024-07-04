@@ -13,30 +13,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/hotels")
 public class JpaHotelController {
 
     @Autowired
     IJpaHotelService service;
 
-    @GetMapping("/listarTodosLosHoteles")
+    @GetMapping
     public ResponseEntity<List<Hotel>> traerTodosLosHoteles() {
         return new ResponseEntity<>(service.listarHotels(), HttpStatus.OK);
     }
 
-    @PostMapping("/crearHotel")
+    @PostMapping("/new")
     public ResponseEntity<ResponseDTO> crearHotel(@RequestBody HotelDTO hotelDTO) {
         return new ResponseEntity<>(service.createHotel(hotelDTO), HttpStatus.CREATED);
     }
 
     //UPDATE
-    @PostMapping("/updateHotel/{id}")
+    @PostMapping("/edit/{id}")
     public ResponseEntity<ResponseDTO> updateHotel(@PathVariable @NotNull Long id, @RequestBody HotelDTO hotelDTO) {
         return new ResponseEntity<>(service.updateHotel(id, hotelDTO), HttpStatus.OK);
     }
 
     //DELETE
-    @DeleteMapping("/deleteHoteles/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDTO> deleteHotel(@PathVariable @NotNull Long id) {
         return new ResponseEntity<>(service.deleteHotel(id), HttpStatus.OK);
     }

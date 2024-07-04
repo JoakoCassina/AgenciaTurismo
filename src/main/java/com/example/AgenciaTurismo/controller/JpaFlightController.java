@@ -14,30 +14,30 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/flights")
 public class JpaFlightController {
 
     @Autowired
     IJpaFlightService service;
 
-    @GetMapping("/listarTodosLosVuelos")
+    @GetMapping
     public ResponseEntity<List<Flight>> traerTodosLosVuelos() {
         return new ResponseEntity<>(service.listarFlight(), HttpStatus.OK);
     }
 
-    @PostMapping("/crearFlight")
+    @PostMapping("/new")
     public ResponseEntity<ResponseDTO> crearFlight(@RequestBody FlightDTO flightDTO) {
         return new ResponseEntity<>(service.createFlight(flightDTO), HttpStatus.CREATED);
     }
 
     //UPDATE
-    @PostMapping("/updateFlight/{id}")
+    @PostMapping("/edit/{id}")
     public ResponseEntity<ResponseDTO> updateFlight(@PathVariable @NotNull Long id, @RequestBody FlightDTO flightDTO) {
         return new ResponseEntity<>(service.updateFlight(id, flightDTO), HttpStatus.OK);
     }
 
     //DELETE
-    @DeleteMapping("/deleteFlights/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDTO> deleteFlights(@PathVariable @NotNull Long id) {
         return new ResponseEntity<>(service.deleteFlight(id), HttpStatus.OK);
     }
