@@ -11,7 +11,7 @@ import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.model.Flight;
-import com.example.AgenciaTurismo.repository.IFlightRepository;
+//import com.example.AgenciaTurismo.repository.IFlightRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
