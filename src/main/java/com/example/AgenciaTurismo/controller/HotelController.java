@@ -1,11 +1,9 @@
 package com.example.AgenciaTurismo.controller;
 
 import com.example.AgenciaTurismo.dto.HotelDTO;
-import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.service.IHotelService;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,13 +17,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/hotels")
 public class HotelController {
 
     @Autowired
     IHotelService service;
 
-    @GetMapping("/hotels")
+    @GetMapping
     public ResponseEntity<List<HotelDTO>> traerTodosLosHoteles() {
         return new ResponseEntity<>(service.listarHotels(), HttpStatus.OK);
     }
@@ -49,23 +47,11 @@ public class HotelController {
     }
     //LISTADO DE HOTELES SEGUN FILTROS
     @GetMapping("/hotels-available")
-    public ResponseEntity<?> hotelesDisponibles(@RequestParam  @Future(message = "La fecha de entrada debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateFrom,
-                                                @RequestParam @Future(message = "La fecha de salida debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateTo,
-                                               @RequestParam @NotBlank(message = "El destino no puede estar en blanco") String destination){
+    public ResponseEntity<?> hotelesDisponibles(@RequestParam (required = false) @Future(message = "La fecha de entrada debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateFrom,
+                                                @RequestParam (required = false) @Future(message = "La fecha de salida debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateTo,
+                                               @RequestParam (required = false) @NotBlank(message = "El destino no puede estar en blanco") String destination){
         HotelConsultDTO datos = new HotelConsultDTO(dateFrom, dateTo, destination);
         return new ResponseEntity<>(service.hotelesDisponibles(datos), HttpStatus.OK);
-    }
-
-    //ALTA RESERVA HOTEL
-    @PostMapping("/hotel-booking/new")
-    public ResponseEntity<?> reserved(@RequestBody @Valid FinalHotelReservationDTO finalHotelReservationDTO) {
-        return new ResponseEntity<>(service.reserved(finalHotelReservationDTO), HttpStatus.CREATED);
-    }
-
-                                //HOTELES RESERVADOS
-    @GetMapping("/hotel-booking/")
-    public ResponseEntity<?> hotelsSaved() {
-        return new ResponseEntity<>(service.hotelSaved(), HttpStatus.OK);
     }
 
 }
