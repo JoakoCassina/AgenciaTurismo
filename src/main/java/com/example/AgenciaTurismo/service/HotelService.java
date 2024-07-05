@@ -12,12 +12,14 @@ import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
 import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import com.example.AgenciaTurismo.model.Hotel;
 import com.example.AgenciaTurismo.repository.IHotelRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelService implements IHotelService {
@@ -25,21 +27,14 @@ public class HotelService implements IHotelService {
     @Autowired
     IHotelRepository repository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     @Override
     public List<HotelDTO> listarHotels() {
-        List<HotelDTO> listHotel = repository.findAll().stream()
-                .map(hotel -> new HotelDTO(
-                        hotel.getHotelCode(),
-                        hotel.getHotelName(),
-                        hotel.getDestination(),
-                        hotel.getRoomType(),
-                        hotel.getPriceForNight(),
-                        hotel.getDateFrom(),
-                        hotel.getDateTo(),
-                        hotel.getReserved()
-                )).toList();
-        return listHotel;
+        return repository.findAll().stream()
+                .map(hotel -> modelMapper.map(hotel, HotelDTO.class)).collect(Collectors.toList());
     }
 
 
@@ -59,15 +54,7 @@ public class HotelService implements IHotelService {
     @Override
     public ResponseDTO createHotel(HotelDTO hotelDTO) {
         Hotel hotel = new Hotel();
-                hotel.setHotelCode(hotelDTO.getHotelCode());
-                hotel.setHotelName(hotelDTO.getHotelName());
-                hotel.setDestination(hotelDTO.getDestination());
-                hotel.setRoomType(hotelDTO.getRoomType());
-                hotel.setPriceForNight(hotelDTO.getPriceForNight());
-                hotel.setDateFrom(hotelDTO.getDateFrom());
-                hotel.setDateTo(hotelDTO.getDateTo());
-                hotel.setReserved(hotelDTO.getReserved());
-
+        modelMapper.map(hotelDTO, hotel);
         repository.save(hotel);
 
         return new ResponseDTO("Hotel creado con éxito");
@@ -79,17 +66,8 @@ public class HotelService implements IHotelService {
         if(!repository.existsById(id)){
             return new ResponseDTO("No se encontro el hotel a actualizar");
         }
-        Hotel hotel = new Hotel(
-                id,
-                hotelDTO.getHotelCode(),
-                hotelDTO.getHotelName(),
-                hotelDTO.getDestination(),
-                hotelDTO.getRoomType(),
-                hotelDTO.getPriceForNight(),
-                hotelDTO.getDateFrom(),
-                hotelDTO.getDateTo(),
-                hotelDTO.getReserved()
-        );
+        Hotel hotel = new Hotel();
+        modelMapper.map(hotelDTO, hotel);
         repository.save(hotel);
         return new ResponseDTO("Hotel actualizado con éxito");
 
