@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Table(name="hotels")
 public class Hotel {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,8 +42,8 @@ public class Hotel {
 
     private Boolean reserved;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "reservahotel_id")
-//    private ReservarHotel reservation;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resevahotel_id")
+    private ReservarHotel reservation;
 
 }

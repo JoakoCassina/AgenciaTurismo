@@ -8,6 +8,8 @@ import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
+import com.example.AgenciaTurismo.model.People;
+import com.example.AgenciaTurismo.model.ReservarHotel;
 import com.example.AgenciaTurismo.repository.IHotelReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,6 +80,11 @@ public class HotelReservaService implements IHotelReservaService {
 
         listarReservas().add(new HotelReservedDTO(totalHotelReservationDTO));
 
+//        People people = new People();
+//        people.setDni(finalHotelReservationDTO.getHotelReservationDTO().getPeopleDTO().get(0).getDni());
+//        ReservarHotel hotel = new ReservarHotel();
+//        hotel.setPeopleAmount(totalHotelReservationDTO.getFinalHotelReservation().getHotelReservationDTO().getPeopleAmount());
+//        hotel.setPeople(totalHotelReservationDTO.getFinalHotelReservation().getHotelReservationDTO().getPeopleDTO());
         return new ResponseDTO("Reserva de hotel dada de alta correctamente");
     }
 
