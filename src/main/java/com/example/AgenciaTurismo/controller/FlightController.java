@@ -32,7 +32,7 @@ public class FlightController {
     }
 
     //US 0005:
-    @GetMapping
+    @GetMapping("/flights")
     public ResponseEntity<?> vuelosDisponibles(@RequestParam @Future(message = "La fecha de entrada debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateFrom,
                                                @RequestParam @Future(message = "La fecha de salida debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateTo,
                                                @RequestParam @NotBlank String origin,
