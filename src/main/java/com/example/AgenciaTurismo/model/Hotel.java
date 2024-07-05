@@ -43,7 +43,7 @@ public class Hotel {
     private Boolean reserved;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "resevahotel_id")
+    @JoinColumn(name = "reservar_hotels_id")
     private ReservarHotel reservation;
 
 }

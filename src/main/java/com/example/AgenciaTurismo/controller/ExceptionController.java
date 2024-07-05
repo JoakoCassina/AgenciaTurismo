@@ -33,7 +33,7 @@ public class ExceptionController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorDTO> validationException(MethodArgumentNotValidException e){
         return ResponseEntity.badRequest().body(
-                new ErrorDTO("Se encontraron los siguientes errores en las validaciones: @Valid del DTO",
+                new ErrorDTO("Se encontraron los siguientes errores en las validaciones:",
                         e.getAllErrors().stream()
                                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                                 .collect(Collectors.toList())

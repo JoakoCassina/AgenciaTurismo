@@ -26,7 +26,7 @@ public class ReservarHotel {
     private List<People> people;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "paymentmethod_id")
+    @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
     @OneToOne(mappedBy = "reservation")

@@ -32,7 +32,7 @@ public class People {
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "reservahotel_id", nullable = false)
+    @JoinColumn(name = "reservar_hotels_id", nullable = false)
     private ReservarHotel reservationHotel;
 
     @ManyToOne
