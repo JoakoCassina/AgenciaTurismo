@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IHotelRepository extends JpaRepository<Hotel, Long> {
 
-//    @Query("DELETE FROM Hotel h WHERE h.id = :hotelCode")
-//    void deleteByCode(@Param("hotelCode") String hotelCode);
+    Hotel findByHotelCode(String hotelCode);
+
 }

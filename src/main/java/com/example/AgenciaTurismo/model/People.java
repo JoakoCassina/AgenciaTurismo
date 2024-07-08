@@ -23,7 +23,7 @@ public class People {
     private Long id;
 
     private Integer dni;
-    private String name;;
+    private String name;
     @Column(name ="last_name")
     private String lastName;
     @Column(name = "birth_date")
@@ -32,10 +32,10 @@ public class People {
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "reservar_hotels_id", nullable = false)
+    @JoinColumn(name = "reservar_hotels_id")
     private ReservarHotel reservationHotel;
 
     @ManyToOne
-    @JoinColumn(name = "reservaflight_id", nullable = false)
+    @JoinColumn(name = "reservaflight_id")
     private ReservarFlight reservationFlight;
 }

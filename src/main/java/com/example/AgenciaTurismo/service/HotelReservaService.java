@@ -10,7 +10,10 @@ import com.example.AgenciaTurismo.model.Hotel;
 import com.example.AgenciaTurismo.model.PaymentMethod;
 import com.example.AgenciaTurismo.model.People;
 import com.example.AgenciaTurismo.model.ReservarHotel;
+import com.example.AgenciaTurismo.repository.IHotelRepository;
 import com.example.AgenciaTurismo.repository.IHotelReservaRepository;
+import com.example.AgenciaTurismo.repository.IPaymentMethodRepository;
+import com.example.AgenciaTurismo.repository.IPeopleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +24,13 @@ import java.util.List;
 @Service
 public class HotelReservaService implements IHotelReservaService {
     @Autowired
-    IHotelReservaRepository repository;
-
+    IHotelReservaRepository hotelReservaRepository;
+    @Autowired
+    IPeopleRepository peopleRepository;
+    @Autowired
+    IPaymentMethodRepository paymentMethodRepository;
+    @Autowired
+    IHotelRepository hotelRepository;
     @Autowired
     IHotelService serviceHotel;
 
@@ -32,7 +40,7 @@ public class HotelReservaService implements IHotelReservaService {
     @Override
     public List<HotelReservedDTO> listarReservas() {
         List<HotelReservedDTO> hotelReserve = new ArrayList<>();
-        List<ReservarHotel> reservas = repository.findAll();
+        List<ReservarHotel> reservas = hotelReservaRepository.findAll();
         if (reservas.isEmpty()) {
             return hotelReserve;
         }
@@ -94,22 +102,17 @@ public class HotelReservaService implements IHotelReservaService {
         for (PeopleDTO peoples : persDeReserva) {
             People person = modelMapper.map(peoples, People.class);
             persAGuardar.add(person);
+            peopleRepository.save(person);
         } //guardo la lista de personas
 
-        PaymentMethodDTO metodoPago = totalHotelReservationDTO.getFinalHotelReservation().getHotelReservationDTO().getPaymentMethodDTO();
+        PaymentMethodDTO metodoPago = finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO();
         PaymentMethod metodoPagoAGuardar = modelMapper.map(metodoPago, PaymentMethod.class);
+        paymentMethodRepository.save(metodoPagoAGuardar);//guardo el metodo de pago
 
-        HotelDTO hotelDTO = new HotelDTO();
-        hotelDTO.setHotelCode(totalHotelReservationDTO.getFinalHotelReservation().getHotelReservationDTO().getHotelCode());
-        hotelDTO.setHotelName(hotelToReserved.getHotelName());
-        hotelDTO.setDestination(hotelToReserved.getDestination());
-        hotelDTO.setRoomType(hotelToReserved.getRoomType());
-        hotelDTO.setPriceForNight(hotelToReserved.getPriceForNight());
-        hotelDTO.setDateFrom(hotelToReserved.getDateFrom());
-        hotelDTO.setDateTo(hotelToReserved.getDateTo());
-        hotelDTO.setReserved(hotelToReserved.getReserved());
 
-        Hotel hotelAGuardar = modelMapper.map(hotelDTO, Hotel.class);
+        Hotel hotelExitente = hotelRepository.findByHotelCode(hotelToReserved.getHotelCode());
+        Hotel hotelAGuardar = modelMapper.map(hotelExitente, Hotel.class);
+        hotelAGuardar.setReserved(true);
 
         ReservarHotel hotel = new ReservarHotel();
         hotel.setPeopleAmount(finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
@@ -117,7 +120,7 @@ public class HotelReservaService implements IHotelReservaService {
         hotel.setPaymentMethod(metodoPagoAGuardar);
         hotel.setHotel(hotelAGuardar);
 
-        repository.save(hotel);
+        hotelReservaRepository.save(hotel);
 
         return new ResponseDTO("Reserva de hotel dada de alta correctamente");
     }
@@ -135,12 +138,13 @@ public class HotelReservaService implements IHotelReservaService {
     //METODOS PARA REUTILIZAR
     @Override
     public Boolean reserveSaved(FinalHotelReservationDTO finalHotelReservationDTO) {
-        for (HotelReservedDTO reservaGuardada : listarReservas()) {
-            FinalHotelReservationDTO reservaExistente = reservaGuardada.getHotelReserved().getFinalHotelReservation();
-            if (reservaExistente.equals(finalHotelReservationDTO)) {
-                return true;
-            }
-        }
+      String hotelCode = finalHotelReservationDTO.getHotelReservationDTO().getHotelCode();
+      Hotel hotelEncontrado = hotelRepository.findByHotelCode(hotelCode);
+
+      if (hotelEncontrado.getReserved() == true) {
+          throw new IllegalStateException("Este hotel se encuentra reservado");
+      }
+
         return false;
     }
 
