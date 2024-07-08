@@ -4,7 +4,7 @@ package com.example.AgenciaTurismo.service;
 import com.example.AgenciaTurismo.dto.AuthResponseDto;
 import com.example.AgenciaTurismo.dto.request.LoginDTO;
 import com.example.AgenciaTurismo.jwt.JwtService;
-import com.example.AgenciaTurismo.repository.IUserRepository;
+import com.example.AgenciaTurismo.repository.IClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements IAuthService{
 
-    private final IUserRepository repository;
+    private final IClientRepository repository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;

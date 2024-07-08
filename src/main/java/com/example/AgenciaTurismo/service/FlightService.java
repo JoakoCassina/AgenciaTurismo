@@ -9,7 +9,7 @@ import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.model.Flight;
-import com.example.AgenciaTurismo.model.UserEntity;
+import com.example.AgenciaTurismo.model.Client;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -261,8 +261,8 @@ public class FlightService implements IFlightService {
     }
 
 
-    public static interface IUserRepository extends JpaRepository<UserEntity,Long> {
+    public static interface IUserRepository extends JpaRepository<Client,Long> {
 
-        Optional<UserEntity> findByUsername(String username);
+        Optional<Client> findByUsername(String username);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.AgenciaTurismo.config;
 
 
-import com.example.AgenciaTurismo.repository.IUserRepository;
+import com.example.AgenciaTurismo.repository.IClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final IUserRepository repository;
+    private final IClientRepository repository;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
