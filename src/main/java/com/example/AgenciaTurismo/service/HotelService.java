@@ -100,7 +100,8 @@ public class HotelService implements IHotelService {
         List<HotelDTO> availableHotel = new ArrayList<>();
         for (HotelDTO hotel : listHotelDTO) {
             if (hotel.getDateFrom().equals(hotelConsultDTO.getDateFrom())
-                    && hotel.getDateTo().equals(hotelConsultDTO.getDateTo())) {
+                    && hotel.getDateTo().equals(hotelConsultDTO.getDateTo())
+                    && hotel.getDestination().equalsIgnoreCase(hotelConsultDTO.getDestination())) {
                 availableHotel.add(hotel);
             }
         }

@@ -1,14 +1,13 @@
 package com.example.AgenciaTurismo.service;
 
-import com.example.AgenciaTurismo.dto.HotelDTO;
-import com.example.AgenciaTurismo.dto.HotelReservationDTO;
-import com.example.AgenciaTurismo.dto.HotelReservedDTO;
-import com.example.AgenciaTurismo.dto.PaymentMethodDTO;
+import com.example.AgenciaTurismo.dto.*;
 import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
+import com.example.AgenciaTurismo.model.Hotel;
+import com.example.AgenciaTurismo.model.PaymentMethod;
 import com.example.AgenciaTurismo.model.People;
 import com.example.AgenciaTurismo.model.ReservarHotel;
 import com.example.AgenciaTurismo.repository.IHotelReservaRepository;
@@ -33,8 +32,14 @@ public class HotelReservaService implements IHotelReservaService {
     @Override
     public List<HotelReservedDTO> listarReservas() {
         List<HotelReservedDTO> hotelReserve = new ArrayList<>();
-        if (hotelReserve.isEmpty()) {
-            throw new IllegalArgumentException ("No hay reservas al momento");
+        List<ReservarHotel> reservas = repository.findAll();
+        if (reservas.isEmpty()) {
+            return hotelReserve;
+        }
+
+        for(ReservarHotel resrv : reservas) {
+            HotelReservedDTO reservaDTO = modelMapper.map(resrv, HotelReservedDTO.class);
+            hotelReserve.add(reservaDTO);
         }
         return hotelReserve;
     }
@@ -42,14 +47,15 @@ public class HotelReservaService implements IHotelReservaService {
     @Override
     public ResponseDTO createReserva(FinalHotelReservationDTO finalHotelReservationDTO) {
 
-//        if (this.reserveSaved(finalHotelReservationDTO)) {
-//            throw new IllegalArgumentException("La reserva ya está realizada.");
-//        }
+        if (this.reserveSaved(finalHotelReservationDTO)) {
+            throw new IllegalArgumentException("La reserva ya está realizada.");
+        }
 
         this.roomCapacity(finalHotelReservationDTO.getHotelReservationDTO());
 
 
-        HotelConsultDTO hotelBuscado = new HotelConsultDTO(finalHotelReservationDTO.getHotelReservationDTO().getDateFrom(),
+        HotelConsultDTO hotelBuscado = new HotelConsultDTO(
+                finalHotelReservationDTO.getHotelReservationDTO().getDateFrom(),
                 finalHotelReservationDTO.getHotelReservationDTO().getDateTo(),
                 finalHotelReservationDTO.getHotelReservationDTO().getDestination());
 
@@ -83,9 +89,34 @@ public class HotelReservaService implements IHotelReservaService {
         totalHotelReservationDTO.setFinalHotelReservation(finalHotelReservationDTO);
         totalHotelReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
 
+        List<PeopleDTO> persDeReserva = finalHotelReservationDTO.getHotelReservationDTO().getPeopleDTO();
+        List<People> persAGuardar = new ArrayList<>();
+        for (PeopleDTO peoples : persDeReserva) {
+            People person = modelMapper.map(peoples, People.class);
+            persAGuardar.add(person);
+        } //guardo la lista de personas
+
+        PaymentMethodDTO metodoPago = totalHotelReservationDTO.getFinalHotelReservation().getHotelReservationDTO().getPaymentMethodDTO();
+        PaymentMethod metodoPagoAGuardar = modelMapper.map(metodoPago, PaymentMethod.class);
+
+        HotelDTO hotelDTO = new HotelDTO();
+        hotelDTO.setHotelCode(totalHotelReservationDTO.getFinalHotelReservation().getHotelReservationDTO().getHotelCode());
+        hotelDTO.setHotelName(hotelToReserved.getHotelName());
+        hotelDTO.setDestination(hotelToReserved.getDestination());
+        hotelDTO.setRoomType(hotelToReserved.getRoomType());
+        hotelDTO.setPriceForNight(hotelToReserved.getPriceForNight());
+        hotelDTO.setDateFrom(hotelToReserved.getDateFrom());
+        hotelDTO.setDateTo(hotelToReserved.getDateTo());
+        hotelDTO.setReserved(hotelToReserved.getReserved());
+
+        Hotel hotelAGuardar = modelMapper.map(hotelDTO, Hotel.class);
 
         ReservarHotel hotel = new ReservarHotel();
-        modelMapper.map(totalHotelReservationDTO, hotel);
+        hotel.setPeopleAmount(finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
+        hotel.setPeople(persAGuardar);
+        hotel.setPaymentMethod(metodoPagoAGuardar);
+        hotel.setHotel(hotelAGuardar);
+
         repository.save(hotel);
 
         return new ResponseDTO("Reserva de hotel dada de alta correctamente");
