@@ -9,13 +9,16 @@ import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.model.Flight;
+import com.example.AgenciaTurismo.model.Client;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FlightService implements IFlightService {
@@ -258,5 +261,8 @@ public class FlightService implements IFlightService {
     }
 
 
+    public static interface IUserRepository extends JpaRepository<Client,Long> {
 
+        Optional<Client> findByUsername(String username);
+    }
 }

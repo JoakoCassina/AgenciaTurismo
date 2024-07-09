@@ -1,17 +1,19 @@
 package com.example.AgenciaTurismo.service;
 
-import com.example.AgenciaTurismo.dto.HotelDTO;
-import com.example.AgenciaTurismo.dto.HotelReservationDTO;
-import com.example.AgenciaTurismo.dto.HotelReservedDTO;
-import com.example.AgenciaTurismo.dto.PaymentMethodDTO;
+import com.example.AgenciaTurismo.dto.*;
 import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
+import com.example.AgenciaTurismo.model.Hotel;
+import com.example.AgenciaTurismo.model.PaymentMethod;
 import com.example.AgenciaTurismo.model.People;
 import com.example.AgenciaTurismo.model.ReservarHotel;
+import com.example.AgenciaTurismo.repository.IHotelRepository;
 import com.example.AgenciaTurismo.repository.IHotelReservaRepository;
+import com.example.AgenciaTurismo.repository.IPaymentMethodRepository;
+import com.example.AgenciaTurismo.repository.IPeopleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +24,13 @@ import java.util.List;
 @Service
 public class HotelReservaService implements IHotelReservaService {
     @Autowired
-    IHotelReservaRepository repository;
-
+    IHotelReservaRepository hotelReservaRepository;
+    @Autowired
+    IPeopleRepository peopleRepository;
+    @Autowired
+    IPaymentMethodRepository paymentMethodRepository;
+    @Autowired
+    IHotelRepository hotelRepository;
     @Autowired
     IHotelService serviceHotel;
 
@@ -33,8 +40,14 @@ public class HotelReservaService implements IHotelReservaService {
     @Override
     public List<HotelReservedDTO> listarReservas() {
         List<HotelReservedDTO> hotelReserve = new ArrayList<>();
-        if (hotelReserve.isEmpty()) {
-            throw new IllegalArgumentException ("No hay reservas al momento");
+        List<ReservarHotel> reservas = hotelReservaRepository.findAll();
+        if (reservas.isEmpty()) {
+            return hotelReserve;
+        }
+
+        for(ReservarHotel resrv : reservas) {
+            HotelReservedDTO reservaDTO = modelMapper.map(resrv, HotelReservedDTO.class);
+            hotelReserve.add(reservaDTO);
         }
         return hotelReserve;
     }
@@ -42,14 +55,15 @@ public class HotelReservaService implements IHotelReservaService {
     @Override
     public ResponseDTO createReserva(FinalHotelReservationDTO finalHotelReservationDTO) {
 
-//        if (this.reserveSaved(finalHotelReservationDTO)) {
-//            throw new IllegalArgumentException("La reserva ya está realizada.");
-//        }
+        if (this.reserveSaved(finalHotelReservationDTO)) {
+            throw new IllegalArgumentException("La reserva ya está realizada.");
+        }
 
         this.roomCapacity(finalHotelReservationDTO.getHotelReservationDTO());
 
 
-        HotelConsultDTO hotelBuscado = new HotelConsultDTO(finalHotelReservationDTO.getHotelReservationDTO().getDateFrom(),
+        HotelConsultDTO hotelBuscado = new HotelConsultDTO(
+                finalHotelReservationDTO.getHotelReservationDTO().getDateFrom(),
                 finalHotelReservationDTO.getHotelReservationDTO().getDateTo(),
                 finalHotelReservationDTO.getHotelReservationDTO().getDestination());
 
@@ -83,10 +97,30 @@ public class HotelReservaService implements IHotelReservaService {
         totalHotelReservationDTO.setFinalHotelReservation(finalHotelReservationDTO);
         totalHotelReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
 
+        List<PeopleDTO> persDeReserva = finalHotelReservationDTO.getHotelReservationDTO().getPeopleDTO();
+        List<People> persAGuardar = new ArrayList<>();
+        for (PeopleDTO peoples : persDeReserva) {
+            People person = modelMapper.map(peoples, People.class);
+            persAGuardar.add(person);
+            peopleRepository.save(person);
+        } //guardo la lista de personas
+
+        PaymentMethodDTO metodoPago = finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO();
+        PaymentMethod metodoPagoAGuardar = modelMapper.map(metodoPago, PaymentMethod.class);
+        paymentMethodRepository.save(metodoPagoAGuardar);//guardo el metodo de pago
+
+
+        Hotel hotelExitente = hotelRepository.findByHotelCode(hotelToReserved.getHotelCode());
+        Hotel hotelAGuardar = modelMapper.map(hotelExitente, Hotel.class);
+        hotelAGuardar.setReserved(true);
 
         ReservarHotel hotel = new ReservarHotel();
-        modelMapper.map(totalHotelReservationDTO, hotel);
-        repository.save(hotel);
+        hotel.setPeopleAmount(finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
+        hotel.setPeople(persAGuardar);
+        hotel.setPaymentMethod(metodoPagoAGuardar);
+        hotel.setHotel(hotelAGuardar);
+
+        hotelReservaRepository.save(hotel);
 
         return new ResponseDTO("Reserva de hotel dada de alta correctamente");
     }
@@ -104,12 +138,13 @@ public class HotelReservaService implements IHotelReservaService {
     //METODOS PARA REUTILIZAR
     @Override
     public Boolean reserveSaved(FinalHotelReservationDTO finalHotelReservationDTO) {
-        for (HotelReservedDTO reservaGuardada : listarReservas()) {
-            FinalHotelReservationDTO reservaExistente = reservaGuardada.getHotelReserved().getFinalHotelReservation();
-            if (reservaExistente.equals(finalHotelReservationDTO)) {
-                return true;
-            }
-        }
+      String hotelCode = finalHotelReservationDTO.getHotelReservationDTO().getHotelCode();
+      Hotel hotelEncontrado = hotelRepository.findByHotelCode(hotelCode);
+
+      if (hotelEncontrado.getReserved() == true) {
+          throw new IllegalStateException("Este hotel se encuentra reservado");
+      }
+
         return false;
     }
 

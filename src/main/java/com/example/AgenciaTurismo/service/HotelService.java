@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,13 +63,15 @@ public class HotelService implements IHotelService {
 
     @Override
     public ResponseDTO updateHotel(Long id, HotelDTO hotelDTO) {
-
-        if(!repository.existsById(id)){
+        Optional<Hotel> optionalHotel = repository.findById(id);//Guardamos el HOTEL obtenido (con un OPTIONAL porque puede llegar a ser null)
+        if(optionalHotel.isEmpty()){
             return new ResponseDTO("No se encontro el hotel a actualizar");
         }
-        Hotel hotel = new Hotel();
-        modelMapper.map(hotelDTO, hotel);
-        repository.save(hotel);
+        Hotel hotelExistente = optionalHotel.get();
+
+        modelMapper.getConfiguration().setSkipNullEnabled(true); //Si algun campo de HOTEL llega null o vacio (MANTENER EL ACTUAL)
+        modelMapper.map(hotelDTO, hotelExistente);
+        repository.save(hotelExistente);
         return new ResponseDTO("Hotel actualizado con éxito");
 
 
@@ -97,7 +100,8 @@ public class HotelService implements IHotelService {
         List<HotelDTO> availableHotel = new ArrayList<>();
         for (HotelDTO hotel : listHotelDTO) {
             if (hotel.getDateFrom().equals(hotelConsultDTO.getDateFrom())
-                    && hotel.getDateTo().equals(hotelConsultDTO.getDateTo())) {
+                    && hotel.getDateTo().equals(hotelConsultDTO.getDateTo())
+                    && hotel.getDestination().equalsIgnoreCase(hotelConsultDTO.getDestination())) {
                 availableHotel.add(hotel);
             }
         }

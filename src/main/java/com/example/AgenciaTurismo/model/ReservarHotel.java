@@ -22,14 +22,14 @@ public class ReservarHotel {
     @Column(name = "people_amount")
     private Double peopleAmount;
 
-    @OneToMany(mappedBy = "reservationHotel")
+    @OneToMany(mappedBy = "reservationHotel", cascade = CascadeType.ALL)
     private List<People> people;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
-    @OneToOne(mappedBy = "reservation")
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private Hotel hotel;
 
 }
