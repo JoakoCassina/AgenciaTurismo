@@ -17,7 +17,7 @@ public class HotelReservaController {
     IHotelReservaService service;
 
     //HOTELES RESERVADOS
-    @GetMapping("/hotel-booking/")
+    @GetMapping("/hotel-booking")
     public ResponseEntity<?> listarReserva() {
         return new ResponseEntity<>(service.listarReservas(), HttpStatus.OK);
     }
@@ -29,7 +29,7 @@ public class HotelReservaController {
     }
 
     //MODIFICAR RESERVA HOTEL
-    @PostMapping("/hotel-booking/edit/{id}")
+    @PutMapping("/hotel-booking/edit/{id}")
     public ResponseEntity<?> actualizarReserva(@PathVariable Long id, @RequestBody FinalHotelReservationDTO finalHotelReservationDTO) {
         return new ResponseEntity<>(service.uptateReserva(id, finalHotelReservationDTO), HttpStatus.CREATED);
     }

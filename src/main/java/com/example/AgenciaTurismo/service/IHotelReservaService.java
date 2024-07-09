@@ -4,12 +4,13 @@ import com.example.AgenciaTurismo.dto.HotelReservationDTO;
 import com.example.AgenciaTurismo.dto.HotelReservedDTO;
 import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
+import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
 
 import java.util.List;
 
 public interface IHotelReservaService {
 
-    List<HotelReservedDTO> listarReservas();
+    List<FinalHotelReservationDTO> listarReservas();
 
     //CREATE
     ResponseDTO createReserva(FinalHotelReservationDTO finalHotelReservationDTO);

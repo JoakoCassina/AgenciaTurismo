@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HotelReservaService implements IHotelReservaService {
@@ -37,19 +38,18 @@ public class HotelReservaService implements IHotelReservaService {
     @Autowired
     ModelMapper modelMapper;
 
-    @Override
-    public List<HotelReservedDTO> listarReservas() {
-        List<HotelReservedDTO> hotelReserve = new ArrayList<>();
-        List<ReservarHotel> reservas = hotelReservaRepository.findAll();
-        if (reservas.isEmpty()) {
-            return hotelReserve;
-        }
 
-        for(ReservarHotel resrv : reservas) {
-            HotelReservedDTO reservaDTO = modelMapper.map(resrv, HotelReservedDTO.class);
-            hotelReserve.add(reservaDTO);
-        }
-        return hotelReserve;
+    @Override
+    public List<FinalHotelReservationDTO> listarReservas() {
+        List<ReservarHotel> reservasList = hotelReservaRepository.findAll();
+        List<FinalHotelReservationDTO> listAMotrar = new ArrayList<>();
+
+        for (ReservarHotel reservas : reservasList) {
+            FinalHotelReservationDTO reserva = modelMapper.map(reservas, FinalHotelReservationDTO.class);
+            listAMotrar.add(reserva);
+        } //guardo la lista de personas
+
+        return listAMotrar;
     }
 
     @Override
@@ -97,6 +97,7 @@ public class HotelReservaService implements IHotelReservaService {
         totalHotelReservationDTO.setFinalHotelReservation(finalHotelReservationDTO);
         totalHotelReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
 
+
         List<PeopleDTO> persDeReserva = finalHotelReservationDTO.getHotelReservationDTO().getPeopleDTO();
         List<People> persAGuardar = new ArrayList<>();
         for (PeopleDTO peoples : persDeReserva) {
@@ -126,13 +127,74 @@ public class HotelReservaService implements IHotelReservaService {
     }
 
     @Override
-    public ResponseDTO uptateReserva(Long id, FinalHotelReservationDTO finalHoteltReservationDTO) {
-        return null;
+    public ResponseDTO uptateReserva(Long id, FinalHotelReservationDTO finalHotelReservationDTO) {
+        Optional<ReservarHotel> optionalReservaHotel = hotelReservaRepository.findById(id);
+
+        if (optionalReservaHotel.isEmpty()) {
+            throw new IllegalArgumentException("No se encontró la reserva a actualizar");
+        }
+
+        ReservarHotel reservaExistente = optionalReservaHotel.get();
+
+        // Actualizar campos simples directamente
+        reservaExistente.setPeopleAmount(finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
+
+        /// Actualizar personas (people)
+        List<PeopleDTO> personasDTO = finalHotelReservationDTO.getHotelReservationDTO().getPeopleDTO();
+        if (personasDTO != null && !personasDTO.isEmpty()) {
+            List<People> personas = new ArrayList<>();
+            for (PeopleDTO peopleDTO : personasDTO) {
+                // Buscar una persona existente por algún atributo único (en este caso, el nombre)
+                Optional<People> optionalPersonaExistente = peopleRepository.findByName(peopleDTO.getName());
+                if (optionalPersonaExistente.isPresent()) {
+                    // Si la persona existe, actualizar los campos relevantes
+                    People personaExistente = optionalPersonaExistente.get();
+                    modelMapper.map(peopleDTO, personaExistente);
+                    personas.add(personaExistente);
+                } else {
+                    // Si la persona no existe, mapear una nueva persona desde el DTO
+                    People personaNueva = modelMapper.map(peopleDTO, People.class);
+                    personas.add(personaNueva);
+                }
+            }
+            reservaExistente.setPeople(personas);
+        } else {
+            // Si no se proporcionan personas en el DTO, mantener las existentes (no hacer nada)
+            reservaExistente.setPeople(reservaExistente.getPeople());
+        }
+
+        // Actualizar método de pago (paymentMethod)
+        PaymentMethodDTO metodoPagoDTO = finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO();
+        if (metodoPagoDTO != null) {
+            // Obtener el método de pago existente de la reserva
+            PaymentMethod metodoPagoExistente = reservaExistente.getPaymentMethod();
+
+            // Verificar si hay un método de pago existente
+            if (metodoPagoExistente != null) {
+                // Actualizar los campos del método de pago existente con los del DTO
+                modelMapper.map(metodoPagoDTO, metodoPagoExistente);
+            } else {
+                // Si no hay método de pago existente, mapear uno nuevo
+                PaymentMethod metodoPago = modelMapper.map(metodoPagoDTO, PaymentMethod.class);
+                reservaExistente.setPaymentMethod(metodoPago);
+            }
+        } else {
+            // Si no se proporciona método de pago en el DTO, mantener el existente (no hacer nada)
+        }
+
+        // Guardar la reserva actualizada
+        hotelReservaRepository.save(reservaExistente);
+
+        return new ResponseDTO("Reserva actualizada correctamente");
     }
 
     @Override
     public ResponseDTO deleteReserva(Long id) {
-        return null;
+        if(!hotelReservaRepository.existsById(id)){
+            return new ResponseDTO("No se encontro la reserva a eliminar");
+        }
+        hotelReservaRepository.deleteById(id);
+        return new ResponseDTO("Reserva eliminada con éxito");
     }
 
     //METODOS PARA REUTILIZAR
