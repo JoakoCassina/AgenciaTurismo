@@ -1,7 +1,7 @@
 package com.example.AgenciaTurismo.service;
 
 
-import com.example.AgenciaTurismo.dto.AuthResponseDto;
+import com.example.AgenciaTurismo.dto.AuthResponseDTO;
 import com.example.AgenciaTurismo.dto.request.LoginDTO;
 import com.example.AgenciaTurismo.jwt.JwtService;
 import com.example.AgenciaTurismo.repository.IClientRepository;
@@ -22,11 +22,11 @@ public class AuthServiceImpl implements IAuthService{
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthResponseDto login(LoginDTO userDto) {
+    public AuthResponseDTO login(LoginDTO userDto) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(),userDto.getPassword()));
         UserDetails user = repository.findByUsername(userDto.getUsername()).orElseThrow();
         String token = jwtService.getToken(user);
-        return AuthResponseDto.builder()
+        return AuthResponseDTO.builder()
                 .token(token)
                 .build();
     }
