@@ -11,6 +11,7 @@ import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.model.Flight;
 import com.example.AgenciaTurismo.model.Client;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -19,28 +20,24 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightService implements IFlightService {
 
     @Autowired
-    private IFlightRepository repository;
+    IFlightRepository repository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     private List<FlightReservedDTO> flightReserve = new ArrayList<>();
-
 
     @Override
     public List<FlightDTO> listarFlight() {
         return repository.findAll().stream()
-                .map(flight -> new FlightDTO(
-                        flight.getFlightCode(),
-                        flight.getOrigin(),
-                        flight.getDestination(),
-                        flight.getSeatType(),
-                        flight.getPrice(),
-                        flight.getDateFrom(),
-                        flight.getDateTo()
-                )).toList();
+                .map(flight -> modelMapper.map(flight, FlightDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -134,16 +131,8 @@ public class FlightService implements IFlightService {
         if(!repository.existsById(id)){
             return new ResponseDTO("Vuelo no encontrado");
         }
-        Flight flight = new Flight(
-                id,
-                flightDTO.getFlightCode(),
-                flightDTO.getOrigin(),
-                flightDTO.getDestination(),
-                flightDTO.getSeatType(),
-                flightDTO.getPrice(),
-                flightDTO.getDateFrom(),
-                flightDTO.getDateTo()
-        );
+        Flight flight = modelMapper.map(flightDTO, Flight.class);
+        flight.setId(id);
         repository.save(flight);
         return new ResponseDTO("Vuelo actualizado con éxito");
 

@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "flights")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "flights")
 public class Flight {
 
     @Id
@@ -27,6 +27,7 @@ public class Flight {
 
     @Column(name = "seat_type")
     private String seatType;
+
     private Integer price;
 
     @Column(name = "date_from")
@@ -37,8 +38,10 @@ public class Flight {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "reservaflight_id")
-//    private ReservarHotel reservation;
+    private Boolean reserved;
+
+   @OneToOne
+   @JoinColumn(name = "reservaflight_id")
+   private ReservarFlight reservation;
 
 }
