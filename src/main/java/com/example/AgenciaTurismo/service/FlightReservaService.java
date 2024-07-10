@@ -55,9 +55,7 @@ public class FlightReservaService implements IFlightReservaService {
 
         if (this.reserveSaved(finalFlightReservationDTO)) {
             throw new IllegalArgumentException("La reserva ya está realizada.");
-            }
-
-        this.seatCapacity(finalFlightReservationDTO.getFlightReservationDTO());
+        }
 
         FlightConsultDTO vueloBuscado = new FlightConsultDTO(
                 finalFlightReservationDTO.getFlightReservationDTO().getDateFrom(),
@@ -195,7 +193,7 @@ public class FlightReservaService implements IFlightReservaService {
 
     @Override
     public Boolean reserveSaved(FinalFlightReservationDTO finalFlightReservationDTO) {
-        String flightCode = finalFlightReservationDTO.getFlightReservationDTO().getFlightNumber();
+        String flightCode = finalFlightReservationDTO.getFlightReservationDTO().getFlightCode();
         Flight flightEncontrado = flightRepository.findByFlightCode(flightCode);
 
         if (flightEncontrado.getReserved() == true) {
@@ -229,27 +227,4 @@ public class FlightReservaService implements IFlightReservaService {
         }
     }
 
-    public Boolean seatCapacity(FlightReservationDTO reservation) {
-        Double seats;
-
-        switch (reservation.getSeatType()) {
-            case "Economy":
-                seats = 1D;
-                break;
-            case "Business":
-                seats = 1D;
-                break;
-            case "First":
-                seats = 1D;
-                break;
-            default:
-                seats = 0D;
-                break;
-        }
-        if (!seats.equals(reservation.getSeats())) {
-            throw new IllegalArgumentException("La cantidad de asientos no coincide con el tipo de asiento.");
-        } else {
-            return true;
-        }
-    }
 }

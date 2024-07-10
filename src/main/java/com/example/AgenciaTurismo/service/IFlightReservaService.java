@@ -25,5 +25,4 @@ public interface IFlightReservaService {
 
     Double calcInterest(Double amount, Integer dues, String type);
 
-    Boolean seatCapacity(FlightReservationDTO reservation);
 }

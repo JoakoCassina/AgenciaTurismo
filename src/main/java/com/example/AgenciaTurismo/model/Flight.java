@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "flights")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "flights")
 public class Flight {
 
     @Id
@@ -23,6 +23,7 @@ public class Flight {
     private String flightCode;
 
     private String origin;
+
     private String destination;
 
     @Column(name = "seat_type")
@@ -40,8 +41,8 @@ public class Flight {
 
     private Boolean reserved;
 
-   @OneToOne
-   @JoinColumn(name = "reservaflight_id")
-   private ReservarFlight reservation;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservar_flights_id")
+    private ReservarFlight reservation;
 
 }

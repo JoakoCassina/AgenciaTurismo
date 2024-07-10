@@ -11,8 +11,4 @@ public interface IFlightRepository extends JpaRepository<Flight, Long> {
 
      Flight findByFlightCode(String flightCode);
 
-//    @Transactional
-//    @Modifying
-//    @Query("DELETE FROM Flight f WHERE f.id = :flightCode")
-     void deleteByFlightCode(@Param("flightCode") String flightCode);
 }

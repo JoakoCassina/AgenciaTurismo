@@ -12,31 +12,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/flight-booking")
 public class FlightReservaController {
     @Autowired
     IFlightReservaService service;
 
     // VUELOS RESERVADOS
-    @GetMapping("/flight-booking")
+    @GetMapping
     public ResponseEntity<?> listarReserva() {
         return new ResponseEntity<>(service.listarReservas(), HttpStatus.OK);
     }
 
     // ALTA RESERVA VUELO
-    @PostMapping("/flight-booking/new")
+    @PostMapping("/new")
     public ResponseEntity<?> crearReserva(@RequestBody @Valid FinalFlightReservationDTO finalFlightReservationDTO) {
         return new ResponseEntity<>(service.createReserva(finalFlightReservationDTO), HttpStatus.CREATED);
     }
 
     // MODIFICAR RESERVA VUELO
-    @PutMapping("/flight-booking/edit/{id}")
+    @PutMapping("/edit/{id}")
     public ResponseEntity<?> actualizarReserva(@PathVariable Long id, @RequestBody FinalFlightReservationDTO finalFlightReservationDTO) {
         return new ResponseEntity<>(service.uptateReserva(id, finalFlightReservationDTO), HttpStatus.CREATED);
     }
 
     // BORRAR RESERVA VUELO
-    @DeleteMapping("/flight-booking/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDTO> eliminarReserva(@PathVariable @NotNull Long id) {
         return new ResponseEntity<>(service.deleteReserva(id), HttpStatus.OK);
     }

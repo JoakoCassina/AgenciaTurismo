@@ -29,10 +29,6 @@ public interface IFlightService {
     //DELETE
     ResponseDTO deleteFlight (Long id);
 
-    ResponseDTO eliminarPorCode(String flightCode);
-
-
-
 
     //METODOS PARA VALIDAR
     Boolean reserveSaved(FinalFlightReservationDTO finalFlightReservationDTO);

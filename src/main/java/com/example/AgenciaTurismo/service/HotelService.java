@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class HotelService implements IHotelService {
 
     @Autowired
-    IHotelRepository repository;
+    IHotelRepository hotelRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -34,8 +34,9 @@ public class HotelService implements IHotelService {
 
     @Override
     public List<HotelDTO> listarHotels() {
-        return repository.findAll().stream()
-                .map(hotel -> modelMapper.map(hotel, HotelDTO.class)).collect(Collectors.toList());
+        return hotelRepository.findAll().stream()
+                .map(hotel -> modelMapper.map(hotel, HotelDTO.class))
+                .collect(Collectors.toList());
     }
 
 
@@ -56,14 +57,14 @@ public class HotelService implements IHotelService {
     public ResponseDTO createHotel(HotelDTO hotelDTO) {
         Hotel hotel = new Hotel();
         modelMapper.map(hotelDTO, hotel);
-        repository.save(hotel);
+        hotelRepository.save(hotel);
 
         return new ResponseDTO("Hotel creado con éxito");
     }
 
     @Override
     public ResponseDTO updateHotel(Long id, HotelDTO hotelDTO) {
-        Optional<Hotel> optionalHotel = repository.findById(id);//Guardamos el HOTEL obtenido (con un OPTIONAL porque puede llegar a ser null)
+        Optional<Hotel> optionalHotel = hotelRepository.findById(id);//Guardamos el HOTEL obtenido (con un OPTIONAL porque puede llegar a ser null)
         if(optionalHotel.isEmpty()){
             return new ResponseDTO("No se encontro el hotel a actualizar");
         }
@@ -71,17 +72,17 @@ public class HotelService implements IHotelService {
 
         modelMapper.getConfiguration().setSkipNullEnabled(true); //Si algun campo de HOTEL llega null o vacio (MANTENER EL ACTUAL)
         modelMapper.map(hotelDTO, hotelExistente);
-        repository.save(hotelExistente);
+        hotelRepository.save(hotelExistente);
         return new ResponseDTO("Hotel actualizado con éxito");
 
 
     }
     @Override
     public ResponseDTO deleteHotel(Long id) {
-        if(!repository.existsById(id)){
+        if(!hotelRepository.existsById(id)){
             return new ResponseDTO("No se encontro el hotel a eliminar");
         }
-        repository.deleteById(id);
+        hotelRepository.deleteById(id);
         return new ResponseDTO("Hotel eliminado con éxito");
     }
 
