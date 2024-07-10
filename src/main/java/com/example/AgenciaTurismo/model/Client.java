@@ -49,10 +49,6 @@ public class Client implements UserDetails {
     @JoinColumn(name = "reservar_flights_id")
     private ReservarFlight reservationFlight;
 
-    @OneToOne
-    @JoinColumn(name = "paquete_turistico_id")
-    private TouristPackage paqueteTuristico;
-
     @Override
     public boolean isAccountNonExpired() {
         return true;

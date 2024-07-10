@@ -28,8 +28,7 @@ public class TouristPackage {
     @Column(name = "creation_date")
     private LocalDate creationDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @Column(name = "client_id")
     private Client clientId;
 
     @OneToMany(mappedBy = "paqueteTuristico", cascade = CascadeType.ALL)
