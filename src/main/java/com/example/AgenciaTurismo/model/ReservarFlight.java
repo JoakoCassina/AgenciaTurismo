@@ -29,4 +29,8 @@ public class ReservarFlight {
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private Flight flights;
+
+    @ManyToOne
+    @JoinColumn(name = "paquete_turistico_id")
+    private TouristPackage paqueteTuristico;
 }
