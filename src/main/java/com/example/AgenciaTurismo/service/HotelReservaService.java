@@ -127,7 +127,7 @@ public class HotelReservaService implements IHotelReservaService {
     }
 
     @Override
-    public ResponseDTO uptateReserva(Long id, FinalHotelReservationDTO finalHotelReservationDTO) {
+    public ResponseDTO updateReserva(Long id, FinalHotelReservationDTO finalHotelReservationDTO) {
         Optional<ReservarHotel> optionalReservaHotel = hotelReservaRepository.findById(id);
 
         if (optionalReservaHotel.isEmpty()) {

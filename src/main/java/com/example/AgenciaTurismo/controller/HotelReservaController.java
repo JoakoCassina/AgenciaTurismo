@@ -31,7 +31,7 @@ public class HotelReservaController {
     //MODIFICAR RESERVA HOTEL
     @PutMapping("/hotel-booking/edit/{id}")
     public ResponseEntity<?> actualizarReserva(@PathVariable Long id, @RequestBody FinalHotelReservationDTO finalHotelReservationDTO) {
-        return new ResponseEntity<>(service.uptateReserva(id, finalHotelReservationDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.updateReserva(id, finalHotelReservationDTO), HttpStatus.CREATED);
     }
 
     //BORRAR RESERVA HOTEL

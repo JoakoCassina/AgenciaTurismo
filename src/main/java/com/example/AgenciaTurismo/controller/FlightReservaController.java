@@ -32,7 +32,7 @@ public class FlightReservaController {
     // MODIFICAR RESERVA VUELO
     @PutMapping("/edit/{id}")
     public ResponseEntity<?> actualizarReserva(@PathVariable Long id, @RequestBody FinalFlightReservationDTO finalFlightReservationDTO) {
-        return new ResponseEntity<>(service.uptateReserva(id, finalFlightReservationDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.updateReserva(id, finalFlightReservationDTO), HttpStatus.CREATED);
     }
 
     // BORRAR RESERVA VUELO

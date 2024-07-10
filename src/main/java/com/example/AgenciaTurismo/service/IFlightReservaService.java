@@ -15,7 +15,7 @@ public interface IFlightReservaService {
     ResponseDTO createReserva(FinalFlightReservationDTO finalFlightReservationDTO);
 
     //UPDATE
-    ResponseDTO uptateReserva(Long id, FinalFlightReservationDTO finalFlightReservationDTO);
+    ResponseDTO updateReserva(Long id, FinalFlightReservationDTO finalFlightReservationDTO);
 
     //DELETE
     ResponseDTO deleteReserva(Long id);

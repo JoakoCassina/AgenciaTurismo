@@ -121,7 +121,7 @@ public class FlightReservaService implements IFlightReservaService {
     }
 
     @Override
-    public ResponseDTO uptateReserva(Long id, FinalFlightReservationDTO finalFlightReservationDTO){
+    public ResponseDTO updateReserva(Long id, FinalFlightReservationDTO finalFlightReservationDTO){
         Optional<ReservarFlight> optionalReservaFlight = flightReservaRepository.findById(id);
 
         if (optionalReservaFlight.isEmpty()) {
