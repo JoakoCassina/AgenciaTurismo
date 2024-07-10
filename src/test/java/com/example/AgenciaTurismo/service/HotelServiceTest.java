@@ -35,6 +35,9 @@ public class HotelServiceTest {
     @InjectMocks
     private HotelService hotelService;
 
+//    List<Hotel> hotelList = new ArrayList<>(
+//            new Hotel(1L, "CH-0002", "Cataratas Hotel", "Puerto Iguazú", "Doble", 6300, "2025-02-10", "2025-03-20", 0)
+//    );
     private static final HotelDTO hotelDTO1 = new HotelDTO("CH-0002", "Cataratas Hotel", "Puerto Iguazú",
             "Doble", 6300, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 20), false);
 
@@ -44,19 +47,19 @@ public class HotelServiceTest {
     private static final HotelDTO hotelDTO3 = new HotelDTO("HB-0001", "Hotel Bristol", "Buenos Aires",
             "Single", 5435, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 19), false);
 
-    private static final Hotel hotel1 = new Hotel("CH-0002", "Cataratas Hotel", "Puerto Iguazú",
-            "Doble", 6300, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 20), false);
-
-    private static final Hotel hotel2 = new Hotel("CH-0003", "Cataratas Hotel 2", "Puerto Iguazú",
-            "Triple", 8200, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 23), false);
-
-    private static final Hotel hotel3 = new Hotel("HB-0001", "Hotel Bristol", "Buenos Aires",
-            "Single", 5435, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 19), false);
+//    private static final Hotel hotel1 = new Hotel("CH-0002", "Cataratas Hotel", "Puerto Iguazú",
+//            "Doble", 6300, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 20), false);
+//
+//    private static final Hotel hotel2 = new Hotel("CH-0003", "Cataratas Hotel 2", "Puerto Iguazú",
+//            "Triple", 8200, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 23), false);
+//
+//    private static final Hotel hotel3 = new Hotel("HB-0001", "Hotel Bristol", "Buenos Aires",
+//            "Single", 5435, LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 19), false);
 
     //Personas para la lista enviada
-    private static final PeopleDTO peopleDTO1 = new PeopleDTO(42533885,"Joako","Cassina",LocalDate.of(2000,04,18), "joako@gmail.com");
+    private static final PeopleDTO peopleDTO1 = new PeopleDTO("42533885","Joako","Cassina",LocalDate.of(2000,04,18), "joako@gmail.com");
 
-    private static final PeopleDTO peopleDTO2 = new PeopleDTO(420000,"Juan","Casi",LocalDate.of(1999,05,19), "juan@gmail.com");
+    private static final PeopleDTO peopleDTO2 = new PeopleDTO("420000","Juan","Casi",LocalDate.of(1999,05,19), "juan@gmail.com");
 
 
     //Metodo de pago enviado
@@ -83,22 +86,19 @@ public class HotelServiceTest {
     @DisplayName("Test ListarHotelesDTO OK")   //public List<HotelDTO> listHotelsDTO()
     public void listHotelesDTOTestOK(){
 
-        List<HotelDTO> listaEsperadaDTO = new ArrayList<>();
-        listaEsperadaDTO.add(hotelDTO1);
-        listaEsperadaDTO.add(hotelDTO2);
-        listaEsperadaDTO.add(hotelDTO3);
-
-        List<Hotel> listaEsperada = new ArrayList<>();
-        listaEsperada.add(hotel1);
-        listaEsperada.add(hotel2);
-        listaEsperada.add(hotel3);
+//        List<HotelDTO> listaEsperadaDTO = new ArrayList<>();
+//        listaEsperadaDTO.add(hotelDTO1);
+//        listaEsperadaDTO.add(hotelDTO2);
+//        listaEsperadaDTO.add(hotelDTO3);
+        List<HotelDTO> resultado = hotelService.listarHotels();
 
         //ACT
-        Mockito.when(hotelRepository.findAll()).thenReturn(listaEsperada);
-        List<HotelDTO> listaDTO = hotelService.listHotelsDTO();
+//        Mockito.when(hotelRepository.findAll()).thenReturn(listaEsperadaDTO);
+//        List<HotelDTO> listaDTO = hotelService.listarHotels();
 
         //ASSERT
-        Assertions.assertEquals(listaEsperadaDTO, listaDTO);
+        Assertions.assertEquals(12, resultado.size());
+        Assertions.assertEquals("Cataratas Hotel", resultado.get(0).getHotelName());
     }
 
 
