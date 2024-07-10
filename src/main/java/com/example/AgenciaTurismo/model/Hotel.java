@@ -27,8 +27,10 @@ public class Hotel {
     private String hotelName;
 
     private String destination;
+
     @Column(name = "room_type")
     private String roomType;
+
     @Column(name = "price_for_night")
     private Integer priceForNight;
 

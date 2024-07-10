@@ -1,13 +1,14 @@
 package com.example.AgenciaTurismo.repository;
 
 import com.example.AgenciaTurismo.model.Flight;
+import com.example.AgenciaTurismo.model.Hotel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface IFlightRepository extends JpaRepository<Flight, Long> {
 
-//    @Transactional
-//    @Modifying
-//    @Query("DELETE FROM Flight f WHERE f.id = :flightCode")
-     void deleteByFlightCode(@Param("flightCode") String flightCode);
+     Flight findByFlightCode(String flightCode);
+
 }

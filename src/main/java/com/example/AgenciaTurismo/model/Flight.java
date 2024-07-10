@@ -23,10 +23,12 @@ public class Flight {
     private String flightCode;
 
     private String origin;
+
     private String destination;
 
     @Column(name = "seat_type")
     private String seatType;
+
     private Integer price;
 
     @Column(name = "date_from")
@@ -37,8 +39,10 @@ public class Flight {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "reservaflight_id")
-//    private ReservarHotel reservation;
+    private Boolean reserved;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservar_flights_id")
+    private ReservarFlight reservation;
 
 }

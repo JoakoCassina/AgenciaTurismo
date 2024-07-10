@@ -26,7 +26,7 @@ public class SecurityConfig {
                         authRequest
 
                         .requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/api/v1/flights").permitAll()
+                                .requestMatchers("/api/v1/**").permitAll()
                                 .requestMatchers("/api/v1/helloUser").hasAuthority("ADMIN")
                                 .requestMatchers("/api/v1/helloUser").hasAuthority("ADMIN")
                                 .requestMatchers("/api/v1/helloAdmin").hasAuthority("ADMIN")

@@ -41,26 +41,14 @@ public class FlightController {
         return new ResponseEntity<>(service.vuelosDisponibles(datos), HttpStatus.OK);
     }
 
-    //US 0006
-    @PostMapping("/flight-reservation/new")
-    public ResponseEntity<?> reserveFlight(@RequestBody @Valid FinalFlightReservationDTO finalFlightReservationDTO) {
-        return new ResponseEntity<>(service.reserved(finalFlightReservationDTO), HttpStatus.CREATED);
-    }
-    //VUELOS RESERVADOS
-    @GetMapping("/flight-reservation")
-    public ResponseEntity<?> flightsSaved() {
-        return new ResponseEntity<>(service.flightSaved(), HttpStatus.OK);
-    }
-
-
     @PostMapping("/new")
-    public ResponseEntity<ResponseDTO> crearFlight(@RequestBody FlightDTO flightDTO) {
+    public ResponseEntity<ResponseDTO> crearFlight(@RequestBody @Valid FlightDTO flightDTO) {
         return new ResponseEntity<>(service.createFlight(flightDTO), HttpStatus.CREATED);
     }
 
     //UPDATE
-    @PostMapping("/edit/{id}")
-    public ResponseEntity<ResponseDTO> updateFlight(@PathVariable @NotNull Long id, @RequestBody FlightDTO flightDTO) {
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<ResponseDTO> updateFlight(@PathVariable @NotNull Long id, @RequestBody @Valid FlightDTO flightDTO) {
         return new ResponseEntity<>(service.updateFlight(id, flightDTO), HttpStatus.OK);
     }
 
@@ -68,17 +56,5 @@ public class FlightController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDTO> deleteFlights(@PathVariable @NotNull Long id) {
         return new ResponseEntity<>(service.deleteFlight(id), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/borrar/{flightCode}")
-    public ResponseEntity<ResponseDTO> deleteFlights(@PathVariable @NotNull String flightCode) {
-        try {
-            ResponseDTO response = service.eliminarPorCode(flightCode);
-            return ResponseEntity.ok(response); // Devuelve 200 OK si la eliminación fue exitosa
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build(); // Devuelve 404 Not Found si no se encontró el vuelo
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Devuelve 500 Internal Server Error en otros casos}
-        }
     }
 }

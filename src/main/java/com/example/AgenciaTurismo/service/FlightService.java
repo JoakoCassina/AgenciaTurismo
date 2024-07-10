@@ -11,6 +11,7 @@ import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.model.Flight;
 import com.example.AgenciaTurismo.model.Client;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -19,28 +20,24 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightService implements IFlightService {
 
     @Autowired
-    private IFlightRepository repository;
+    IFlightRepository flightRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     private List<FlightReservedDTO> flightReserve = new ArrayList<>();
 
-
     @Override
     public List<FlightDTO> listarFlight() {
-        return repository.findAll().stream()
-                .map(flight -> new FlightDTO(
-                        flight.getFlightCode(),
-                        flight.getOrigin(),
-                        flight.getDestination(),
-                        flight.getSeatType(),
-                        flight.getPrice(),
-                        flight.getDateFrom(),
-                        flight.getDateTo()
-                )).toList();
+        return flightRepository.findAll().stream()
+                .map(flight -> modelMapper.map(flight, FlightDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -115,56 +112,36 @@ public class FlightService implements IFlightService {
     @Override
     public ResponseDTO createFlight(FlightDTO flightDTO) {
         Flight flight = new Flight();
-        flight.setFlightCode(flightDTO.getFlightCode());
-        flight.setOrigin(flightDTO.getOrigin());
-        flight.setDestination(flightDTO.getDestination());
-        flight.setSeatType(flightDTO.getSeatType());
-        flight.setPrice(flightDTO.getPrice());
-        flight.setDateFrom(flightDTO.getDateFrom());
-        flight.setDateTo(flightDTO.getDateTo());
-
-        repository.save(flight);
+        modelMapper.map(flightDTO, flight);
+        flightRepository.save(flight);
 
         return new ResponseDTO("Vuelo creado con éxito");
     }
 
     @Override
     public ResponseDTO updateFlight(Long id, FlightDTO flightDTO) {
-
-        if(!repository.existsById(id)){
+        Optional<Flight> optionFlight = flightRepository.findById(id);
+        if(optionFlight.isEmpty()){
             return new ResponseDTO("Vuelo no encontrado");
         }
-        Flight flight = new Flight(
-                id,
-                flightDTO.getFlightCode(),
-                flightDTO.getOrigin(),
-                flightDTO.getDestination(),
-                flightDTO.getSeatType(),
-                flightDTO.getPrice(),
-                flightDTO.getDateFrom(),
-                flightDTO.getDateTo()
-        );
-        repository.save(flight);
+        Flight flightExistente = optionFlight.get();
+
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(flightDTO, flightExistente);
+        flightRepository.save(flightExistente);
         return new ResponseDTO("Vuelo actualizado con éxito");
-
-
     }
+
+
     @Override
     public ResponseDTO deleteFlight(Long id) {
-        if(!repository.existsById(id)){
+        if(!flightRepository.existsById(id)){
             return new ResponseDTO("Vuelo no encontrado");
         }
 
-        repository.deleteById(id);
+        flightRepository.deleteById(id);
         return new ResponseDTO("Vuelo eliminado con éxito");
     }
-
-    @Override
-    public ResponseDTO eliminarPorCode(String flightCode) {
-        repository.deleteByFlightCode(flightCode);
-        return new ResponseDTO("Vuelo eliminado con éxito");
-    }
-
 
 
                             //METODOS PARA VALIDAR
@@ -260,9 +237,4 @@ public class FlightService implements IFlightService {
             return true;
     }
 
-
-    public static interface IUserRepository extends JpaRepository<Client,Long> {
-
-        Optional<Client> findByUsername(String username);
-    }
 }

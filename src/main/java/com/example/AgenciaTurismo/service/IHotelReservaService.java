@@ -16,7 +16,7 @@ public interface IHotelReservaService {
     ResponseDTO createReserva(FinalHotelReservationDTO finalHotelReservationDTO);
 
     //UPDATE
-    ResponseDTO uptateReserva(Long id, FinalHotelReservationDTO finalHoteltReservationDTO);
+    ResponseDTO updateReserva(Long id, FinalHotelReservationDTO finalHoteltReservationDTO);
 
     //DELETE
     ResponseDTO deleteReserva(Long id);
