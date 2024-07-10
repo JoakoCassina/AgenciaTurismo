@@ -36,6 +36,6 @@ public class People {
     private ReservarHotel reservationHotel;
 
     @ManyToOne
-    @JoinColumn(name = "reservaflight_id")
+    @JoinColumn(name = "reservar_flights_id")
     private ReservarFlight reservationFlight;
 }

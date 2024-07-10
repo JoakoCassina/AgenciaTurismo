@@ -41,6 +41,18 @@ public class Client implements UserDetails {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
+    @OneToOne
+    @JoinColumn(name = "reservar_hotels_id")
+    private ReservarHotel reservationHotel;
+
+    @OneToOne
+    @JoinColumn(name = "reservar_flights_id")
+    private ReservarFlight reservationFlight;
+
+    @OneToOne
+    @JoinColumn(name = "paquete_turistico_id")
+    private TouristPackage paqueteTuristico;
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

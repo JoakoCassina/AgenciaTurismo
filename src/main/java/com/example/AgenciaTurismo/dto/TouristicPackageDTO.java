@@ -1,0 +1,24 @@
+package com.example.AgenciaTurismo.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDate;
+
+public class TouristicPackageDTO {
+
+    @JsonProperty("package_number")
+    private String packageNumber;
+
+    private String name;
+
+    @JsonProperty("creation_date")
+    private LocalDate creationDate;
+
+    @JsonProperty("client_id")
+    private Long clienteId;
+
+    @JsonProperty("bookings_or_reservations")
+    private ReservationPackageDTO listaReservation;
+
+
+}

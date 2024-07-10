@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -18,16 +20,23 @@ import java.util.List;
 public class TouristPackage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "package_number")
-    private Long packageNumber;
+    private Long id;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "creation_date")
+    private LocalDate creationDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    private Client clientId;
 
     @OneToMany(mappedBy = "paqueteTuristico", cascade = CascadeType.ALL)
-    @Column(name = "reserva_hotel_id")
-    private List<Long> reservaHotelId;
+    private List<ReservarHotel> reservaHotel;
 
     @OneToMany(mappedBy = "paqueteTuristico", cascade = CascadeType.ALL)
-    private List<Long> reservaFlightId;
+    private List<ReservarFlight> reservaFlight;
 
 
 }
