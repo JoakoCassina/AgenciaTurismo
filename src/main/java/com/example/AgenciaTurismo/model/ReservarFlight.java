@@ -20,6 +20,9 @@ public class ReservarFlight {
 
     private Double seats;
 
+    @Column(name = "total_amount")
+    private Double totalAmount;
+
     @OneToMany(mappedBy = "reservationFlight", cascade = CascadeType.ALL)
     private List<People> people;
 
@@ -34,4 +37,8 @@ public class ReservarFlight {
     @ManyToOne
     @JoinColumn(name = "paquete_turistico_id")
     private TouristPackage paqueteTuristico;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clients_id")
+    private Client cliente;
 }
