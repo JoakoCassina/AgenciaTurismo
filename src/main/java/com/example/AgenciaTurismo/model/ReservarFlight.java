@@ -27,8 +27,9 @@ public class ReservarFlight {
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
-    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
-    private Flight flights;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flights_id", unique =true)
+    private Flight flight;
 
     @ManyToOne
     @JoinColumn(name = "paquete_turistico_id")

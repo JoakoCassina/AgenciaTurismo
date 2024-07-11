@@ -41,8 +41,7 @@ public class Flight {
 
     private Boolean reserved;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "reservar_flights_id")
+    @OneToOne(mappedBy = "flight",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ReservarFlight reservation;
 
 }
