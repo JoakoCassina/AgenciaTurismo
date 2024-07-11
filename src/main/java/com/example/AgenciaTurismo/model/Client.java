@@ -1,5 +1,7 @@
 package com.example.AgenciaTurismo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name="clients", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+@JsonIgnoreProperties("reservationHotel")
 public class Client implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

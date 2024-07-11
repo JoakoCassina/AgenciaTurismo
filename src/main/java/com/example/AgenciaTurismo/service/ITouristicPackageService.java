@@ -9,5 +9,5 @@ import java.util.List;
 public interface ITouristicPackageService {
 
 
-//    ResponseDTO createPackage(TouristicPackageDTO paquete);
+    ResponseDTO createPackage(TouristicPackageDTO paquete);
 }

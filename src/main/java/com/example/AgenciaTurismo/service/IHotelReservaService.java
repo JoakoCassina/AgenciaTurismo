@@ -5,6 +5,7 @@ import com.example.AgenciaTurismo.dto.HotelReservedDTO;
 import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
+import com.example.AgenciaTurismo.model.ReservarHotel;
 
 import java.util.List;
 
@@ -27,4 +28,7 @@ public interface IHotelReservaService {
     Double calcInterest(Double amount, Integer dues, String type);
 
     Boolean roomCapacity(HotelReservationDTO reservation);
+
+    List<Object[]> traerReservaPorCliente(Long clientId);
+
 }

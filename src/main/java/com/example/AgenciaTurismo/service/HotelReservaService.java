@@ -264,5 +264,10 @@ public class HotelReservaService implements IHotelReservaService {
         return true;
     }
 
+    @Override
+    public List<Object[]> traerReservaPorCliente(Long clientId) {
+        return hotelReservaRepository.findByClientId(clientId);
+    }
+
 
 }
