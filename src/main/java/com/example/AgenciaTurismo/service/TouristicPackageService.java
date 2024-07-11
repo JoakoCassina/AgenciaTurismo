@@ -30,18 +30,35 @@ public class TouristicPackageService implements ITouristicPackageService{
 
     @Override
     public ResponseDTO createPackage(TouristicPackageDTO paquete) {
-//        TouristPackage paqueteTuristico = new TouristPackage();
-//        paqueteTuristico.setName(paquete.getName());
-//        paqueteTuristico.setCreationDate(paquete.getCreationDate());
-//        paqueteTuristico.setId(paquete.getClienteId());
-//        paqueteTuristico.setReservaHotel(paquete.getListaReservation());
-
         Long clienteABuscar = paquete.getClienteId();
         Long reservaDeClienteABuscar = paquete.getListaReservation().getId1();
         Long segundaReservaDeClienteABuscar = paquete.getListaReservation().getId2();
-        reservaRepository.findByClientId(clienteABuscar);
 
-        return null;
+        List<Object[]> reservasDelCliente = reservaRepository.findByClientId(clienteABuscar);
+
+        Double totalAmountReserva1 = null;
+        Double totalAmountReserva2 = null;
+
+        // Iterar sobre las reservas del cliente para encontrar los totalAmounts de las reservas específicas
+        for (Object[] reserva : reservasDelCliente) {
+            Long idReserva = (Long) reserva[0];
+            Double totalAmount = (Double) reserva[1];
+
+            if (idReserva.equals(reservaDeClienteABuscar)) {
+                totalAmountReserva1 = totalAmount;
+            } else if (idReserva.equals(segundaReservaDeClienteABuscar)) {
+                totalAmountReserva2 = totalAmount;
+            }
+        }
+            // Si ambos totalAmounts se han encontrado, se puede salir del bucle
+            if (totalAmountReserva1 != null && totalAmountReserva2 != null) {
+                // Sumar los totalAmounts
+                Double total = ((totalAmountReserva1 + totalAmountReserva2) - 0.10);
+                // Devolver el total como parte de la respuesta
+                return new ResponseDTO("Paquete Turistico creado correctamente. Total de los totalAmounts: " + total);
+            }
+        throw new IllegalArgumentException("No se encontraron todas las reservas especificadas para el cliente.");
+
     }
 
 
