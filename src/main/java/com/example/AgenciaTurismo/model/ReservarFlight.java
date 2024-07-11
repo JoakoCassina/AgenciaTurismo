@@ -20,6 +20,9 @@ public class ReservarFlight {
 
     private Double seats;
 
+    @Column(name = "total_amount")
+    private Double totalAmount;
+
     @OneToMany(mappedBy = "reservationFlight", cascade = CascadeType.ALL)
     private List<People> people;
 

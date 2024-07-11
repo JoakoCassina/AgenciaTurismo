@@ -52,8 +52,9 @@ public class HotelController {
     @GetMapping("/hotels-available")
     public ResponseEntity<?> hotelesDisponibles(@RequestParam (required = false) @Future(message = "La fecha de entrada debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateFrom,
                                                 @RequestParam (required = false) @Future(message = "La fecha de salida debe ser en el futuro") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateTo,
-                                               @RequestParam (required = false) @NotBlank(message = "El destino no puede estar en blanco") String destination){
-        HotelConsultDTO datos = new HotelConsultDTO(dateFrom, dateTo, destination);
+                                               @RequestParam (required = false) @NotBlank(message = "El destino no puede estar en blanco") String destination,
+                                                @RequestParam (required = false) @NotBlank(message = "El codigo de hotel no puede estar en blanco") String hotelCode){
+        HotelConsultDTO datos = new HotelConsultDTO(dateFrom, dateTo, destination, hotelCode);
         return new ResponseEntity<>(service.hotelesDisponibles(datos), HttpStatus.OK);
     }
 

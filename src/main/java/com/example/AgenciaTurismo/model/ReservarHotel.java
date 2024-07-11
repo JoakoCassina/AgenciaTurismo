@@ -22,6 +22,9 @@ public class ReservarHotel {
     @Column(name = "people_amount")
     private Double peopleAmount;
 
+    @Column(name = "total_amount")
+    private Double totalAmount;
+
     @OneToMany(mappedBy = "reservationHotel", cascade = CascadeType.ALL)
     private List<People> people;
 

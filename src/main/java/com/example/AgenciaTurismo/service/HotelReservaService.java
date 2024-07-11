@@ -68,7 +68,8 @@ public class HotelReservaService implements IHotelReservaService {
         HotelConsultDTO hotelBuscado = new HotelConsultDTO(
                 finalHotelReservationDTO.getHotelReservationDTO().getDateFrom(),
                 finalHotelReservationDTO.getHotelReservationDTO().getDateTo(),
-                finalHotelReservationDTO.getHotelReservationDTO().getDestination());
+                finalHotelReservationDTO.getHotelReservationDTO().getDestination(),
+                finalHotelReservationDTO.getHotelReservationDTO().getHotelCode());
 
         List<HotelDTO> availableHotel = serviceHotel.validarHotelesDisponibles(hotelBuscado);
 
@@ -129,7 +130,10 @@ public class HotelReservaService implements IHotelReservaService {
         reservaHotelCreada.setPaymentMethod(metodoPagoAGuardar);
         reservaHotelCreada.setHotel(hotelExistente);
         reservaHotelCreada.setCliente(clienteEncontrado);
+        reservaHotelCreada.setTotalAmount(total);
         hotelReservaRepository.save(reservaHotelCreada);
+
+        clienteEncontrado.setBookingQuantity(clienteEncontrado.getBookingQuantity()+1);
 
         for (People person : persAGuardar) {
             person.setReservationHotel(reservaHotelCreada);

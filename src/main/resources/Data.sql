@@ -27,3 +27,9 @@ VALUES
 ('BOBA-6567', 'Bogotá', 'Buenos Aires', 'Economy', 39860, '2025-02-15', '2025-02-28',0),
 ('BOME-4442', 'Bogotá', 'Medellín', 'Economy', 11000, '2025-02-10', '2025-02-24',0),
 ('MEPI-9986', 'Medellín', 'Puerto Iguazú', 'Business', 41640, '2025-04-17', '2025-05-02',0);
+
+INSERT INTO clients (booking_quantity, year, email,first_name, last_name, password, username, role)
+VALUES
+(0, 2023, "gerpoupeau@gmail.com","German", "Poupeau", "Vamo River", "gerpoupeau", "CLIENTE"),
+(0, 2020, "juanma@gmail.com", "Juan", "Francesconi", "juanma13", "jfrancesco", "CLIENTE"),
+(0, 1992, "rikiford@gmail.com", "Ricardo", "Ford", "miamee", "rikiford99", "ADMIN");
