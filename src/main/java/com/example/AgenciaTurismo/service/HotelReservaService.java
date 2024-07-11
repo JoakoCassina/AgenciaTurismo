@@ -6,14 +6,8 @@ import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
-import com.example.AgenciaTurismo.model.Hotel;
-import com.example.AgenciaTurismo.model.PaymentMethod;
-import com.example.AgenciaTurismo.model.People;
-import com.example.AgenciaTurismo.model.ReservarHotel;
-import com.example.AgenciaTurismo.repository.IHotelRepository;
-import com.example.AgenciaTurismo.repository.IHotelReservaRepository;
-import com.example.AgenciaTurismo.repository.IPaymentMethodRepository;
-import com.example.AgenciaTurismo.repository.IPeopleRepository;
+import com.example.AgenciaTurismo.model.*;
+import com.example.AgenciaTurismo.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +30,9 @@ public class HotelReservaService implements IHotelReservaService {
     IHotelService serviceHotel;
 
     @Autowired
+    IClientRepository clientRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
 
@@ -54,6 +51,12 @@ public class HotelReservaService implements IHotelReservaService {
 
     @Override
     public ResponseDTO createReserva(FinalHotelReservationDTO finalHotelReservationDTO) {
+
+        Optional<Client> clienteExistente = clientRepository.findByUsername(finalHotelReservationDTO.getUserName());
+        if(clienteExistente.isEmpty()) {
+            return new ResponseDTO("Debes loguearte para poder crear una reserva!!");
+        }
+        Client clienteEncontrado = clienteExistente.get();
 
         if (this.reserveSaved(finalHotelReservationDTO)) {
             throw new IllegalArgumentException("La reserva ya está realizada.");
@@ -90,6 +93,7 @@ public class HotelReservaService implements IHotelReservaService {
 
         Double total = amount + interest;
 
+
         TotalHotelReservationDTO totalHotelReservationDTO = new TotalHotelReservationDTO();
         totalHotelReservationDTO.setAmount(amount);
         totalHotelReservationDTO.setInterest(interest);
@@ -124,6 +128,7 @@ public class HotelReservaService implements IHotelReservaService {
         reservaHotelCreada.setPeople(persAGuardar);
         reservaHotelCreada.setPaymentMethod(metodoPagoAGuardar);
         reservaHotelCreada.setHotel(hotelExistente);
+        reservaHotelCreada.setCliente(clienteEncontrado);
         hotelReservaRepository.save(reservaHotelCreada);
 
         for (People person : persAGuardar) {

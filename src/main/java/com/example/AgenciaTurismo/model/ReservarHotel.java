@@ -37,4 +37,8 @@ public class ReservarHotel {
     @JoinColumn(name = "paquete_turistico_id")
     private TouristPackage paqueteTuristico;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clients_id")
+    private Client cliente;
+
 }

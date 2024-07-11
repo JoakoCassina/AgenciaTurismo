@@ -37,13 +37,11 @@ public class Client implements UserDetails {
     private Rol role;
 
 
-    @OneToOne
-    @JoinColumn(name = "reservar_hotels_id")
-    private ReservarHotel reservationHotel;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ReservarHotel> reservationHotel;
 
-    @OneToOne
-    @JoinColumn(name = "reservar_flights_id")
-    private ReservarFlight reservationFlight;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ReservarFlight> reservationFlight;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
