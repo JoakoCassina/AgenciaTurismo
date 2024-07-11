@@ -17,11 +17,11 @@ public interface IHotelService {
 
     // CREATE
     ResponseDTO createHotel(HotelDTO hotelDTO);
-
     // UPDATE
     ResponseDTO updateHotel(Long id, HotelDTO hotelDTO);
     //DELETE
     ResponseDTO deleteHotel (Long id);
+
 
     List<HotelDTO> validarHotelesDisponibles(HotelConsultDTO hotelConsultDTO);
 

@@ -18,12 +18,9 @@ public interface IFlightService {
 
     FlightAvailableDTO vuelosDisponibles(FlightConsultDTO flightConsultDTO);
 
-    TotalFlightReservationDTO reserved(FinalFlightReservationDTO finalFlightReservationDTO);
-
 
     // CREATE
     ResponseDTO createFlight(FlightDTO flightDTO);
-
     // UPDATE
     ResponseDTO updateFlight(Long id, FlightDTO flightDTO);
     //DELETE
@@ -31,9 +28,6 @@ public interface IFlightService {
 
 
     //METODOS PARA VALIDAR
-    Boolean reserveSaved(FinalFlightReservationDTO finalFlightReservationDTO);
-
-    List<FlightReservedDTO> flightSaved();
 
     List<FlightDTO> validarVuelosDisponibles(FlightConsultDTO flightConsultDTO);
 
@@ -41,5 +35,4 @@ public interface IFlightService {
 
     Boolean dateValid(LocalDate dateFrom, LocalDate dateTo);
 
-    Double calcInterest(Double totalPrice, Integer dues, String type);
 }

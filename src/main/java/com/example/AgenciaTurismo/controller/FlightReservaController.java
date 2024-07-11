@@ -9,10 +9,12 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/flight-booking")
+@Validated
 public class FlightReservaController {
     @Autowired
     IFlightReservaService service;
@@ -31,7 +33,7 @@ public class FlightReservaController {
 
     // MODIFICAR RESERVA VUELO
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> actualizarReserva(@PathVariable Long id, @RequestBody FinalFlightReservationDTO finalFlightReservationDTO) {
+    public ResponseEntity<?> actualizarReserva(@PathVariable @NotNull Long id, @RequestBody @Valid FinalFlightReservationDTO finalFlightReservationDTO) {
         return new ResponseEntity<>(service.updateReserva(id, finalFlightReservationDTO), HttpStatus.CREATED);
     }
 

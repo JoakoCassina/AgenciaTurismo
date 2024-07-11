@@ -1,14 +1,9 @@
 package com.example.AgenciaTurismo.service;
 
 import com.example.AgenciaTurismo.dto.HotelDTO;
-import com.example.AgenciaTurismo.dto.HotelReservationDTO;
-import com.example.AgenciaTurismo.dto.HotelReservedDTO;
-import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.request.HotelConsultDTO;
 import com.example.AgenciaTurismo.dto.response.HotelAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
-import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
-import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
 import com.example.AgenciaTurismo.exception.InvalidReservationException;
 import com.example.AgenciaTurismo.model.Hotel;
 import com.example.AgenciaTurismo.repository.IHotelRepository;
