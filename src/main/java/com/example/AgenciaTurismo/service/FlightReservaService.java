@@ -106,17 +106,24 @@ public class FlightReservaService implements IFlightReservaService {
         paymentMethodRepository.save(metodoPagoAGuardar); //guardo el metodo de pago
 
         Flight flightExistente = flightRepository.findByFlightCode(flightToReserved.getFlightCode());
-        Flight flightAGuardar = modelMapper.map(flightExistente, Flight.class);
-        flightAGuardar.setReserved(true);
+        if (flightExistente == null){
+            throw new IllegalArgumentException("No se encontró el vuelo a reservar.");
 
-        ReservarFlight flight = new ReservarFlight();
-        flight.setSeats(finalFlightReservationDTO.getFlightReservationDTO().getSeats());
-        flight.setPeople(persAGuardar);
-        flight.setPaymentMethod(metodoPagoAGuardar);
-        flight.setFlights(flightAGuardar);
+        }
+        flightExistente.setReserved(true);
 
-        flightReservaRepository.save(flight);
+        ReservarFlight reservaFlightCreada = new ReservarFlight();
+        reservaFlightCreada.setSeats(finalFlightReservationDTO.getFlightReservationDTO().getSeats());
+        reservaFlightCreada.setPeople(persAGuardar);
+        reservaFlightCreada.setPaymentMethod(metodoPagoAGuardar);
+        reservaFlightCreada.setFlight(flightExistente);
 
+        flightReservaRepository.save(reservaFlightCreada);
+
+        for (People peoples : persAGuardar) {
+            peoples.setReservationFlight(reservaFlightCreada);
+             peopleRepository.save(peoples);
+        }
         return new ResponseDTO("Reserva de vuelo dada de alta correctamente");
     }
 
@@ -133,30 +140,6 @@ public class FlightReservaService implements IFlightReservaService {
         // Actualizar campos simples directamente
         reservaExistente.setSeats(finalFlightReservationDTO.getFlightReservationDTO().getSeats());
 
-        /// Actualizar personas (people)
-        List<PeopleDTO> personasDTO = finalFlightReservationDTO.getFlightReservationDTO().getPeopleDTO();
-        if (personasDTO != null && !personasDTO.isEmpty()) {
-            List<People> personas = new ArrayList<>();
-            for (PeopleDTO peopleDTO : personasDTO) {
-                // Buscar una persona existente por algún atributo único (en este caso, el nombre)
-                Optional<People> optionalPersonaExistente = peopleRepository.findByName(peopleDTO.getName());
-                if (optionalPersonaExistente.isPresent()) {
-                    // Si la persona existe, actualizar los campos relevantes
-                    People personaExistente = optionalPersonaExistente.get();
-                    modelMapper.map(peopleDTO, personaExistente);
-                    personas.add(personaExistente);
-                } else {
-                    // Si la persona no existe, mapear una nueva persona desde el DTO
-                    People personaNueva = modelMapper.map(peopleDTO, People.class);
-                    personas.add(personaNueva);
-                }
-            }
-            reservaExistente.setPeople(personas);
-        } else {
-            // Si no se proporcionan personas en el DTO, mantener las existentes (no hacer nada)
-            reservaExistente.setPeople(reservaExistente.getPeople());
-        }
-
         // Actualizar método de pago (paymentMethod)
         PaymentMethodDTO metodoPagoDTO = finalFlightReservationDTO.getFlightReservationDTO().getPaymentMethodDTO();
         if (metodoPagoDTO != null) {
@@ -172,10 +155,7 @@ public class FlightReservaService implements IFlightReservaService {
                 PaymentMethod metodoPago = modelMapper.map(metodoPagoDTO, PaymentMethod.class);
                 reservaExistente.setPaymentMethod(metodoPago);
             }
-        } else {
-            // Si no se proporciona método de pago en el DTO, mantener el existente (no hacer nada)
         }
-
         // Guardar la reserva actualizada
         flightReservaRepository.save(reservaExistente);
 
@@ -184,10 +164,16 @@ public class FlightReservaService implements IFlightReservaService {
 
     @Override
     public ResponseDTO deleteReserva(Long id) {
-        if (!flightReservaRepository.existsById(id)) {
+        Optional<ReservarFlight> reservaABuscar = flightReservaRepository.findById(id);
+        if (reservaABuscar.isEmpty()) {
             return new ResponseDTO("No se encontró la reserva a eliminar");
         }
+        ReservarFlight reservaAEliminar = reservaABuscar.get();
+        Flight flightReservado = reservaAEliminar.getFlight();
         flightReservaRepository.deleteById(id);
+
+        flightReservado.setReserved(false);
+        flightRepository.save(flightReservado);
         return new ResponseDTO("Reserva eliminada con éxito");
     }
 

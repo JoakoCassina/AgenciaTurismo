@@ -163,7 +163,6 @@ public class HotelReservaService implements IHotelReservaService {
                 reservaExistente.setPaymentMethod(metodoPago);
             }
         }
-
         // Guardar la reserva actualizada
         hotelReservaRepository.save(reservaExistente);
 
