@@ -44,8 +44,7 @@ public class Hotel {
 
     private Boolean reserved;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "reservar_hotels_id")
+    @OneToOne(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ReservarHotel reservation;
 
 }

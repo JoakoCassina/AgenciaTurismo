@@ -13,17 +13,17 @@ VALUES
 ('CP-0002', 'Central Plaza 2', 'Medillín', 'Doble', 6400, '2025-02-10', '2025-03-20',0),
 ('BG-0004', 'Bocagrande', 'Cartagena', 'Múltiple', 9370, '2025-04-17', '2025-06-12', 0);
 
-INSERT INTO flights (flight_code, origin, destination, seat_type, price, date_from, date_to)
+INSERT INTO flights (flight_code, origin, destination, seat_type, price, date_from, date_to, reserved)
 VALUES
-('BAPI-1235', 'Buenos Aires', 'Puerto Iguazú', 'Economy', 6500, '2025-02-10', '2025-02-15'),
-('PIBA-1420', 'Puerto Iguazú', 'Bogotá', 'Business', 43200, '2025-02-10', '2025-02-20'),
-('PIBA-1420', 'Puerto Iguazú', 'Bogotá', 'Economy', 25735, '2025-02-10', '2025-02-20'),
-('BATU-5536', 'Buenos Aires', 'Tucumán', 'Economy', 7320, '2025-02-10', '2025-02-17'),
-('TUPI-3369', 'Tucumán', 'Puerto Iguazú', 'Business', 12530, '2025-02-12', '2025-02-23'),
-('TUPI-3369', 'Tucumán', 'Puerto Iguazú', 'Economy', 5400, '2025-02-12', '2025-02-23'),
-('BOCA-4213', 'Bogotá', 'Cartagena', 'Economy', 8000, '2025-01-23', '2025-02-05'),
-('CAME-0321', 'Cartagena', 'Medellín', 'Economy', 7800, '2025-01-23', '2025-01-31'),
-('BOBA-6567', 'Bogotá', 'Buenos Aires', 'Business', 57000, '2025-02-15', '2025-02-28'),
-('BOBA-6567', 'Bogotá', 'Buenos Aires', 'Economy', 39860, '2025-02-15', '2025-02-28'),
-('BOME-4442', 'Bogotá', 'Medellín', 'Economy', 11000, '2025-02-10', '2025-02-24'),
-('MEPI-9986', 'Medellín', 'Puerto Iguazú', 'Business', 41640, '2025-04-17', '2025-05-02');
+('BAPI-1235', 'Buenos Aires', 'Puerto Iguazú', 'Economy', 6500, '2025-02-10', '2025-02-15',0),
+('PIBA-1420', 'Puerto Iguazú', 'Bogotá', 'Business', 43200, '2025-02-10', '2025-02-20',0),
+('PIBA-1420', 'Puerto Iguazú', 'Bogotá', 'Economy', 25735, '2025-02-10', '2025-02-20',0),
+('BATU-5536', 'Buenos Aires', 'Tucumán', 'Economy', 7320, '2025-02-10', '2025-02-17',0),
+('TUPI-3369', 'Tucumán', 'Puerto Iguazú', 'Business', 12530, '2025-02-12', '2025-02-23',0),
+('TUPI-3369', 'Tucumán', 'Puerto Iguazú', 'Economy', 5400, '2025-02-12', '2025-02-23',0),
+('BOCA-4213', 'Bogotá', 'Cartagena', 'Economy', 8000, '2025-01-23', '2025-02-05',0),
+('CAME-0321', 'Cartagena', 'Medellín', 'Economy', 7800, '2025-01-23', '2025-01-31',0),
+('BOBA-6567', 'Bogotá', 'Buenos Aires', 'Business', 57000, '2025-02-15', '2025-02-28',0),
+('BOBA-6567', 'Bogotá', 'Buenos Aires', 'Economy', 39860, '2025-02-15', '2025-02-28',0),
+('BOME-4442', 'Bogotá', 'Medellín', 'Economy', 11000, '2025-02-10', '2025-02-24',0),
+('MEPI-9986', 'Medellín', 'Puerto Iguazú', 'Business', 41640, '2025-04-17', '2025-05-02',0);

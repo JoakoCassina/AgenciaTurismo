@@ -36,10 +36,6 @@ public class Client implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Rol role;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }
 
     @OneToOne
     @JoinColumn(name = "reservar_hotels_id")
@@ -48,6 +44,11 @@ public class Client implements UserDetails {
     @OneToOne
     @JoinColumn(name = "reservar_flights_id")
     private ReservarFlight reservationFlight;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
 
     @Override
     public boolean isAccountNonExpired() {
