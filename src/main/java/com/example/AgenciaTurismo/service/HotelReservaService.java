@@ -98,6 +98,7 @@ public class HotelReservaService implements IHotelReservaService {
         totalHotelReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
 
 
+
         List<PeopleDTO> persDeReserva = finalHotelReservationDTO.getHotelReservationDTO().getPeopleDTO();
         List<People> persAGuardar = new ArrayList<>();
         for (PeopleDTO peoples : persDeReserva) {
@@ -106,22 +107,29 @@ public class HotelReservaService implements IHotelReservaService {
             peopleRepository.save(person);
         } //guardo la lista de personas
 
+
         PaymentMethodDTO metodoPago = finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO();
         PaymentMethod metodoPagoAGuardar = modelMapper.map(metodoPago, PaymentMethod.class);
         paymentMethodRepository.save(metodoPagoAGuardar);//guardo el metodo de pago
 
 
-        Hotel hotelExitente = hotelRepository.findByHotelCode(hotelToReserved.getHotelCode());
-        Hotel hotelAGuardar = modelMapper.map(hotelExitente, Hotel.class);
-        hotelAGuardar.setReserved(true);
+        Hotel hotelExistente = hotelRepository.findByHotelCode(hotelToReserved.getHotelCode());
+        if (hotelExistente == null) {
+            throw new IllegalArgumentException("No se encontró el hotel a reservar.");
+        }
+        hotelExistente.setReserved(true);
 
-        ReservarHotel hotel = new ReservarHotel();
-        hotel.setPeopleAmount(finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
-        hotel.setPeople(persAGuardar);
-        hotel.setPaymentMethod(metodoPagoAGuardar);
-        hotel.setHotel(hotelAGuardar);
+        ReservarHotel reservaHotelCreada = new ReservarHotel();
+        reservaHotelCreada.setPeopleAmount(finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
+        reservaHotelCreada.setPeople(persAGuardar);
+        reservaHotelCreada.setPaymentMethod(metodoPagoAGuardar);
+        reservaHotelCreada.setHotel(hotelExistente);
+        hotelReservaRepository.save(reservaHotelCreada);
 
-        hotelReservaRepository.save(hotel);
+        for (People person : persAGuardar) {
+            person.setReservationHotel(reservaHotelCreada);
+            peopleRepository.save(person);
+        }
 
         return new ResponseDTO("Reserva de hotel dada de alta correctamente");
     }
@@ -190,10 +198,18 @@ public class HotelReservaService implements IHotelReservaService {
 
     @Override
     public ResponseDTO deleteReserva(Long id) {
-        if(!hotelReservaRepository.existsById(id)){
+        Optional<ReservarHotel> reservaABuscar = hotelReservaRepository.findById(id);
+        if(reservaABuscar.isEmpty()){
             return new ResponseDTO("No se encontro la reserva a eliminar");
         }
+        ReservarHotel reservaAEliminar = reservaABuscar.get();
+        Hotel hotelReservado = reservaAEliminar.getHotel();
+
         hotelReservaRepository.deleteById(id);
+
+        hotelReservado.setReserved(false);
+        hotelRepository.save(hotelReservado);
+
         return new ResponseDTO("Reserva eliminada con éxito");
     }
 
