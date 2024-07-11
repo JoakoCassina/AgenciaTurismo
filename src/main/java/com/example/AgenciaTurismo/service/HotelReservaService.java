@@ -147,30 +147,6 @@ public class HotelReservaService implements IHotelReservaService {
         // Actualizar campos simples directamente
         reservaExistente.setPeopleAmount(finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
 
-        /// Actualizar personas (people)
-        List<PeopleDTO> personasDTO = finalHotelReservationDTO.getHotelReservationDTO().getPeopleDTO();
-        if (personasDTO != null && !personasDTO.isEmpty()) {
-            List<People> personas = new ArrayList<>();
-            for (PeopleDTO peopleDTO : personasDTO) {
-                // Buscar una persona existente por algún atributo único (en este caso, el nombre)
-                Optional<People> optionalPersonaExistente = peopleRepository.findByName(peopleDTO.getName());
-                if (optionalPersonaExistente.isPresent()) {
-                    // Si la persona existe, actualizar los campos relevantes
-                    People personaExistente = optionalPersonaExistente.get();
-                    modelMapper.map(peopleDTO, personaExistente);
-                    personas.add(personaExistente);
-                } else {
-                    // Si la persona no existe, mapear una nueva persona desde el DTO
-                    People personaNueva = modelMapper.map(peopleDTO, People.class);
-                    personas.add(personaNueva);
-                }
-            }
-            reservaExistente.setPeople(personas);
-        } else {
-            // Si no se proporcionan personas en el DTO, mantener las existentes (no hacer nada)
-            reservaExistente.setPeople(reservaExistente.getPeople());
-        }
-
         // Actualizar método de pago (paymentMethod)
         PaymentMethodDTO metodoPagoDTO = finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO();
         if (metodoPagoDTO != null) {
@@ -186,8 +162,6 @@ public class HotelReservaService implements IHotelReservaService {
                 PaymentMethod metodoPago = modelMapper.map(metodoPagoDTO, PaymentMethod.class);
                 reservaExistente.setPaymentMethod(metodoPago);
             }
-        } else {
-            // Si no se proporciona método de pago en el DTO, mantener el existente (no hacer nada)
         }
 
         // Guardar la reserva actualizada
