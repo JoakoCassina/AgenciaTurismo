@@ -30,8 +30,10 @@ public interface IHotelReservaService {
 
     Boolean roomCapacity(HotelReservationDTO reservation);
 
+    List<FinalHotelReservationDTO> mapearReservas (List<ReservarHotel> reservas);
+
     List<FinalHotelReservationDTO> ListarReservasDia(LocalDate dia);
 
-//    List<Object[]> traerReservaPorCliente(Long clientId);
+    List<FinalHotelReservationDTO> listarReservasMes(Integer mes);
 
 }

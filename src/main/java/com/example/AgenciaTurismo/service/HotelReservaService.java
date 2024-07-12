@@ -42,46 +42,8 @@ public class HotelReservaService implements IHotelReservaService {
     @Override
     public List<FinalHotelReservationDTO> listarReservas() {
         List<ReservarHotel> reservasList = hotelReservaRepository.findAll();
-        List<FinalHotelReservationDTO> listAMotrar = new ArrayList<>();
+        return mapearReservas(reservasList);
 
-
-        for (ReservarHotel reserva : reservasList) { //Iteramos la lista de Reservas de la BBDD
-
-            FinalHotelReservationDTO reservaFinal = new FinalHotelReservationDTO();
-
-            Client clienteDTO = reserva.getCliente();
-            if (clienteDTO != null) {
-                reservaFinal.setUserName(clienteDTO.getUsername());
-            } //Recuperamos el userName del cliente que realizo la reserva (obtenemos el primer campo del FinalHotelReservationDTO)
-
-            HotelReservationDTO reservaGeneral = new HotelReservationDTO();
-            //Inicializamos el segundo campo de FinalHotelReservationDTO (HotelReservatioDTO) y mapeamos todos los campos simples de HotelReservationDTO
-            reservaGeneral.setHotelCode(reserva.getHotel().getHotelCode());
-            reservaGeneral.setDateFrom(reserva.getHotel().getDateFrom());
-            reservaGeneral.setDateTo(reserva.getHotel().getDateTo());
-            reservaGeneral.setDestination(reserva.getHotel().getDestination());
-            reservaGeneral.setRoomType(reserva.getHotel().getRoomType());
-            reservaGeneral.setPeopleAmount(reserva.getPeopleAmount());
-
-
-            PaymentMethod paymentMethodDeReserva = reserva.getPaymentMethod();
-            PaymentMethodDTO pagoDTO = modelMapper.map(paymentMethodDeReserva, PaymentMethodDTO.class);
-            //Mapeamos el Objeto PaymentMethod ==> PaymentMethodDTO
-            reservaGeneral.setPaymentMethodDTO(pagoDTO); //le asignamos el campo a HotelReservationDTO
-
-            List<People> peopleDeReserva = reserva.getPeople();
-            List<PeopleDTO> peoplesDTO = new ArrayList<>();
-            for (People peoples : peopleDeReserva) {
-                PeopleDTO person = modelMapper.map(peoples, PeopleDTO.class);
-                peoplesDTO.add(person);
-            } //Mapeamos la lista de Peoples ==> peopleDTO
-            reservaGeneral.setPeopleDTO(peoplesDTO); // Le asignamos la lista de peolesDTO al HotelReservationDTO
-
-            reservaFinal.setHotelReservationDTO(reservaGeneral); //seteamos el HotelReservationDTO DEL FinalHotelReservationDTO con el HotelReservatioDTO creado
-            listAMotrar.add(reservaFinal);
-        } //guardo la lista de personas
-
-        return listAMotrar;
     }
 
     @Override
@@ -314,12 +276,11 @@ public class HotelReservaService implements IHotelReservaService {
     }
 
     @Override
-    public List<FinalHotelReservationDTO> ListarReservasDia(LocalDate dia) {
-        List<ReservarHotel> reservasList = hotelReservaRepository.findByDia(dia);
+    public List<FinalHotelReservationDTO> mapearReservas(List<ReservarHotel> reservas) {
         List<FinalHotelReservationDTO> listAMotrar = new ArrayList<>();
 
 
-        for (ReservarHotel reserva : reservasList) { //Iteramos la lista de Reservas de la BBDD
+        for (ReservarHotel reserva : reservas) { //Iteramos la lista de Reservas de la BBDD
 
             FinalHotelReservationDTO reservaFinal = new FinalHotelReservationDTO();
 
@@ -357,11 +318,19 @@ public class HotelReservaService implements IHotelReservaService {
 
         return listAMotrar;
     }
-//
-//    @Override
-//    public List<Re> traerReservaPorCliente(Long clientId) {
-//        return hotelReservaRepository.findByClientId(clientId);
-//    }
+
+    @Override
+    public List<FinalHotelReservationDTO> ListarReservasDia(LocalDate dia) {
+        List<ReservarHotel> reservasListDia = hotelReservaRepository.findByDia(dia);
+        return mapearReservas(reservasListDia);
+    }
+
+    @Override
+    public List<FinalHotelReservationDTO> listarReservasMes(Integer mes) {
+        List<ReservarHotel> reservasListMes = hotelReservaRepository.findByMes(mes);
+        return mapearReservas(reservasListMes);
+
+    }
 
 
 }
