@@ -7,6 +7,7 @@ import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.dto.response.TotalHotelReservationDTO;
 import com.example.AgenciaTurismo.model.ReservarHotel;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IHotelReservaService {
@@ -28,6 +29,8 @@ public interface IHotelReservaService {
     Double calcInterest(Double amount, Integer dues, String type);
 
     Boolean roomCapacity(HotelReservationDTO reservation);
+
+    List<FinalHotelReservationDTO> ListarReservasDia(LocalDate dia);
 
 //    List<Object[]> traerReservaPorCliente(Long clientId);
 
