@@ -10,13 +10,14 @@ import java.util.List;
 
 public interface IHotelReservaRepository extends JpaRepository<ReservarHotel, Long> {
 
-    @Query ("SELECT r FROM ReservarHotel r WHERE r.cliente.id = :clientId")
+    @Query("SELECT r FROM ReservarHotel r WHERE r.cliente.id = :clientId")
     List<ReservarHotel> findByClientId(Long clientId);
 
 
     @Query("SELECT r FROM ReservarHotel r WHERE DATE(r.creationDate) = :dia")
     List<ReservarHotel> findByDia(@Param("dia") LocalDate dia);
 
-//    List<ReservarHotel> findByMonth(Integer mes);
+    @Query("SELECT r FROM ReservarHotel r WHERE MONTH(r.creationDate) = :mes ")
+    List<ReservarHotel> findByMes(@Param("mes") Integer mes);
 
 }

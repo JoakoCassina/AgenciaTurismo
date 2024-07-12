@@ -45,44 +45,7 @@ public class FlightReservaService implements IFlightReservaService {
     @Override
     public List<FinalFlightReservationDTO> listarReservas() {
         List<ReservarFlight> reservasList = flightReservaRepository.findAll();
-        List<FinalFlightReservationDTO> listAMotrar = new ArrayList<>();
-
-        for (ReservarFlight reserva : reservasList) { //Iteramos la lista de Reservas de la BBDD
-
-            FinalFlightReservationDTO reservaFinal = new FinalFlightReservationDTO();
-
-            Client clienteDTO = reserva.getCliente();
-            if (clienteDTO != null) {
-                reservaFinal.setUserName(clienteDTO.getUsername());
-            } //Recuperamos el userName del cliente que realizo la reserva (obtenemos el primer campo del FinalFlightReservationDTO)
-
-            FlightReservationDTO reservaGeneral = new FlightReservationDTO();
-            //Inicializamos el segundo campo de FinalFlightReservationDTO (FlighReservatioDTO) y mapeamos todos los campos simples de FlighReservationDTO
-            reservaGeneral.setFlightCode(reserva.getFlight().getFlightCode());
-            reservaGeneral.setDateFrom(reserva.getFlight().getDateFrom());
-            reservaGeneral.setDateTo(reserva.getFlight().getDateTo());
-            reservaGeneral.setOrigin(reserva.getFlight().getOrigin());
-            reservaGeneral.setDestination(reserva.getFlight().getDestination());
-            reservaGeneral.setSeatType(reserva.getFlight().getSeatType());
-
-            PaymentMethod paymentMethodDeReserva = reserva.getPaymentMethod();
-            PaymentMethodDTO pagoDTO = modelMapper.map(paymentMethodDeReserva, PaymentMethodDTO.class);
-            //Mapeamos el Objeto PaymentMethod ==> PaymentMethodDTO
-            reservaGeneral.setPaymentMethodDTO(pagoDTO); //le asignamos el campo a FlightReservationDTO
-
-            List<People> peopleDeReserva = reserva.getPeople();
-            List<PeopleDTO> peoplesDTO = new ArrayList<>();
-            for (People peoples : peopleDeReserva) {
-                PeopleDTO person = modelMapper.map(peoples, PeopleDTO.class);
-                peoplesDTO.add(person);
-            } //Mapeamos la lista de Peoples ==> peopleDTO
-            reservaGeneral.setPeopleDTO(peoplesDTO); // Le asignamos la lista de peolesDTO al FlightReservationDTO
-
-            reservaFinal.setFlightReservationDTO(reservaGeneral); //seteamos el Flight ReservationDTO DEL FinalFlightReservationDTO con el FlightReservatioDTO creado
-            listAMotrar.add(reservaFinal);
-        } //guardo la lista de personas
-
-        return listAMotrar;
+        return this.mapearReservas(reservasList);
     }
 
 
@@ -270,6 +233,61 @@ public class FlightReservaService implements IFlightReservaService {
         } else {
             throw new IllegalArgumentException("Tipo de pago no válido.");
         }
+    }
+
+    @Override
+    public List<FinalFlightReservationDTO> ListarReservasDia(LocalDate dia) {
+        List<ReservarFlight> reservasListDia = flightReservaRepository.findByDia(dia);
+        return this.mapearReservas(reservasListDia);
+    }
+
+    @Override
+    public List<FinalFlightReservationDTO> listarReservasMes(Integer mes) {
+        List<ReservarFlight> reservasListMes = flightReservaRepository.findByMes(mes);
+
+        return this.mapearReservas(reservasListMes);
+
+    }
+
+    public List<FinalFlightReservationDTO> mapearReservas(List<ReservarFlight> listReservas) {
+        List<FinalFlightReservationDTO> listAMotrar = new ArrayList<>();
+
+        for (ReservarFlight reserva : listReservas) { //Iteramos la lista de Reservas de la BBDD
+
+            FinalFlightReservationDTO reservaFinal = new FinalFlightReservationDTO();
+
+            Client clienteDTO = reserva.getCliente();
+            if (clienteDTO != null) {
+                reservaFinal.setUserName(clienteDTO.getUsername());
+            } //Recuperamos el userName del cliente que realizo la reserva (obtenemos el primer campo del FinalFlightReservationDTO)
+
+            FlightReservationDTO reservaGeneral = new FlightReservationDTO();
+            //Inicializamos el segundo campo de FinalFlightReservationDTO (FlighReservatioDTO) y mapeamos todos los campos simples de FlighReservationDTO
+            reservaGeneral.setFlightCode(reserva.getFlight().getFlightCode());
+            reservaGeneral.setDateFrom(reserva.getFlight().getDateFrom());
+            reservaGeneral.setDateTo(reserva.getFlight().getDateTo());
+            reservaGeneral.setOrigin(reserva.getFlight().getOrigin());
+            reservaGeneral.setDestination(reserva.getFlight().getDestination());
+            reservaGeneral.setSeatType(reserva.getFlight().getSeatType());
+
+            PaymentMethod paymentMethodDeReserva = reserva.getPaymentMethod();
+            PaymentMethodDTO pagoDTO = modelMapper.map(paymentMethodDeReserva, PaymentMethodDTO.class);
+            //Mapeamos el Objeto PaymentMethod ==> PaymentMethodDTO
+            reservaGeneral.setPaymentMethodDTO(pagoDTO); //le asignamos el campo a FlightReservationDTO
+
+            List<People> peopleDeReserva = reserva.getPeople();
+            List<PeopleDTO> peoplesDTO = new ArrayList<>();
+            for (People peoples : peopleDeReserva) {
+                PeopleDTO person = modelMapper.map(peoples, PeopleDTO.class);
+                peoplesDTO.add(person);
+            } //Mapeamos la lista de Peoples ==> peopleDTO
+            reservaGeneral.setPeopleDTO(peoplesDTO); // Le asignamos la lista de peolesDTO al FlightReservationDTO
+
+            reservaFinal.setFlightReservationDTO(reservaGeneral); //seteamos el Flight ReservationDTO DEL FinalFlightReservationDTO con el FlightReservatioDTO creado
+            listAMotrar.add(reservaFinal);
+        } //guardo la lista de personas
+
+        return listAMotrar;
     }
 
 }
