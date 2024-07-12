@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IHotelReservaRepository extends JpaRepository<ReservarHotel, Long> {
 
-    @Query ("SELECT r.totalAmount, r.id FROM ReservarHotel r WHERE r.cliente.id = :clientId")
-    List<Object[]> findByClientId(Long clientId);
+    @Query ("SELECT r FROM ReservarHotel r WHERE r.cliente.id = :clientId")
+    List<ReservarHotel> findByClientId(Long clientId);
 
 }

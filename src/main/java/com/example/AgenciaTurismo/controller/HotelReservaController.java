@@ -40,9 +40,9 @@ public class HotelReservaController {
         return new ResponseEntity<>(service.deleteReserva(id), HttpStatus.OK);
     }
 
-    @GetMapping("/findBy/{clientId}")
-    public ResponseEntity<?> listarReservasPorCliente(@PathVariable Long clientId) {
-        return new ResponseEntity<>(service.traerReservaPorCliente(clientId), HttpStatus.OK);
-    }
+//    @GetMapping("/findBy/{clientId}")
+//    public ResponseEntity<?> listarReservasPorCliente(@PathVariable Long clientId) {
+//        return new ResponseEntity<>(service.traerReservaPorCliente(clientId), HttpStatus.OK);
+//    }
 
 }

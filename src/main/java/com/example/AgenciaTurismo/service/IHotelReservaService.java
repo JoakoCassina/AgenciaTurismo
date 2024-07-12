@@ -29,6 +29,6 @@ public interface IHotelReservaService {
 
     Boolean roomCapacity(HotelReservationDTO reservation);
 
-    List<Object[]> traerReservaPorCliente(Long clientId);
+//    List<Object[]> traerReservaPorCliente(Long clientId);
 
 }

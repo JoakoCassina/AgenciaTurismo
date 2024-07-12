@@ -1,5 +1,6 @@
 package com.example.AgenciaTurismo.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class TouristicPackageDTO {
 
     private String name;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("creation_date")
     private LocalDate creationDate;
 

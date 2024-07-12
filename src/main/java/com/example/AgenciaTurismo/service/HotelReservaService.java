@@ -30,7 +30,8 @@ public class HotelReservaService implements IHotelReservaService {
     IHotelRepository hotelRepository;
     @Autowired
     IHotelService serviceHotel;
-
+    @Autowired
+    ITouristicPackageRepository touristicPackageRepository;
     @Autowired
     IClientRepository clientRepository;
 
@@ -309,11 +310,11 @@ public class HotelReservaService implements IHotelReservaService {
         }
         return true;
     }
-
-    @Override
-    public List<Object[]> traerReservaPorCliente(Long clientId) {
-        return hotelReservaRepository.findByClientId(clientId);
-    }
+//
+//    @Override
+//    public List<Re> traerReservaPorCliente(Long clientId) {
+//        return hotelReservaRepository.findByClientId(clientId);
+//    }
 
 
 }

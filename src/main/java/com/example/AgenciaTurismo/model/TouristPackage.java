@@ -29,7 +29,7 @@ public class TouristPackage {
     private LocalDate creationDate;
 
     @Column(name = "client_id")
-    private Client clientId;
+    private Long clientId;
 
     @OneToMany(mappedBy = "paqueteTuristico", cascade = CascadeType.ALL)
     private List<ReservarHotel> reservaHotel;
