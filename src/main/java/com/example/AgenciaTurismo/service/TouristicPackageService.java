@@ -3,6 +3,7 @@ package com.example.AgenciaTurismo.service;
 import com.example.AgenciaTurismo.dto.TouristicPackageDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.model.Client;
+import com.example.AgenciaTurismo.model.ReservarFlight;
 import com.example.AgenciaTurismo.model.ReservarHotel;
 import com.example.AgenciaTurismo.model.TouristPackage;
 import com.example.AgenciaTurismo.repository.IClientRepository;
@@ -35,7 +36,7 @@ public class TouristicPackageService implements ITouristicPackageService{
 
 
     @Override
-    public ResponseDTO createPackage(TouristicPackageDTO paquete) {
+    public ResponseDTO createPackageHotel(TouristicPackageDTO paquete) {
         Long clienteABuscar = paquete.getClienteId();
         Long reservaDeClienteABuscar = paquete.getListaReservation().getId1();
         Long segundaReservaDeClienteABuscar = paquete.getListaReservation().getId2();
@@ -88,21 +89,57 @@ public class TouristicPackageService implements ITouristicPackageService{
             }
         throw new IllegalArgumentException("No se encontraron todas las reservas especificadas para el cliente.");
     }
-//    if(totalAmountReserva1 == null || totalAmountReserva2 == null){
-//        for (Object[] reserva : reservasDelClienteVuelo) {
-//            Long idReserva = (Long) reserva[0];
-//            Double totalAmount = (Double) reserva[1];
-//
-//            if (idReserva.equals(reservaDeClienteABuscar)) {
-//                totalAmountReserva1 = totalAmount;
-//            } else if (idReserva.equals(segundaReservaDeClienteABuscar)) {
-//                totalAmountReserva2 = totalAmount;
-//            }
-//            if (totalAmountReserva1 != null && totalAmountReserva2 != null) {
-//                break;
-//            }
-//        }
-//    }
 
 
-}
+    @Override
+    public ResponseDTO createPackageVuelo(TouristicPackageDTO paquete) {
+        Long clienteABuscar = paquete.getClienteId();
+        Long reservaDeClienteABuscar = paquete.getListaReservation().getId1();
+        Long segundaReservaDeClienteABuscar = paquete.getListaReservation().getId2();
+
+        Optional<Client> clienteParaPaquete = clientRepository.findById(paquete.getClienteId());
+        Client clienteEncontrado  = clienteParaPaquete.get();
+
+        List<ReservarFlight> reservasDelClienteVuelo = flightReservaRepository.findByClientId(clienteABuscar);
+
+        Double totalAmountReserva1 = null;
+        Double totalAmountReserva2 = null;
+
+        for (ReservarFlight reserva : reservasDelClienteVuelo) {
+            Long idReserva = reserva.getId();
+            Double totalAmount = reserva.getTotalAmount();
+
+            if (idReserva.equals(reservaDeClienteABuscar)) {
+                totalAmountReserva1 = totalAmount;
+            } else if (idReserva.equals(segundaReservaDeClienteABuscar)) {
+                totalAmountReserva2 = totalAmount;
+            }
+            if (totalAmountReserva1 != null && totalAmountReserva2 != null) {
+                break;
+            }
+        }
+        if (totalAmountReserva1 != null && totalAmountReserva2 != null) {
+            // Sumar los totalAmounts
+            Double total = ((totalAmountReserva1 + totalAmountReserva2) * 0.90);
+            // Devolver el total como parte de la respuesta
+            TouristPackage paqueteTuristico = new TouristPackage();
+            paqueteTuristico.setName(paquete.getName());
+            paqueteTuristico.setCreationDate(paquete.getCreationDate());
+            paqueteTuristico.setClientId(clienteEncontrado.getId());
+            touristicPackageRepository.save(paqueteTuristico);
+
+            Optional<ReservarFlight> reservaDePaquete = flightReservaRepository.findById(reservaDeClienteABuscar);
+            ReservarFlight reservaEncontrada = reservaDePaquete.get();
+            reservaEncontrada.setPaqueteTuristico(paqueteTuristico);
+            flightReservaRepository.save(reservaEncontrada);
+            Optional<ReservarFlight> reservaDePaqueteDos = flightReservaRepository.findById(segundaReservaDeClienteABuscar);
+            ReservarFlight reservaEncontradaDos = reservaDePaqueteDos.get();
+            reservaEncontradaDos.setPaqueteTuristico(paqueteTuristico);
+            flightReservaRepository.save(reservaEncontradaDos);
+            return new ResponseDTO("Paquete Turistico de vuelos creado correctamente. Total del paquete Turístico: " + total);
+        }
+        throw new IllegalArgumentException("No se encontraron todas las reservas especificadas para el cliente.");
+    }
+    }
+
+

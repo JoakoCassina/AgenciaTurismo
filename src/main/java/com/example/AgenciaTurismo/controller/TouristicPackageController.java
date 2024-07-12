@@ -18,9 +18,13 @@ public class TouristicPackageController {
     @Autowired
     ITouristicPackageService service;
 
-    @PostMapping("/touristicpackage/new")
-    public ResponseEntity<ResponseDTO> crearPaquete(@RequestBody TouristicPackageDTO paquete){
-        return new ResponseEntity<>(service.createPackage(paquete), HttpStatus.CREATED);
+    @PostMapping("/touristicpackage/hotel/new")
+    public ResponseEntity<ResponseDTO> crearPaqueteHotel(@RequestBody TouristicPackageDTO paquete){
+        return new ResponseEntity<>(service.createPackageHotel(paquete), HttpStatus.CREATED);
+    }
+    @PostMapping("/touristicpackage/flight/new")
+    public ResponseEntity<ResponseDTO> crearPaqueteVuelo(@RequestBody TouristicPackageDTO paquete){
+        return new ResponseEntity<>(service.createPackageVuelo(paquete), HttpStatus.CREATED);
     }
 //
 //    //UPDATE
