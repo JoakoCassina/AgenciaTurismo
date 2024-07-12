@@ -12,9 +12,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class HotelReservaService implements IHotelReservaService {
@@ -149,6 +151,17 @@ public class HotelReservaService implements IHotelReservaService {
         PaymentMethod metodoPagoAGuardar = modelMapper.map(metodoPago, PaymentMethod.class);
         paymentMethodRepository.save(metodoPagoAGuardar);//guardo el metodo de pago
 
+        Random random = new Random();
+
+        int[] diasPosibles = {10, 15, 20};
+        int randomDay  = diasPosibles[random.nextInt(diasPosibles.length)];
+
+        int randomMonth = random.nextInt(12 - 7 + 1) + 7;
+
+        int year = 2024;
+
+        LocalDate fechaCreacion = LocalDate.of(year, randomMonth, randomDay);
+
 
         Hotel hotelExistente = hotelRepository.findByHotelCode(hotelToReserved.getHotelCode());
         if (hotelExistente == null) {
@@ -163,6 +176,7 @@ public class HotelReservaService implements IHotelReservaService {
         reservaHotelCreada.setHotel(hotelExistente);
         reservaHotelCreada.setCliente(clienteEncontrado);
         reservaHotelCreada.setTotalAmount(total);
+        reservaHotelCreada.setCreationDate(fechaCreacion);
         hotelReservaRepository.save(reservaHotelCreada);
 
         clienteEncontrado.setBookingQuantity(clienteEncontrado.getBookingQuantity()+1);
