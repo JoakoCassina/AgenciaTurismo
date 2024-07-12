@@ -20,7 +20,7 @@ public class TouristicPackageService implements ITouristicPackageService{
     @Autowired
     IClientRepository clientRepository;
     @Autowired
-    IHotelReservaRepository reservaRepository;
+    IHotelReservaRepository hotelReservaRepository;
 
     public List<Client> listarClientes(){
         return clientRepository.findAll();
@@ -34,7 +34,7 @@ public class TouristicPackageService implements ITouristicPackageService{
         Long reservaDeClienteABuscar = paquete.getListaReservation().getId1();
         Long segundaReservaDeClienteABuscar = paquete.getListaReservation().getId2();
 
-        List<Object[]> reservasDelCliente = reservaRepository.findByClientId(clienteABuscar);
+        List<Object[]> reservasDelCliente = hotelReservaRepository.findByClientId(clienteABuscar);
 
         Double totalAmountReserva1 = null;
         Double totalAmountReserva2 = null;
@@ -55,7 +55,7 @@ public class TouristicPackageService implements ITouristicPackageService{
                 // Sumar los totalAmounts
                 Double total = ((totalAmountReserva1 + totalAmountReserva2) - 0.10);
                 // Devolver el total como parte de la respuesta
-                return new ResponseDTO("Paquete Turistico creado correctamente. Total de los totalAmounts: " + total);
+                return new ResponseDTO("Paquete Turistico de hoteles creado correctamente. Total de los totalAmounts: " + total);
             }
         throw new IllegalArgumentException("No se encontraron todas las reservas especificadas para el cliente.");
 
