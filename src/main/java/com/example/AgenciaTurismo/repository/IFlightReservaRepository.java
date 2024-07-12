@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IFlightReservaRepository extends JpaRepository<ReservarFlight, Long> {
 
-    @Query("SELECT r.id, r.totalAmount FROM ReservarFlight r WHERE r.cliente.id = :clientId")
-    List<Object[]> findByClientId(Long clientId);
+    @Query("SELECT r FROM ReservarFlight r WHERE r.cliente.id = :clientId")
+    List<ReservarFlight> findByClientId(Long clientId);
 
 }
