@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,9 @@ public class ReservarFlight {
 
     @Column(name = "total_amount")
     private Double totalAmount;
+
+    @Column(name = "creation_date")
+    private LocalDate creationDate;
 
     @OneToMany(mappedBy = "reservationFlight", cascade = CascadeType.ALL)
     private List<People> people;
