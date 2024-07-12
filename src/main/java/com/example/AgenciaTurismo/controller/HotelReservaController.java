@@ -47,5 +47,9 @@ public class HotelReservaController {
         LocalDate fechaBuscada = LocalDate.parse(dia);
         return new ResponseEntity<>(service.ListarReservasDia(fechaBuscada), HttpStatus.OK);
     }
+    @GetMapping("/findBy/mes")
+    public ResponseEntity<?> listarReservasDia(@RequestParam("mes") Integer mes) {
+        return new ResponseEntity<>(service.listarReservasMes(mes), HttpStatus.OK);
+    }
 
 }

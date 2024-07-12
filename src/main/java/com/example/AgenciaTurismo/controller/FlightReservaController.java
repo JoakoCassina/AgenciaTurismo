@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/v1/flight-booking")
 @Validated
@@ -41,6 +43,15 @@ public class FlightReservaController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDTO> eliminarReserva(@PathVariable @NotNull Long id) {
         return new ResponseEntity<>(service.deleteReserva(id), HttpStatus.OK);
+    }
+    @GetMapping("/findBy/dia")
+    public ResponseEntity<?> listarReservasDia(@RequestParam("dia") String dia) {
+        LocalDate fechaBuscada = LocalDate.parse(dia);
+        return new ResponseEntity<>(service.ListarReservasDia(fechaBuscada), HttpStatus.OK);
+    }
+    @GetMapping("/findBy/mes")
+    public ResponseEntity<?> listarReservasDia(@RequestParam("mes") Integer mes) {
+        return new ResponseEntity<>(service.listarReservasMes(mes), HttpStatus.OK);
     }
 
 }
