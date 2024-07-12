@@ -34,6 +34,9 @@ public class FlightReservaService implements IFlightReservaService {
     IFlightService serviceFlight;
 
     @Autowired
+    IClientRepository clientRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
 
@@ -42,16 +45,54 @@ public class FlightReservaService implements IFlightReservaService {
         List<ReservarFlight> reservasList = flightReservaRepository.findAll();
         List<FinalFlightReservationDTO> listAMotrar = new ArrayList<>();
 
-        for (ReservarFlight reservas : reservasList) {
-            FinalFlightReservationDTO reserva = modelMapper.map(reservas, FinalFlightReservationDTO.class);
-            listAMotrar.add(reserva);
+        for (ReservarFlight reserva : reservasList) { //Iteramos la lista de Reservas de la BBDD
+
+            FinalFlightReservationDTO reservaFinal = new FinalFlightReservationDTO();
+
+            Client clienteDTO = reserva.getCliente();
+            if (clienteDTO != null) {
+                reservaFinal.setUserName(clienteDTO.getUsername());
+            } //Recuperamos el userName del cliente que realizo la reserva (obtenemos el primer campo del FinalFlightReservationDTO)
+
+            FlightReservationDTO reservaGeneral = new FlightReservationDTO();
+            //Inicializamos el segundo campo de FinalFlightReservationDTO (FlighReservatioDTO) y mapeamos todos los campos simples de FlighReservationDTO
+            reservaGeneral.setFlightCode(reserva.getFlight().getFlightCode());
+            reservaGeneral.setDateFrom(reserva.getFlight().getDateFrom());
+            reservaGeneral.setDateTo(reserva.getFlight().getDateTo());
+            reservaGeneral.setOrigin(reserva.getFlight().getOrigin());
+            reservaGeneral.setDestination(reserva.getFlight().getDestination());
+            reservaGeneral.setSeatType(reserva.getFlight().getSeatType());
+
+            PaymentMethod paymentMethodDeReserva = reserva.getPaymentMethod();
+            PaymentMethodDTO pagoDTO = modelMapper.map(paymentMethodDeReserva, PaymentMethodDTO.class);
+            //Mapeamos el Objeto PaymentMethod ==> PaymentMethodDTO
+            reservaGeneral.setPaymentMethodDTO(pagoDTO); //le asignamos el campo a FlightReservationDTO
+
+            List<People> peopleDeReserva = reserva.getPeople();
+            List<PeopleDTO> peoplesDTO = new ArrayList<>();
+            for (People peoples : peopleDeReserva) {
+                PeopleDTO person = modelMapper.map(peoples, PeopleDTO.class);
+                peoplesDTO.add(person);
+            } //Mapeamos la lista de Peoples ==> peopleDTO
+            reservaGeneral.setPeopleDTO(peoplesDTO); // Le asignamos la lista de peolesDTO al FlightReservationDTO
+
+            reservaFinal.setFlightReservationDTO(reservaGeneral); //seteamos el Flight ReservationDTO DEL FinalFlightReservationDTO con el FlightReservatioDTO creado
+            listAMotrar.add(reservaFinal);
         } //guardo la lista de personas
 
         return listAMotrar;
     }
 
+
     @Override
     public ResponseDTO createReserva(FinalFlightReservationDTO finalFlightReservationDTO) {
+
+        Optional<Client> clienteExistente = clientRepository.findByUsername(finalFlightReservationDTO.getUserName());
+        if(clienteExistente.isEmpty()) {
+            return new ResponseDTO("Debes loguearte para poder crear una reserva!!");
+        }
+
+        Client clienteEncontrado = clienteExistente.get();
 
         if (this.reserveSaved(finalFlightReservationDTO)) {
             throw new IllegalArgumentException("La reserva ya está realizada.");
@@ -116,9 +157,11 @@ public class FlightReservaService implements IFlightReservaService {
         reservaFlightCreada.setSeats(finalFlightReservationDTO.getFlightReservationDTO().getSeats());
         reservaFlightCreada.setPeople(persAGuardar);
         reservaFlightCreada.setPaymentMethod(metodoPagoAGuardar);
+        reservaFlightCreada.setCliente(clienteEncontrado);
         reservaFlightCreada.setFlight(flightExistente);
-
         flightReservaRepository.save(reservaFlightCreada);
+
+        clienteEncontrado.setBookingQuantity(clienteEncontrado.getBookingQuantity()+1);
 
         for (People peoples : persAGuardar) {
             peoples.setReservationFlight(reservaFlightCreada);
