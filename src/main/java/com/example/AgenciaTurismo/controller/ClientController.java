@@ -18,10 +18,10 @@ public class ClientController {
     @Autowired
     IClientService clientService;
 
-//    @GetMapping("/top-3")
-//    ResponseEntity<List<ClienteDTO>> topClientes(){
-//        return new ResponseEntity<>(clientService.topClientes(), HttpStatus.OK);
-//    }
+    @GetMapping("/top3")
+    ResponseEntity<List<ClienteDTO>> topClientes(){
+        return new ResponseEntity<>(clientService.topClientes(), HttpStatus.OK);
+    }
 
     @GetMapping
     ResponseEntity<List<Client>> listarClientes(){
