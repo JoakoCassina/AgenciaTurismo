@@ -18,10 +18,10 @@ public class TouristicPackageController {
     @Autowired
     ITouristicPackageService service;
 
-//    @PostMapping("/touristicpackage/new")
-//    public ResponseEntity<ResponseDTO> crearPaquete(@RequestBody TouristicPackageDTO paquete){
-//        return new ResponseEntity<>(service.createPackage(paquete), HttpStatus.CREATED);
-//    }
+    @PostMapping("/touristicpackage/new")
+    public ResponseEntity<ResponseDTO> crearPaquete(@RequestBody TouristicPackageDTO paquete){
+        return new ResponseEntity<>(service.createPackage(paquete), HttpStatus.CREATED);
+    }
 //
 //    //UPDATE
 //    @PutMapping("/edit/{id}")

@@ -32,8 +32,8 @@ INSERT INTO clients (booking_quantity, year, email,first_name, last_name, passwo
 VALUES
 (0, 2024, "gerpoupeau@gmail.com","German", "Poupeau", "Vamo River", "gerpoupeau", "CLIENTE"),
 (0, 2024, "juanma@gmail.com", "Juan", "Francesconi", "juanma13", "jfrancesco", "CLIENTE"),
-(0, 2024, "rikiford@gmail.com", "Ricardo", "Ford", "miamee", "rikiford99", "ADMIN");
-(0, 2024, "agus@gmail.com", "Agustina", "Peralta", "123456", "aguperalta", "CLIENTE");
-(0, 2024, "andrea@gmail.com", "Andrea", "Toledo", "contraseña", "andretoledo", "CLIENTE");
-(0, 2024, "matias@gmail.com", "Matias", "Leglise", "mati2000", "matileglise", "CLIENTE");
+(0, 2024, "rikiford@gmail.com", "Ricardo", "Ford", "miamee", "rikiford99", "ADMIN"),
+(0, 2024, "agus@gmail.com", "Agustina", "Peralta", "123456", "aguperalta", "CLIENTE"),
+(0, 2024, "andrea@gmail.com", "Andrea", "Toledo", "contraseña", "andretoledo", "CLIENTE"),
+(0, 2024, "matias@gmail.com", "Matias", "Leglise", "mati2000", "matileglise", "CLIENTE"),
 (0, 2024, "joaco@gmail.com", "Joaquin", "Cassina", "limon20", "joacassina", "CLIENTE");
