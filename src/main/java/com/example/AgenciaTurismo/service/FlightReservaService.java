@@ -15,9 +15,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class FlightReservaService implements IFlightReservaService {
@@ -146,6 +148,18 @@ public class FlightReservaService implements IFlightReservaService {
         PaymentMethod metodoPagoAGuardar = modelMapper.map(metodoPago, PaymentMethod.class);
         paymentMethodRepository.save(metodoPagoAGuardar); //guardo el metodo de pago
 
+        Random random = new Random();
+
+        int[] diasPosibles = {10, 15, 20};
+        int randomDay  = diasPosibles[random.nextInt(diasPosibles.length)];
+
+        int randomMonth = random.nextInt(12 - 7 + 1) + 7;
+
+        int year = 2024;
+
+        LocalDate fechaCreacion = LocalDate.of(year, randomMonth, randomDay);
+
+
         Flight flightExistente = flightRepository.findByFlightCode(flightToReserved.getFlightCode());
         if (flightExistente == null){
             throw new IllegalArgumentException("No se encontró el vuelo a reservar.");
@@ -159,6 +173,8 @@ public class FlightReservaService implements IFlightReservaService {
         reservaFlightCreada.setPaymentMethod(metodoPagoAGuardar);
         reservaFlightCreada.setCliente(clienteEncontrado);
         reservaFlightCreada.setFlight(flightExistente);
+        reservaFlightCreada.setTotalAmount(total);
+        reservaFlightCreada.setCreationDate(fechaCreacion);
         flightReservaRepository.save(reservaFlightCreada);
 
         clienteEncontrado.setBookingQuantity(clienteEncontrado.getBookingQuantity()+1);
