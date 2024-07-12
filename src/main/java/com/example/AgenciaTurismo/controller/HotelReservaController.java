@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/v1/hotel-booking")
 public class HotelReservaController {
@@ -40,9 +42,10 @@ public class HotelReservaController {
         return new ResponseEntity<>(service.deleteReserva(id), HttpStatus.OK);
     }
 
-//    @GetMapping("/findBy/{clientId}")
-//    public ResponseEntity<?> listarReservasPorCliente(@PathVariable Long clientId) {
-//        return new ResponseEntity<>(service.traerReservaPorCliente(clientId), HttpStatus.OK);
-//    }
+    @GetMapping("/findBy/dia")
+    public ResponseEntity<?> listarReservasDia(@RequestParam("dia") String dia) {
+        LocalDate fechaBuscada = LocalDate.parse(dia);
+        return new ResponseEntity<>(service.ListarReservasDia(fechaBuscada), HttpStatus.OK);
+    }
 
 }
