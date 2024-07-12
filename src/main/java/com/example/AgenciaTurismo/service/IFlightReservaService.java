@@ -27,7 +27,7 @@ public interface IFlightReservaService {
 
     List<FinalFlightReservationDTO> mapearReservas(List<ReservarFlight> listReservas);
 
-    List<FinalFlightReservationDTO> ListarReservasDia(LocalDate dias);
+    List<FinalFlightReservationDTO> listarReservasDia(LocalDate dias);
 
     List<FinalFlightReservationDTO> listarReservasMes(Integer mes);
 

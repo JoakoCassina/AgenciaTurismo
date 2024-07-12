@@ -236,7 +236,7 @@ public class FlightReservaService implements IFlightReservaService {
     }
 
     @Override
-    public List<FinalFlightReservationDTO> ListarReservasDia(LocalDate dia) {
+    public List<FinalFlightReservationDTO> listarReservasDia(LocalDate dia) {
         List<ReservarFlight> reservasListDia = flightReservaRepository.findByDia(dia);
         return this.mapearReservas(reservasListDia);
     }

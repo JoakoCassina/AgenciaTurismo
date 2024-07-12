@@ -320,7 +320,7 @@ public class HotelReservaService implements IHotelReservaService {
     }
 
     @Override
-    public List<FinalHotelReservationDTO> ListarReservasDia(LocalDate dia) {
+    public List<FinalHotelReservationDTO> listarReservasDia(LocalDate dia) {
         List<ReservarHotel> reservasListDia = hotelReservaRepository.findByDia(dia);
         return mapearReservas(reservasListDia);
     }
