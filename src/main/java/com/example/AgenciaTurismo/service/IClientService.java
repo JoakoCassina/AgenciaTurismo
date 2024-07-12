@@ -11,7 +11,7 @@ public interface IClientService {
 
     ClienteDTO findByUsername(String username);
 
-//    List<ClienteDTO> topClientes();
+    List<ClienteDTO> topClientes();
 
     List<Client> listarClientes();
 }

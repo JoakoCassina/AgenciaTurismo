@@ -19,7 +19,8 @@ public class ClienteDTO {
     private Integer bookingQuantity;
     @JsonProperty("total_amount")
     private Double totalAmount;
-    private Integer clienteId;
+    @JsonProperty("cliente_id")
+    private Long clienteId;
     @JsonProperty("client_name")
     private String firstName;
     @JsonProperty("client_lastname")
