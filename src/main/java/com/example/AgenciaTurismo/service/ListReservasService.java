@@ -1,12 +1,19 @@
 package com.example.AgenciaTurismo.service;
 
+import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
+import com.example.AgenciaTurismo.dto.request.FinalHotelReservationDTO;
 import com.example.AgenciaTurismo.dto.response.ListReservasDTO;
+import com.example.AgenciaTurismo.dto.response.ReservaDiaDTO;
+import com.example.AgenciaTurismo.dto.response.ReservaMesDTO;
+import com.example.AgenciaTurismo.model.ReservarFlight;
+import com.example.AgenciaTurismo.model.ReservarHotel;
 import com.example.AgenciaTurismo.repository.IFlightReservaRepository;
 import com.example.AgenciaTurismo.repository.IHotelReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ListReservasService implements IListReservasService {
@@ -32,20 +39,39 @@ public class ListReservasService implements IListReservasService {
     }
 
     @Override
-    public ListReservasDTO listarReservasPorDia(LocalDate dia) {
-        ListReservasDTO listaReservasDTODia = new ListReservasDTO();
-        listaReservasDTODia.setMessage("Listado de Reservas del Día " + dia);
-        listaReservasDTODia.setListaReservaHotels(hotelReservaService.listarReservasDia(dia));
-        listaReservasDTODia.setListaReservaFlight(flightReservaService.listarReservasDia(dia));
-        return listaReservasDTODia;
+    public ReservaDiaDTO listarReservasPorDia(LocalDate dia) {
+        List<ReservarHotel> listaReservasHotelDia = (hotelReservaService.listarReservasDia(dia));
+         Double totalReservasHotel = 0.0;
+        Double totalReservasVuelo = 0.0;
+        for (ReservarHotel reserva : listaReservasHotelDia){
+            totalReservasHotel += reserva.getTotalAmount();
+        }
+        List<ReservarFlight> listaReservasVueloDia = (flightReservaService.listarReservasDia(dia));
+        for (ReservarFlight reserva : listaReservasVueloDia) {
+            totalReservasVuelo += reserva.getTotalAmount();
+        }
+        ReservaDiaDTO totalReservasDia = new ReservaDiaDTO();
+        totalReservasDia.setDate(dia);
+        totalReservasDia.setTotal(totalReservasHotel + totalReservasVuelo);
+        return totalReservasDia;
     }
 
     @Override
-    public ListReservasDTO listarReservasPorMes(Integer mes) {
-        ListReservasDTO listaReservasDTOMes = new ListReservasDTO();
-        listaReservasDTOMes.setMessage("Listado de Reservas del Mes " + mes);
-        listaReservasDTOMes.setListaReservaHotels(hotelReservaService.listarReservasMes(mes));
-        listaReservasDTOMes.setListaReservaFlight(flightReservaService.listarReservasMes(mes));
-        return listaReservasDTOMes;
+    public ReservaMesDTO listarReservasPorMes(Integer mes) {
+        List<ReservarHotel> listaReservaHotelMes =hotelReservaService.listarReservasMes(mes);
+        Double totalReservasHotel = 0.0;
+        Double totalReservasVuelo = 0.0;
+        for (ReservarHotel reserva : listaReservaHotelMes){
+            totalReservasHotel += reserva.getTotalAmount();
+        }
+        List<ReservarFlight> listaReservaVueloMes = flightReservaService.listarReservasMes(mes);
+        for (ReservarFlight reserva : listaReservaVueloMes) {
+            totalReservasVuelo += reserva.getTotalAmount();
+        }
+        ReservaMesDTO totalReservasMes = new ReservaMesDTO();
+        totalReservasMes.setMes(mes);
+        totalReservasMes.setAnio(2024);
+        totalReservasMes.setTotal(totalReservasHotel + totalReservasVuelo);
+        return totalReservasMes;
     }
 }

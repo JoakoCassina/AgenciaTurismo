@@ -1,6 +1,8 @@
 package com.example.AgenciaTurismo.service;
 
 import com.example.AgenciaTurismo.dto.response.ListReservasDTO;
+import com.example.AgenciaTurismo.dto.response.ReservaDiaDTO;
+import com.example.AgenciaTurismo.dto.response.ReservaMesDTO;
 
 import java.time.LocalDate;
 
@@ -8,7 +10,7 @@ public interface IListReservasService {
 
     ListReservasDTO listarReservas();
 
-    ListReservasDTO listarReservasPorDia(LocalDate dia);
+    ReservaDiaDTO listarReservasPorDia(LocalDate dia);
 
-    ListReservasDTO listarReservasPorMes(Integer mes);
+    ReservaMesDTO listarReservasPorMes(Integer mes);
 }

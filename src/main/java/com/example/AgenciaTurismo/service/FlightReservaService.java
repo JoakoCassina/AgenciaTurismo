@@ -62,6 +62,10 @@ public class FlightReservaService implements IFlightReservaService {
         if (this.reserveSaved(finalFlightReservationDTO)) {
             throw new IllegalArgumentException("La reserva ya está realizada.");
         }
+        if(finalFlightReservationDTO.getFlightReservationDTO().getSeats() !=
+                finalFlightReservationDTO.getFlightReservationDTO().getPeopleDTO().size()) {
+            throw new IllegalArgumentException("La cantidad de asientos debe coincidir con la cantidad de personas");
+        }
 
         FlightConsultDTO vueloBuscado = new FlightConsultDTO(
                 finalFlightReservationDTO.getFlightReservationDTO().getDateFrom(),
@@ -205,7 +209,7 @@ public class FlightReservaService implements IFlightReservaService {
         Flight flightEncontrado = flightRepository.findByFlightCode(flightCode);
 
         if (flightEncontrado.getReserved() == true) {
-            throw new IllegalStateException("Este vuelo se encuentra reservado");
+            throw new IllegalArgumentException("Este vuelo se encuentra reservado");
         }
 
         return false;
@@ -236,16 +240,16 @@ public class FlightReservaService implements IFlightReservaService {
     }
 
     @Override
-    public List<FinalFlightReservationDTO> listarReservasDia(LocalDate dia) {
+    public List<ReservarFlight> listarReservasDia(LocalDate dia) {
         List<ReservarFlight> reservasListDia = flightReservaRepository.findByDia(dia);
-        return this.mapearReservas(reservasListDia);
+        return reservasListDia;
     }
 
     @Override
-    public List<FinalFlightReservationDTO> listarReservasMes(Integer mes) {
+    public List<ReservarFlight> listarReservasMes(Integer mes) {
         List<ReservarFlight> reservasListMes = flightReservaRepository.findByMes(mes);
 
-        return this.mapearReservas(reservasListMes);
+        return reservasListMes;
 
     }
 
