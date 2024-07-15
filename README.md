@@ -2,62 +2,194 @@
 
 ## Descripción
 
-Esta API proporciona servicios para la búsqueda y reserva de vuelos y hoteles para una agencia de turismo. Permite a los usuarios buscar vuelos y hoteles disponibles, así como realizar reservas de vuelos y hoteles.
+# Proyecto de Gestión de Reservas de Vuelos y Hoteles
+
+Este proyecto es una aplicación de gestión de reservas de vuelos y hoteles que permite a los usuarios crear y gestionar sus reservas. Además, la aplicación ofrece la funcionalidad de paquetes turísticos, que incluyen combinaciones de reservas de vuelos y hoteles con un descuento especial.
+
+
+## Funcionalidades
+
+1. Gestión de Vuelos:
+- Crear, leer, actualizar y eliminar reservas de vuelos.
+- Consultar detalles de vuelos disponibles.
+- Búsqueda de vuelos por diferentes criterios (Ej., destino, fecha).
+
+2. Gestión de Hoteles:
+- Crear, leer, actualizar y eliminar reservas de hoteles.
+- Consultar detalles de hoteles disponibles.
+- Búsqueda de hoteles por diferentes criterios (Ej., ubicación, disponibilidad).
+
+3. Paquetes Turísticos:
+- Crear, leer, actualizar y eliminar paquetes turísticos.
+- Cada paquete turístico incluye una combinación de dos reservas (vuelos y/o hoteles).
+- Aplicación automática de un descuento del 10% en el precio total del paquete.
+
+4. Generación de Reportes:
+- Reportes de ingresos diarios y mensuales.
+- Top 3 clientes con más reservas en el año.
+- Consultas personalizadas sobre reservas y clientes.
+
+## Tecnologías Utilizadas
+
+* Backend:
+  - Lenguaje: Java
+  - Framework: Spring Boot
+  - Persistencia: JPA con Hibernate
+
+* IDE:
+  - IntelliJ IDEA
+
+* Herramientas Adicionales:
+  - Postman para pruebas de la API
+
+## Estructura del Proyecto
+
+El proyecto está organizado en varios módulos, cada uno responsable de una parte específica de la funcionalidad:
+
+* Controller: Maneja las solicitudes HTTP y delega las operaciones al servicio correspondiente.
+* Service: Contiene la lógica de negocio y se comunica con el repositorio.
+* Repository: Interactúa con la base de datos utilizando JPA/Hibernate.
+* Model: Define las entidades y sus relaciones.
+* DTO (Data Transfer Object): Define los objetos que se utilizan para transferir datos entre las capas de la aplicación, simplificando las interacciones y asegurando que sólo la información necesaria se transmita entre las capas.
+
 
 ## Endpoints
 
-### Hoteles
-- **Listar Hoteles (US 0001):**
-    - Método: GET
-    - Endpoint: /api/v1/listHotels
-    - Descripción: Obtiene un listado de todos los hoteles registrados.
+## Uso de la API
 
-- **Hoteles Disponibles (US 0002):**
-    - Método: GET
-      - Endpoint: /api/v1/hotels
-    - Descripción: Obtiene un listado de todos los hoteles disponibles en un determinado rango de fechas y según el destino seleccionado.
+### Gestión de Clientes
 
-- **Reservar Hotel (US 0003):**
-    - Método: POST
-    - Endpoint: /api/v1/booking
-    - Descripción: Realiza una reserva de hotel.
-
-- **Hoteles Reservados (Extra):**
+- *Top 3 Clientes*
   - Método: GET
-  - Endpoint: /api/v1/reservedHotels
-  - Descripción: Muestra las reservas creadas de hotel.
+  - Endpoint: /api/v1/clients/top3
 
-### Vuelos
-- **Listar Vuelos (US 0004):**
-    - Método: GET
-    - Endpoint: /api/v1/listFlights
-    - Descripción: Obtiene un listado de todos los vuelos registrados.
-
-- **Vuelos Disponibles (US 0005):**
-    - Método: GET
-    - Endpoint: /api/v1/flights
-    - Descripción: Obtiene un listado de todos los vuelos disponibles en un determinado rango de fechas y según el origen y destino seleccionados.
-
-- **Reservar Vuelo (US 0006):**
-    - Método: POST
-    - Endpoint: /api/v1/flight-reservation
-    - Descripción: Realiza una reserva de vuelo.
-
-- **Vuelos Reservados (Extra):**
+- *Listar Clientes*
   - Método: GET
-  - Endpoint: /api/v1/reservedFlights
-  - Descripción: Muestra las reservas creadas de vuelos.
+  - Endpoint: /api/v1/clients
 
-# <p align="center">CRUD</p>
-- **CREATE:**
-- @PostMapping("/createHotel") (Crear Hotel).
-- @PostMapping("/createFlight") (Crear vuelo).
-- **UPDATE:**
--  @PutMapping("/updateHotel/{hotelCode}") (Actualizar hotel).
--  @PutMapping("/updateFlight/{flightCode}") (Actualizar vuelo).
-- **DELETE:**
-- @DeleteMapping("/deleteHotel/{hotelCode}") (Borrar hotel).
-- @DeleteMapping("/deleteFlight/{flightCode}") (Borrar vuelo).
+### Gestión de Vuelos
+
+- *Listar Todos los Vuelos*
+  - Método: GET
+  - Endpoint: /api/v1/flights
+
+- *Vuelos Disponibles*
+  - Método: GET
+  - Endpoint: /api/v1/flights/flights
+  - Parámetros:
+    - dateFrom: Fecha de inicio (formato: dd-MM-yyyy)
+    - dateTo: Fecha de fin (formato: dd-MM-yyyy)
+    - origin: Origen del vuelo
+    - destination: Destino del vuelo
+
+- *Crear Vuelo*
+  - Método: POST
+  - Endpoint: /api/v1/flights/new
+
+- *Actualizar Vuelo*
+  - Método: PUT
+  - Endpoint: /api/v1/flights/edit/{id}
+
+- *Eliminar Vuelo*
+  - Método: DELETE
+  - Endpoint: /api/v1/flights/delete/{id}
+
+### Gestión de Reservas de Vuelos
+
+- *Listar Reservas de Vuelos*
+  - Método: GET
+  - Endpoint: /api/v1/flight-booking
+
+- *Crear Reserva de Vuelo*
+  - Método: POST
+  - Endpoint: /api/v1/flight-booking/new
+
+- *Actualizar Reserva de Vuelo*
+  - Método: PUT
+  - Endpoint: /api/v1/flight-booking/edit/{id}
+
+- *Eliminar Reserva de Vuelo*
+  - Método: DELETE
+  - Endpoint: /api/v1/flight-booking/delete/{id}
+
+### Gestión de Hoteles
+
+- *Listar Todos los Hoteles*
+  - Método: GET
+  - Endpoint: /api/v1/hotels
+
+- *Crear Hotel*
+  - Método: POST
+  - Endpoint: /api/v1/hotels/new
+
+- *Actualizar Hotel*
+  - Método: PUT
+  - Endpoint: /api/v1/hotels/edit/{id}
+
+- *Eliminar Hotel*
+  - Método: DELETE
+  - Endpoint: /api/v1/hotels/delete/{id}
+
+- *Hoteles Disponibles*
+  - Método: GET
+  - Endpoint: /api/v1/hotels/hotels-available
+  - Parámetros:
+    - dateFrom: Fecha de inicio (formato: dd-MM-yyyy)
+    - dateTo: Fecha de fin (formato: dd-MM-yyyy)
+    - destination: Destino del hotel
+    - hotelCode: Código del hotel
+
+### Gestión de Reservas de Hoteles
+
+- *Listar Reservas de Hoteles*
+  - Método: GET
+  - Endpoint: /api/v1/hotel-booking
+
+- *Crear Reserva de Hotel*
+  - Método: POST
+  - Endpoint: /api/v1/hotel-booking/new
+
+- *Actualizar Reserva de Hotel*
+  - Método: PUT
+  - Endpoint: /api/v1/hotel-booking/edit/{id}
+
+- *Eliminar Reserva de Hotel*
+  - Método: DELETE
+  - Endpoint: /api/v1/hotel-booking/delete/{id}
+
+
+### Gestión de Paquetes Turísticos
+
+- *Crear Paquete Turístico (Hotel)*
+  - Método: POST
+  - Endpoint: /api/v1/touristicpackage/hotel/new
+
+- *Crear Paquete Turístico (Vuelo)*
+  - Método: POST
+  - Endpoint: /api/v1/touristicpackage/flight/new
+
+### Listado de reservas
+
+- *Listar Reservas*
+  - Método: GET
+  - Endpoint: /api/v1/income
+
+- *Listar Reservas por Día*
+  - Método: GET
+  - Endpoint: /api/v1/income/dia
+  - Parámetro: dia
+
+
+- *Listar Reservas por Mes*
+  - Método: GET
+  - Endpoint: /api/v1/income/mes
+  - Parámetro: mes
+
+
+## Ejecución de Pruebas
+
+Para probar la API, se recomienda usar Postman. Se pueden importar las colecciones de Postman para facilitar las pruebas de los diferentes endpoints.
+
 
 ## Excepciones Implementadas
 
@@ -180,7 +312,6 @@ La colección de la API se encuentra en el directorio collections en la raíz de
     - Tarjeta de débito: Informar que se ha ingresado una cantidad de cuotas diferente a 1.
 
   **Se creó un método (calcInterest) que valida los tipos de pago e intereses correspondientes.**
-
 
 
 

@@ -32,19 +32,19 @@ public class HotelController {
     }
 
     //CREAR
-    @PostMapping("/hotels/new")
+    @PostMapping("/new")
     public ResponseEntity<ResponseDTO> crearHotel(@RequestBody @Valid HotelDTO hotelDTO) {
         return new ResponseEntity<>(service.createHotel(hotelDTO), HttpStatus.CREATED);
     }
 
     //UPDATE
-    @PutMapping("/hotels/edit/{id}")
+    @PutMapping("/edit/{id}")
     public ResponseEntity<ResponseDTO> updateHotel(@PathVariable @NotNull Long id, @RequestBody @Valid HotelDTO hotelDTO) {
         return new ResponseEntity<>(service.updateHotel(id, hotelDTO), HttpStatus.OK);
     }
 
     //DELETE
-    @DeleteMapping("hotels/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDTO> deleteHotel(@PathVariable @NotNull Long id) {
         return new ResponseEntity<>(service.deleteHotel(id), HttpStatus.OK);
     }
