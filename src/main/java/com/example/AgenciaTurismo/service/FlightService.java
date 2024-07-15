@@ -1,43 +1,35 @@
 package com.example.AgenciaTurismo.service;
 
 import com.example.AgenciaTurismo.dto.*;
-
-import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.request.FlightConsultDTO;
 import com.example.AgenciaTurismo.dto.response.FlightAvailableDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
-import com.example.AgenciaTurismo.dto.response.StatusCodeDTO;
-import com.example.AgenciaTurismo.dto.response.TotalFlightReservationDTO;
 import com.example.AgenciaTurismo.model.Flight;
 import com.example.AgenciaTurismo.repository.IFlightRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightService implements IFlightService {
 
     @Autowired
-    private IFlightRepository flightRepository;
+    IFlightRepository flightRepository;
 
-    private List<FlightReservedDTO> flightReserve = new ArrayList<>();
-
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
-    public List<FlightDTO> listFlightsDTO() {
+    public List<FlightDTO> listarFlight() {
         return flightRepository.findAll().stream()
-                .map(flight -> new FlightDTO(
-                        flight.getFlightCode(),
-                        flight.getOrigin(),
-                        flight.getDestination(),
-                        flight.getSeatType(),
-                        flight.getPrice(),
-                        flight.getDateFrom(),
-                        flight.getDateTo()
-                )).toList();
+                .map(flight -> modelMapper.map(flight, FlightDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -51,151 +43,42 @@ public class FlightService implements IFlightService {
         return flightAvailable;
     }
 
-    @Override
-    public TotalFlightReservationDTO reserved(FinalFlightReservationDTO finalFlightReservationDTO) {
-
-        //SE CREA VARIABLE PARA REDUCIR LINEAS DE CODIGO
-        FlightReservationDTO vueloReserva = finalFlightReservationDTO.getFlightReservationDTO();
-
-        if (this.reserveSaved(finalFlightReservationDTO)) {
-            throw new IllegalArgumentException("La reserva ya está realizada.");
-        }
-
-        FlightConsultDTO vueloBuscados = new FlightConsultDTO(
-                vueloReserva.getDateFrom(),
-                vueloReserva.getDateTo(),
-                vueloReserva.getOrigin(),
-                vueloReserva.getDestination());
-
-        List<FlightDTO> availableFlight = this.validarVuelosDisponibles(vueloBuscados);
-
-
-        FlightDTO flightToReserved = null;
-        for (FlightDTO flight : availableFlight) {
-            if(flight.getOrigin().equalsIgnoreCase(vueloReserva.getOrigin())
-                    && flight.getDestination().equalsIgnoreCase(vueloReserva.getDestination())
-                    && flight.getDateFrom().equals(vueloReserva.getDateFrom())
-                    && flight.getDateTo().equals(vueloReserva.getDateTo())) {
-                flightToReserved = flight;
-                break;
-            }
-        }
-        if (flightToReserved == null) {
-            throw new IllegalArgumentException("No se encontró ningún vuelo que coincida con los criterios de reserva.");
-        }
-
-        if (vueloReserva.getSeats() != vueloReserva.getPeopleDTO().size()) {
-            throw new IllegalArgumentException("La cantidad de asientos debe ser igual que la cantidad de personas.");
-        }
-
-        Double amount = flightToReserved.getPrice() * finalFlightReservationDTO.getFlightReservationDTO().getSeats();
-
-        Double interest = this.calcInterest(amount,
-                                        finalFlightReservationDTO.getFlightReservationDTO().getPaymentMethodDTO().getDues(),
-                                        finalFlightReservationDTO.getFlightReservationDTO().getPaymentMethodDTO().getType());
-
-        Double priceFinal = amount + interest;
-
-        TotalFlightReservationDTO totalFlightReservationDTO = new TotalFlightReservationDTO();
-        totalFlightReservationDTO.setAmount(amount);
-        totalFlightReservationDTO.setInterest(interest);
-        totalFlightReservationDTO.setTotal(priceFinal);
-        totalFlightReservationDTO.setFinalFlightReservationDTO(finalFlightReservationDTO);
-        totalFlightReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
-
-        flightReserve.add(new FlightReservedDTO(totalFlightReservationDTO));
-
-        return totalFlightReservationDTO;
-    }
-
-                                    //CRUD
-    //CREATE
+    //CRUD
     @Override
     public ResponseDTO createFlight(FlightDTO flightDTO) {
         Flight flight = new Flight();
-        flight.setFlightCode(flightDTO.getFlightCode());
-        flight.setOrigin(flightDTO.getOrigin());
-        flight.setDestination(flightDTO.getDestination());
-        flight.setSeatType(flightDTO.getSeatType());
-        flight.setPrice(flightDTO.getPrice());
-        flight.setDateFrom(flightDTO.getDateFrom());
-        flight.setDateTo(flightDTO.getDateTo());
+        modelMapper.map(flightDTO, flight);
         flightRepository.save(flight);
 
         return new ResponseDTO("Vuelo creado con éxito");
     }
 
-    //UPDATE
     @Override
-    public ResponseDTO updateFlight(String flightCode, FlightDTO flightDTO) {
-        Flight flight = new Flight(
-                flightCode,
-                flightDTO.getOrigin(),
-                flightDTO.getDestination(),
-                flightDTO.getSeatType(),
-                flightDTO.getPrice(),
-                flightDTO.getDateFrom(),
-                flightDTO.getDateTo()
-        );
-        Flight updatedFlight = flightRepository.update(flight);
-        if (updatedFlight != null) {
-            return new ResponseDTO("Vuelo actualizado con éxito");
-        } else {
+    public ResponseDTO updateFlight(Long id, FlightDTO flightDTO) {
+        Optional<Flight> optionFlight = flightRepository.findById(id);
+        if(optionFlight.isEmpty()){
             return new ResponseDTO("Vuelo no encontrado");
         }
+        Flight flightExistente = optionFlight.get();
+
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(flightDTO, flightExistente);
+        flightRepository.save(flightExistente);
+        return new ResponseDTO("Vuelo actualizado con éxito");
     }
 
-    //DELETE
     @Override
-    public ResponseDTO deleteFlight(String flightCode) {
-        Flight flight = flightRepository.deleteFlight(flightCode);
-        if(flight != null){
-            return new ResponseDTO("Vuelo eliminado con éxito");
-        }else {
-            return new ResponseDTO("No se encontro el vuelo a eliminar");
+    public ResponseDTO deleteFlight(Long id) {
+        if(!flightRepository.existsById(id)){
+            return new ResponseDTO("Vuelo no encontrado");
         }
 
+        flightRepository.deleteById(id);
+        return new ResponseDTO("Vuelo eliminado con éxito");
     }
+
 
                             //METODOS PARA VALIDAR
-    @Override
-    public Boolean reserveSaved(FinalFlightReservationDTO finalFlightReservationDTO) {
-        for (FlightReservedDTO reservaGuardada : flightReserve){
-            FinalFlightReservationDTO reservaExistente = reservaGuardada.getFlightReserved().getFinalFlightReservationDTO();
-            if (reservaExistente.equals(finalFlightReservationDTO)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public List<FlightReservedDTO> flightSaved() {
-        return flightReserve;
-    }
-
-    @Override
-    public Double calcInterest(Double priceTotal, Integer dues, String type) {
-        if (type.equalsIgnoreCase("Debit") || type.equalsIgnoreCase("Credit")) {
-            if (type.equalsIgnoreCase("Debit") && dues > 1) {
-                throw new IllegalArgumentException("No puede pagar en cuotas con tarjeta de debito.");
-            } else
-                switch (dues) {
-                    case 1:
-                        return 0.0;
-                    case 2, 3:
-                        return priceTotal * 0.05;
-                    case 4, 5, 6:
-                        return priceTotal * 0.10;
-                    case 7, 8, 9, 10, 11, 12:
-                        return priceTotal * 0.20;
-                    default:
-                        throw new IllegalArgumentException("Número de cuotas no válido.");
-                }
-        } else {
-            throw new IllegalArgumentException("Tipo de pago no válido.");
-        }
-    }
 
     //VALIDACION DE DESTINO Y ORIGEN DE VUELOS
     @Override
@@ -206,7 +89,7 @@ public class FlightService implements IFlightService {
         this.dateValid(flightConsultDTO.getDateFrom(), flightConsultDTO.getDateTo());
 
 
-        List<FlightDTO> listFlightDTO = this.listFlightsDTO();
+        List<FlightDTO> listFlightDTO = this.listarFlight();
         //CREAMOS UNA LISTA DE VUELOS QUE COINCIDAN CON LA FECHA
         List<FlightDTO> availableFlight = new ArrayList<>();
         for (FlightDTO flight : listFlightDTO) {
@@ -225,10 +108,10 @@ public class FlightService implements IFlightService {
 
     @Override
     public Boolean flightValid(String origin, String destination) {
-        List<String> validOrigin = listFlightsDTO().stream()
+        List<String> validOrigin = listarFlight().stream()
                 .map(FlightDTO::getOrigin)
                 .toList();
-        List<String> validDestination = listFlightsDTO().stream()
+        List<String> validDestination = listarFlight().stream()
                 .map(FlightDTO::getDestination)
                 .toList();
         if (validOrigin.contains(origin) && !validDestination.contains(destination)){
@@ -249,7 +132,5 @@ public class FlightService implements IFlightService {
         } else
             return true;
     }
-
-
 
 }

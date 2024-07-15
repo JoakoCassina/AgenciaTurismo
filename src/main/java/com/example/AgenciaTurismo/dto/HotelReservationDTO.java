@@ -19,6 +19,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class HotelReservationDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_from")
@@ -42,4 +43,5 @@ public class HotelReservationDTO {
     private List<@Valid PeopleDTO> peopleDTO;
     @JsonProperty("payment_method")
     private PaymentMethodDTO paymentMethodDTO;
+
 }

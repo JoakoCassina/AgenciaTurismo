@@ -16,4 +16,5 @@ public class HotelConsultDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate DateTo;
     private String Destination;
+    private String hotelCode;
 }

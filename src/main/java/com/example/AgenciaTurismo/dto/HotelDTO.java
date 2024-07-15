@@ -1,5 +1,6 @@
 package com.example.AgenciaTurismo.dto;
 
+import com.example.AgenciaTurismo.model.ReservarHotel;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -33,13 +34,14 @@ public class HotelDTO {
     @JsonProperty("price_for_night")
     private Integer priceForNight;
     @JsonFormat(pattern = "dd-MM-yyyy")
-    @JsonProperty("date_from")
+    @JsonProperty("disponibility_date_from")
     @Future(message= "La Fecha de entrada debe ser en el futuro")
     private LocalDate dateFrom;
     @JsonFormat(pattern = "dd-MM-yyyy")
-    @JsonProperty("date_to")
+    @JsonProperty("disponibility_date_to")
     @Future(message= "La Fecha de salida debe ser en el futuro")
     private LocalDate dateTo;
+    @JsonProperty("is_booking")
     private Boolean reserved;
 
 }

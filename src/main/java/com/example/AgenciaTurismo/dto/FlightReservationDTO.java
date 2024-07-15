@@ -20,17 +20,17 @@ import java.util.List;
 @NoArgsConstructor
 public class FlightReservationDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
-    @JsonProperty("date_from")
+    @JsonProperty("going_date")
     @Future(message = "La fecha de entrada debe ser mayor al día de hoy")
     private LocalDate dateFrom;
     @JsonFormat(pattern = "dd-MM-yyyy")
-    @JsonProperty("date_to")
+    @JsonProperty("return_date")
     @Future(message = "La fecha de salida debe ser mayor al día de hoy")
     private LocalDate dateTo;
     private String origin;
     private String destination;
-    @JsonProperty("flight_number")
-    private String flightNumber;
+    @JsonProperty("flight_code")
+    private String flightCode;
     @NumberFormat(style = NumberFormat.Style.NUMBER)
     @Positive(message = "La cantidad de personas debe ser un valor numérico.")
     private Double seats;

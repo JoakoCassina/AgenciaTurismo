@@ -1,19 +1,12 @@
 package com.example.AgenciaTurismo.repository;
 
 import com.example.AgenciaTurismo.model.Hotel;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface IHotelRepository extends JpaRepository<Hotel, Long> {
 
-public interface IHotelRepository {
-    public List<Hotel> findAll();
+    Hotel findByHotelCode(String hotelCode);
 
-    //CREATE
-    Hotel save(Hotel hotel);
-
-    //UPDATE
-    Hotel update(Hotel hotel);
-    //DELETE
-    Hotel deleteHotel(String hotel);
 }
-
-
