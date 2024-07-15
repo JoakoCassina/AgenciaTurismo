@@ -3,6 +3,7 @@ package com.example.AgenciaTurismo.service;
 import com.example.AgenciaTurismo.dto.request.FinalFlightReservationDTO;
 import com.example.AgenciaTurismo.dto.response.ResponseDTO;
 import com.example.AgenciaTurismo.model.ReservarFlight;
+import com.example.AgenciaTurismo.model.ReservarHotel;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,9 +28,9 @@ public interface IFlightReservaService {
 
     List<FinalFlightReservationDTO> mapearReservas(List<ReservarFlight> listReservas);
 
-    List<FinalFlightReservationDTO> ListarReservasDia(LocalDate dias);
+    List<ReservarFlight> listarReservasDia(LocalDate dias);
 
-    List<FinalFlightReservationDTO> listarReservasMes(Integer mes);
+    List<ReservarFlight> listarReservasMes(Integer mes);
 
 
 

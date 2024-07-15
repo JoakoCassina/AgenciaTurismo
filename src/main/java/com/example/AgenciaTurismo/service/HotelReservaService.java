@@ -211,7 +211,7 @@ public class HotelReservaService implements IHotelReservaService {
       Hotel hotelEncontrado = hotelRepository.findByHotelCode(hotelCode);
 
       if (hotelEncontrado.getReserved() == true) {
-          throw new IllegalStateException("Este hotel se encuentra reservado");
+          throw new IllegalArgumentException("Este hotel se encuentra reservado");
       }
 
         return false;
@@ -320,15 +320,15 @@ public class HotelReservaService implements IHotelReservaService {
     }
 
     @Override
-    public List<FinalHotelReservationDTO> ListarReservasDia(LocalDate dia) {
+    public List<ReservarHotel> listarReservasDia(LocalDate dia) {
         List<ReservarHotel> reservasListDia = hotelReservaRepository.findByDia(dia);
-        return mapearReservas(reservasListDia);
+        return reservasListDia;
     }
 
     @Override
-    public List<FinalHotelReservationDTO> listarReservasMes(Integer mes) {
+    public List<ReservarHotel> listarReservasMes(Integer mes) {
         List<ReservarHotel> reservasListMes = hotelReservaRepository.findByMes(mes);
-        return mapearReservas(reservasListMes);
+        return reservasListMes;
 
     }
 

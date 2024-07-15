@@ -32,8 +32,8 @@ public interface IHotelReservaService {
 
     List<FinalHotelReservationDTO> mapearReservas (List<ReservarHotel> reservas);
 
-    List<FinalHotelReservationDTO> ListarReservasDia(LocalDate dia);
+    List<ReservarHotel> listarReservasDia(LocalDate dia);
 
-    List<FinalHotelReservationDTO> listarReservasMes(Integer mes);
+    List<ReservarHotel> listarReservasMes(Integer mes);
 
 }
