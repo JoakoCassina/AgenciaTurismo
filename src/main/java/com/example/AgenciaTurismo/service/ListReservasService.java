@@ -29,7 +29,7 @@ public class ListReservasService implements IListReservasService {
     IHotelReservaService hotelReservaService;
 
 
-    @Override
+    @Override//Metodo que lista todas las reservas creadas (Tanto como de Hotel como de Flight)
     public ListReservasDTO listarReservas() {
         ListReservasDTO listaReservasDTO = new ListReservasDTO();
         listaReservasDTO.setMessage("Listado de Todas las Reservas");
@@ -38,21 +38,21 @@ public class ListReservasService implements IListReservasService {
         return listaReservasDTO;
     }
 
-    @Override
+    @Override//Devuele el monto total que se adquirido por una fecha específica
     public ReservaDiaDTO listarReservasPorDia(LocalDate dia) {
-        List<ReservarHotel> listaReservasHotelDia = (hotelReservaService.listarReservasDia(dia));
+        List<ReservarHotel> listaReservasHotelDia = (hotelReservaService.listarReservasDia(dia));//Llamamos al meotod que lista las reservas realizadas tal fecha
          Double totalReservasHotel = 0.0;
         Double totalReservasVuelo = 0.0;
-        for (ReservarHotel reserva : listaReservasHotelDia){
+        for (ReservarHotel reserva : listaReservasHotelDia){//De la lista obtenida tomamos y sumamos sus TOTALES
             totalReservasHotel += reserva.getTotalAmount();
-        }
+        }//Así obtenemos el total obtenido en las Reservas de hotel en una fecha específica
         List<ReservarFlight> listaReservasVueloDia = (flightReservaService.listarReservasDia(dia));
         for (ReservarFlight reserva : listaReservasVueloDia) {
             totalReservasVuelo += reserva.getTotalAmount();
         }
-        ReservaDiaDTO totalReservasDia = new ReservaDiaDTO();
-        totalReservasDia.setDate(dia);
-        totalReservasDia.setTotal(totalReservasHotel + totalReservasVuelo);
+        ReservaDiaDTO totalReservasDia = new ReservaDiaDTO();//Creamos la respuesta final
+        totalReservasDia.setDate(dia);//La fecha de consulta
+        totalReservasDia.setTotal(totalReservasHotel + totalReservasVuelo);//Sumamos los montos adquiridos tanto con reservas de hoteles como de Flight para obtener el total final
         return totalReservasDia;
     }
 

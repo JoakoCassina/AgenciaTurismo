@@ -39,36 +39,34 @@ public class HotelReservaService implements IHotelReservaService {
     ModelMapper modelMapper;
 
 
-    @Override
+    @Override//Método que lista todas las reservas de Hotel cargadas en mi DB
     public List<FinalHotelReservationDTO> listarReservas() {
         List<ReservarHotel> reservasList = hotelReservaRepository.findAll();
         return mapearReservas(reservasList);
 
     }
 
-    @Override
+    @Override//Método para crear una reserva de Hotel
     public ResponseDTO createReserva(FinalHotelReservationDTO finalHotelReservationDTO) {
 
         Optional<Client> clienteExistente = clientRepository.findByUsername(finalHotelReservationDTO.getUserName());
         if(clienteExistente.isEmpty()) {
-            return new ResponseDTO("Debes loguearte para poder crear una reserva!!");
+            return new ResponseDTO("Debes loguearte para poder crear una reserva!!");//Validamos que sea un cliente existente el que realiza la reserva
         }
         Client clienteEncontrado = clienteExistente.get();
 
-        if (this.reserveSaved(finalHotelReservationDTO)) {
-            throw new IllegalArgumentException("La reserva ya está realizada.");
-        }
+        this.reserveSaved(finalHotelReservationDTO);//Llamamos al método que valida si una reserva ya existe para evitar duplicados.
 
-        this.roomCapacity(finalHotelReservationDTO.getHotelReservationDTO());
+        this.roomCapacity(finalHotelReservationDTO.getHotelReservationDTO());//Llamamos al metodo que valida si la cantidad de personas coincide con el tipo de habitacíon solicitado.
 
 
-        HotelConsultDTO hotelBuscado = new HotelConsultDTO(
+        HotelConsultDTO hotelBuscado = new HotelConsultDTO( //Creamos una variable de tipo de dato HotelConsultDTO
                 finalHotelReservationDTO.getHotelReservationDTO().getDateFrom(),
                 finalHotelReservationDTO.getHotelReservationDTO().getDateTo(),
                 finalHotelReservationDTO.getHotelReservationDTO().getDestination(),
                 finalHotelReservationDTO.getHotelReservationDTO().getHotelCode());
 
-        List<HotelDTO> availableHotel = serviceHotel.validarHotelesDisponibles(hotelBuscado);
+        List<HotelDTO> availableHotel = serviceHotel.validarHotelesDisponibles(hotelBuscado); //Llamamos al service que tiene el metodo que valida si un Hotel existe.
 
 
         HotelDTO hotelToReserved = null;
@@ -79,17 +77,18 @@ public class HotelReservaService implements IHotelReservaService {
                 hotelToReserved = hotel;
                 break;
             }
-        }
+        } //De la lista obtenida, tomo el hotel que coincide con el que se desea reservar
         if (hotelToReserved == null) {
             throw new IllegalArgumentException("No se encontró ningún hotel que coincida con los criterios de reserva.");
         }
 
-        Double amount = (hotelToReserved.getPriceForNight() * finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
+        Double amount = (hotelToReserved.getPriceForNight() * finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount()); //Calculo el total
 
         Double interest = this.calcInterest(amount, finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO().getDues(),
                 finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO().getType());
+        //Llamamos al método que calcula el interes dependiendo el tipo de pago seleccionado
 
-        Double total = amount + interest;
+        Double total = amount + interest;//Obtenemos el total final a pagar.
 
 
         TotalHotelReservationDTO totalHotelReservationDTO = new TotalHotelReservationDTO();
@@ -98,7 +97,7 @@ public class HotelReservaService implements IHotelReservaService {
         totalHotelReservationDTO.setTotal(total);
         totalHotelReservationDTO.setFinalHotelReservation(finalHotelReservationDTO);
         totalHotelReservationDTO.setStatusCode(new StatusCodeDTO(201, "El proceso terminó satisfactoriamente"));
-
+        //Creamos el tipo de respuesta que nos pedia en el Sprint2
 
 
         List<PeopleDTO> persDeReserva = finalHotelReservationDTO.getHotelReservationDTO().getPeopleDTO();
@@ -107,12 +106,12 @@ public class HotelReservaService implements IHotelReservaService {
             People person = modelMapper.map(peoples, People.class);
             persAGuardar.add(person);
             peopleRepository.save(person);
-        } //guardo la lista de personas
+        } //Mapeo la lista de personas y guardo esa lista mapeada en mi DB
 
 
         PaymentMethodDTO metodoPago = finalHotelReservationDTO.getHotelReservationDTO().getPaymentMethodDTO();
         PaymentMethod metodoPagoAGuardar = modelMapper.map(metodoPago, PaymentMethod.class);
-        paymentMethodRepository.save(metodoPagoAGuardar);//guardo el metodo de pago
+        paymentMethodRepository.save(metodoPagoAGuardar);//Mapeo el método de pago y guardo el metodo de pago mapeado.
 
         Random random = new Random();
 
@@ -124,37 +123,37 @@ public class HotelReservaService implements IHotelReservaService {
         int year = 2024;
 
         LocalDate fechaCreacion = LocalDate.of(year, randomMonth, randomDay);
-
+        //Creamos un Random para asignar fechas random en la creacion de una reserva.
 
         Hotel hotelExistente = hotelRepository.findByHotelCode(hotelToReserved.getHotelCode());
         if (hotelExistente == null) {
             throw new IllegalArgumentException("No se encontró el hotel a reservar.");
-        }
-        hotelExistente.setReserved(true);
+        }//Buscamos el hotel que se desea reservar
+        hotelExistente.setReserved(true);//Al hotel obtenido lo actualizamos, pasa a ser Reservado.
 
-        ReservarHotel reservaHotelCreada = new ReservarHotel();
-        reservaHotelCreada.setPeopleAmount(finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());
-        reservaHotelCreada.setPeople(persAGuardar);
-        reservaHotelCreada.setPaymentMethod(metodoPagoAGuardar);
-        reservaHotelCreada.setHotel(hotelExistente);
-        reservaHotelCreada.setCliente(clienteEncontrado);
-        reservaHotelCreada.setTotalAmount(total);
-        reservaHotelCreada.setCreationDate(fechaCreacion);
-        hotelReservaRepository.save(reservaHotelCreada);
+        ReservarHotel reservaHotelCreada = new ReservarHotel();//Creamos el tipo de dato a guardar
+        reservaHotelCreada.setPeopleAmount(finalHotelReservationDTO.getHotelReservationDTO().getPeopleAmount());//Cantidad de personas
+        reservaHotelCreada.setPeople(persAGuardar);//Cantidad de personas de la reserva
+        reservaHotelCreada.setPaymentMethod(metodoPagoAGuardar);//Metodo de pago de la reserva
+        reservaHotelCreada.setHotel(hotelExistente);//El hotel reservado
+        reservaHotelCreada.setCliente(clienteEncontrado);//Le asignamos al cliente la reserva
+        reservaHotelCreada.setTotalAmount(total);//Le asignamos el total a la reserva
+        reservaHotelCreada.setCreationDate(fechaCreacion);//Le asignamos la fecha de creacion de dicha reserva.
+        hotelReservaRepository.save(reservaHotelCreada);//Guardamos nuestra reserva en la DB
 
-        clienteEncontrado.setBookingQuantity(clienteEncontrado.getBookingQuantity()+1);
+        clienteEncontrado.setBookingQuantity(clienteEncontrado.getBookingQuantity()+1);//Le incrementamos al cliente la cantidad de reservas
 
         for (People person : persAGuardar) {
             person.setReservationHotel(reservaHotelCreada);
             peopleRepository.save(person);
-        }
+        }//Le asignamos el id de la reserva a las personas que pertenecen a la reserva.
 
         return new ResponseDTO("Reserva de hotel dada de alta correctamente");
     }
 
     @Override
     public ResponseDTO updateReserva(Long id, FinalHotelReservationDTO finalHotelReservationDTO) {
-        Optional<ReservarHotel> optionalReservaHotel = hotelReservaRepository.findById(id);
+        Optional<ReservarHotel> optionalReservaHotel = hotelReservaRepository.findById(id);//Buscamos la reserva por ID en la DB
 
         if (optionalReservaHotel.isEmpty()) {
             throw new IllegalArgumentException("No se encontró la reserva a actualizar");
@@ -189,17 +188,17 @@ public class HotelReservaService implements IHotelReservaService {
 
     @Override
     public ResponseDTO deleteReserva(Long id) {
-        Optional<ReservarHotel> reservaABuscar = hotelReservaRepository.findById(id);
+        Optional<ReservarHotel> reservaABuscar = hotelReservaRepository.findById(id);//Buscamos si existe una reserva por ID en nuestra DB
         if(reservaABuscar.isEmpty()){
             return new ResponseDTO("No se encontro la reserva a eliminar");
         }
         ReservarHotel reservaAEliminar = reservaABuscar.get();
-        Hotel hotelReservado = reservaAEliminar.getHotel();
+        Hotel hotelReservado = reservaAEliminar.getHotel();//Obtenemos el hotel de la reserva
 
-        hotelReservaRepository.deleteById(id);
+        hotelReservaRepository.deleteById(id);//Eliminamos la reserva
 
-        hotelReservado.setReserved(false);
-        hotelRepository.save(hotelReservado);
+        hotelReservado.setReserved(false);//Actualizamos el Hotel, ya que ahora pasa a NO estar reservado.
+        hotelRepository.save(hotelReservado);//Guardamos el hotel actualizado
 
         return new ResponseDTO("Reserva eliminada con éxito");
     }
@@ -207,18 +206,18 @@ public class HotelReservaService implements IHotelReservaService {
     //METODOS PARA REUTILIZAR
     @Override
     public Boolean reserveSaved(FinalHotelReservationDTO finalHotelReservationDTO) {
-      String hotelCode = finalHotelReservationDTO.getHotelReservationDTO().getHotelCode();
-      Hotel hotelEncontrado = hotelRepository.findByHotelCode(hotelCode);
+      String hotelCode = finalHotelReservationDTO.getHotelReservationDTO().getHotelCode();//Obtenemos el hotel de nuestra solicitud
+      Hotel hotelEncontrado = hotelRepository.findByHotelCode(hotelCode);//Buscamos el hotel por hotelCode
 
-      if (hotelEncontrado.getReserved() == true) {
+      if (hotelEncontrado.getReserved() == true) {//Si está reservado lanza la excepcíon
           throw new IllegalArgumentException("Este hotel se encuentra reservado");
       }
 
         return false;
     }
 
-       //Evalua el metodo de pago ingresado para poder hacer el carlculo de la reserva.
-    @Override
+
+    @Override//Calcula el interes dependiendo el tipo de pago y las cuotas seleccionadas por el cliente.
     public Double calcInterest(Double amount, Integer dues, String type) {
 
         if (type.equalsIgnoreCase("Debit") || type.equalsIgnoreCase("Credit")) {
@@ -243,7 +242,7 @@ public class HotelReservaService implements IHotelReservaService {
 
     }
 
-    //comparar tipo de habitacion con cantidad de personas ingresadas
+    //Valida que la cantidad de personas coincida con el tipo de habitacion seleccionado
     public Boolean roomCapacity(HotelReservationDTO reservation) {
         Double people;
 
@@ -275,7 +274,7 @@ public class HotelReservaService implements IHotelReservaService {
 
     }
 
-    @Override
+    @Override//Mapea ReservarHotel a FinalHotelReservationDTO
     public List<FinalHotelReservationDTO> mapearReservas(List<ReservarHotel> reservas) {
         List<FinalHotelReservationDTO> listAMotrar = new ArrayList<>();
 
@@ -319,13 +318,13 @@ public class HotelReservaService implements IHotelReservaService {
         return listAMotrar;
     }
 
-    @Override
+    @Override//Lista las reservas realizadas en un cierto día
     public List<ReservarHotel> listarReservasDia(LocalDate dia) {
         List<ReservarHotel> reservasListDia = hotelReservaRepository.findByDia(dia);
         return reservasListDia;
     }
 
-    @Override
+    @Override//Lista las reservas realizadas en un cierto mes.
     public List<ReservarHotel> listarReservasMes(Integer mes) {
         List<ReservarHotel> reservasListMes = hotelReservaRepository.findByMes(mes);
         return reservasListMes;

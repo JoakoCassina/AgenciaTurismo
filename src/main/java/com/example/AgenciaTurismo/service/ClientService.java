@@ -30,14 +30,14 @@ public class ClientService implements IClientService{
     }
 
     @Override
-    public ClienteDTO findByUsername(String username) {
+    public ClienteDTO findByUsername(String username) { //Buscar cliente por UserName
         Optional<Client> clienteEncontrado = clientRepository.findByUsername(username);
         ClienteDTO clienteDTO = modelMapper.map(clienteEncontrado, ClienteDTO.class);
         return clienteDTO;
     }
 
     @Override
-    public List<ClienteDTO> topClientes() {
+    public List<ClienteDTO> topClientes() { //Listar Top 3 de Clientes (Mayor cantidad de reservas realizadas)
 
     List<Client> listaCliente = clientRepository.findTop3Clients();
     List<ClienteDTO> listaRespuesta = new ArrayList<>();

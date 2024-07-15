@@ -25,14 +25,15 @@ public class FlightService implements IFlightService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Override
+    @Override//Método que lista todos los vuelos cargados en nuestra DB
     public List<FlightDTO> listarFlight() {
         return flightRepository.findAll().stream()
                 .map(flight -> modelMapper.map(flight, FlightDTO.class))
                 .collect(Collectors.toList());
     }
 
-    @Override
+
+    @Override//Método que devuelve los Vuelo segun un filtro (destino, origen y fechas)
     public FlightAvailableDTO vuelosDisponibles(FlightConsultDTO flightConsultDTO) {
         //LLAMAMOS AL METODO VALIDAR VUELOS DISPONIBLES
         List<FlightDTO> availableFlight = this.validarVuelosDisponibles(flightConsultDTO);
@@ -44,7 +45,7 @@ public class FlightService implements IFlightService {
     }
 
     //CRUD
-    @Override
+    @Override//Método que crea un vuelo
     public ResponseDTO createFlight(FlightDTO flightDTO) {
         Flight flight = new Flight();
         modelMapper.map(flightDTO, flight);
@@ -53,7 +54,7 @@ public class FlightService implements IFlightService {
         return new ResponseDTO("Vuelo creado con éxito");
     }
 
-    @Override
+    @Override//Método para actualizar un vuelo
     public ResponseDTO updateFlight(Long id, FlightDTO flightDTO) {
         Optional<Flight> optionFlight = flightRepository.findById(id);
         if(optionFlight.isEmpty()){
@@ -67,7 +68,7 @@ public class FlightService implements IFlightService {
         return new ResponseDTO("Vuelo actualizado con éxito");
     }
 
-    @Override
+    @Override//Metodo para eliminar un vuelo
     public ResponseDTO deleteFlight(Long id) {
         if(!flightRepository.existsById(id)){
             return new ResponseDTO("Vuelo no encontrado");
@@ -81,7 +82,7 @@ public class FlightService implements IFlightService {
                             //METODOS PARA VALIDAR
 
     //VALIDACION DE DESTINO Y ORIGEN DE VUELOS
-    @Override
+    @Override//validamos si el hotel existe
     public List<FlightDTO> validarVuelosDisponibles(FlightConsultDTO flightConsultDTO) {
         //LLAMAMOS AL METODO QUE VALIDA DESTINO Y ORIGEN
         this.flightValid(flightConsultDTO.getOrigin(), flightConsultDTO.getDestination());
@@ -106,7 +107,7 @@ public class FlightService implements IFlightService {
         return availableFlight;
     }
 
-    @Override
+    @Override//Método que valida por destino y origen
     public Boolean flightValid(String origin, String destination) {
         List<String> validOrigin = listarFlight().stream()
                 .map(FlightDTO::getOrigin)
@@ -125,7 +126,7 @@ public class FlightService implements IFlightService {
         }
     }
 
-    @Override
+    @Override//Método que valifa por fechas
     public Boolean dateValid(LocalDate dateFrom, LocalDate dateTo) {
         if (!dateFrom.isBefore(dateTo)) {
             throw new IllegalArgumentException("La fecha de entrada debe ser menor a la de salida");

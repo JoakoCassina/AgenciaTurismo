@@ -27,7 +27,7 @@ public class HotelService implements IHotelService {
     private ModelMapper modelMapper;
 
 
-    @Override
+    @Override//Listamos todos los hoteles disponibles
     public List<HotelDTO> listarHotels() {
         return hotelRepository.findAll().stream()
                 .map(hotel -> modelMapper.map(hotel, HotelDTO.class))
@@ -35,7 +35,7 @@ public class HotelService implements IHotelService {
     }
 
 
-    @Override
+    @Override//Listamos los hoteles disponibles segun filtros (fehca entrada, salida y destino)
     public HotelAvailableDTO hotelesDisponibles(HotelConsultDTO hotelConsultDTO) {
         // Verificar si hay hoteles disponibles para las fechas y el destino
         List<HotelDTO> availableHotel = this.validarHotelesDisponibles(hotelConsultDTO);
@@ -48,7 +48,7 @@ public class HotelService implements IHotelService {
     }
 
 
-    @Override
+    @Override//Método para crear un Hotel
     public ResponseDTO createHotel(HotelDTO hotelDTO) {
         Hotel hotel = new Hotel();
         modelMapper.map(hotelDTO, hotel);
@@ -57,7 +57,7 @@ public class HotelService implements IHotelService {
         return new ResponseDTO("Hotel creado con éxito");
     }
 
-    @Override
+    @Override//Método para actualizar un Hotel
     public ResponseDTO updateHotel(Long id, HotelDTO hotelDTO) {
         Optional<Hotel> optionalHotel = hotelRepository.findById(id);//Guardamos el HOTEL obtenido (con un OPTIONAL porque puede llegar a ser null)
         if(optionalHotel.isEmpty()){
@@ -72,7 +72,7 @@ public class HotelService implements IHotelService {
 
 
     }
-    @Override
+    @Override//Metodo para eliminar un hotel
     public ResponseDTO deleteHotel(Long id) {
         if(!hotelRepository.existsById(id)){
             return new ResponseDTO("No se encontro el hotel a eliminar");
@@ -85,10 +85,10 @@ public class HotelService implements IHotelService {
     // Validando Hoteles disponible
     @Override
     public List<HotelDTO> validarHotelesDisponibles(HotelConsultDTO hotelConsultDTO) {
-        // llamamo al metodo que verifica la existencia del destino
+        // llamamo al metodo que valida la existencia del hotel segun del destino
         this.destinationValid(hotelConsultDTO.getDestination());
 
-        // llamamos al metodo que verifica las fechas
+        // llamamos al metodo que valida si las fechas están bien pasadas
         this.dateValid(hotelConsultDTO.getDateFrom(), hotelConsultDTO.getDateTo());
 
         List<HotelDTO> listHotelDTO = this.listarHotels();
@@ -111,7 +111,7 @@ public class HotelService implements IHotelService {
     }
 
     //Validando fechas
-    @Override
+    @Override//Valida el Hotel segun fechas
     public Boolean dateValid(LocalDate dateFrom, LocalDate dateTo) {
         if (!dateFrom.isBefore(dateTo)) {
             throw new IllegalArgumentException("La fecha de entrada debe ser menor a la de salida");
