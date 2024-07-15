@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api/v1/listReserved")
+@RequestMapping("/api/v1/income")
 @Validated
 public class ListReservasController {
 
